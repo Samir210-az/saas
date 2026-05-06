@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroCBT Klinik Test - AN Psixoloji Mərkəzi</title>
+    <style>
+        /* Bütün stillər əvvəlki kimidir, qısaltmaq üçün yazmıram, amma tam kodda var */
+        *{box-sizing:border-box;font-family:system-ui;} body{background:#0f172a;margin:0;padding:20px;color:#f1f5f9;} 
+        .container{max-width:1400px;margin:0 auto;} .card{background:#1e293b;border-radius:1.25rem;padding:1.5rem;margin-bottom:1.75rem;}
+        .card-header{font-size:1.5rem;font-weight:700;border-left:5px solid #38bdf8;padding-left:1rem;display:flex;justify-content:space-between;}
+        input,select,button{padding:10px;border-radius:14px;background:#0f172a;color:white;border:1px solid #334155;}
+        button{background:#38bdf8;color:#0f172a;font-weight:bold;cursor:pointer;} .btn-outline{background:transparent;border:1px solid #38bdf8;}
+        .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.5rem;}
+        .patient-item{background:#111827;padding:12px;border-radius:1rem;cursor:pointer;display:flex;justify-content:space-between;margin-bottom:0.5rem;border-left:4px solid transparent;}
+        .patient-item.selected{border-left-color:#38bdf8;background:#0f172a;} .question-group{background:#0f172a;padding:1rem;border-radius:1rem;margin-bottom:1.5rem;}
+        .scale-options{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;} .scale-options label{background:#1e293b;padding:5px 12px;border-radius:40px;cursor:pointer;}
+        .report-box{background:#0f172a;padding:1rem;border-radius:1rem;white-space:pre-wrap;font-family:monospace;margin-top:1rem;}
+        .history-item{background:#0f172a;padding:0.8rem;border-radius:0.8rem;margin-bottom:0.6rem;border-left:3px solid #38bdf8;cursor:pointer;}
+        .flex-between{display:flex;justify-content:space-between;align-items:center;} .badge{background:#334155;padding:4px 12px;border-radius:40px;font-size:0.7rem;}
+        footer{text-align:center;margin-top:2rem;padding:1rem;border-top:1px solid #334155;} .modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.8);}
+        .modal-content{background:#1e293b;margin:5% auto;padding:1.5rem;border-radius:1.5rem;width:90%;max-width:800px;max-height:80vh;overflow:auto;} .user-info{background:#0f172a;padding:0.3rem 1rem;border-radius:40px;}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="authPanel" class="card">
+        <div class="card-header">🧠 NeuroCBT Klinik Test Sistemi</div>
+        <div class="grid-2">
+            <div><h3>Daxil ol</h3><input type="text" id="loginUsername" placeholder="İstifadəçi adı"><input type="password" id="loginPassword" placeholder="Şifrə"><button onclick="handleLogin()">Daxil ol</button></div>
+            <div><h3>Mütəxəssis Qeydiyyatı</h3><input type="text" id="regFirstName" placeholder="Ad"><input type="text" id="regLastName" placeholder="Soyad"><select id="regProfession"><option>Psixoloq</option><option>Loqoped</option><option>Terapevt</option><option>Psixopedaqoq</option></select><input type="text" id="regUsername" placeholder="İstifadəçi adı"><input type="password" id="regPassword" placeholder="Şifrə"><button onclick="handleRegister()">Qeydiyyat</button></div>
+        </div>
+        <div id="authError" style="color:#f87171; margin-top:12px;"></div>
+    </div>
+    <div id="mainApp" style="display:none;">
+        <div class="flex-between" style="margin-bottom:1rem;"><h2>📋 Klinik Modul</h2><div style="display:flex; gap:1rem;"><span class="user-info" id="userInfoSpan"></span><button onclick="logout()" class="btn-outline">🚪 Çıxış</button></div></div>
+        <div class="grid-2">
+            <div class="card"><div class="card-header">📌 Xəstə CRM</div><div style="display:flex; gap:8px;"><input type="text" id="patientName" placeholder="Ad, Soyad" style="flex:2"><input type="number" id="patientAge" placeholder="Yaş" style="flex:1"><button onclick="addPatient()">➕ Əlavə et</button></div><div id="patientListContainer" class="patient-list" style="max-height:300px; overflow-y:auto; margin-top:1rem;"></div><div id="selectedPatientInfo" class="badge" style="margin-top:12px;">❌ Xəstə seçilməyib</div></div>
+            <div class="card"><div class="card-header">📝 CBT Klinik Test (28 sual)</div><div id="testContainer" style="max-height:500px; overflow-y:auto;"></div><button onclick="runAnalysis()" style="width:100%; margin:12px 0;">🧠 Klinik Analiz</button><button onclick="downloadReportAsHTML()" class="btn-outline" style="width:100%;">📄 HTML yüklə</button><div id="currentReport" class="report-box"><em>Test nəticəsi...</em></div></div>
+        </div>
+        <div class="card"><div class="card-header" id="historyHeader">📜 Keçmiş hesabatlar</div><div id="historyReports">Xəstə seçin.</div></div>
+    </div>
+    <footer>© 2025 AN Psixoloji Dəstək və Reabilitasiya Mərkəzi</footer>
+</div>
+<div id="reportModal" class="modal"><div class="modal-content"><div class="flex-between"><h3>📄 Tam Hesabat</h3><span class="close-modal" style="cursor:pointer;font-size:1.8rem;">&times;</span></div><div id="modalReportContent"><pre></pre></div><div style="margin-top:1rem;"><button id="modalDownloadBtn" class="btn-outline">⬇️ HTML yüklə</button></div></div></div>
+
+<script>
+    // KLİNİK SUALLAR (28)
+    const klinikSuallar = {
+        Narahatlıq: ["Son 2 həftədə gözlənilməz qorxu hissi?", "Əsəbilik və gərginlik?", "Kiçik şeylər sizi narahat edir?", "Yuxu problemləri?", "Əzələ gərginliyi?", "Nəzarəti itirmək qorxusu?", "Hadisələri təhlükəli qəbul edirsiniz?"],
+        Depressiya: ["Kədər, boşluq hissi?", "Maraq itkisi?", "Enerji azalması?", "Dəyərsizlik hissi?", "Qərar vermə çətinliyi?", "İştah dəyişikliyi?", "Ölüm/intihar düşüncələri?"],
+        Davranış: ["Qəzəb partlayışları?", "Mübahisələr?", "Yalan/manipulyasiya?", "Empatiya çatışmazlığı?", "Riskli hərəkətlər?", "Öhdəlikləri yerinə yetirməmə?", "Həddindən artıq inadkarlıq?"],
+        Diqqət: ["Diqqət cəmləmə çətinliyi?", "Ehtiyatsız səhvlər?", "Dinləmə çətinliyi?", "Təlimatları izləməkdə problem?", "Əşyaları itirmək?", "Zehni yorğunluq?", "Stimullardan tez yayınma?"]
+    };
+    let klinikAnswers = {};
+    function initAnswers(){ for(let s in klinikSuallar){ klinikSuallar[s].forEach((_,i)=>{ klinikAnswers[`${s}_${i}`]=0; }); } } initAnswers();
+    function getScaleAvg(s){ let t=0; klinikSuallar[s].forEach((_,i)=>t+=klinikAnswers[`${s}_${i}`]); return t/klinikSuallar[s].length; }
+    function renderTest(){ const c=document.getElementById("testContainer"); c.innerHTML=""; for(let skala in klinikSuallar){ let g=document.createElement("div"); g.className="question-group"; g.innerHTML=`<div style="font-weight:bold;color:#38bdf8;">📍 ${skala}</div>`; klinikSuallar[skala].forEach((sual,idx)=>{ let q=document.createElement("div"); q.style.marginBottom="12px"; q.innerHTML=`<div class="question-text">${idx+1}. ${sual}</div><div class="scale-options" id="opts_${skala}_${idx}"></div>`; let opts=q.querySelector(`.scale-options`); for(let v=0;v<=3;v++){ let lbl=document.createElement("label"); let r=document.createElement("input"); r.type="radio"; r.name=`${skala}_${idx}`; r.value=v; if(klinikAnswers[`${skala}_${idx}`]===v) r.checked=true; r.onchange=()=>{ klinikAnswers[`${skala}_${idx}`]=parseInt(r.value); }; let txt=v===0?"0 Yox":v===1?"1 Yüngül":v===2?"2 Orta":"3 Şiddətli"; lbl.appendChild(r); lbl.appendChild(document.createTextNode(" "+txt)); opts.appendChild(lbl); } g.appendChild(q); }); c.appendChild(g); } }
+    
+    // === DÜZƏLİŞ: Mütəxəssis məlumatını canlı oxuyan funksiya ===
+    function getCurrentSpecialist() {
+        if (!currentUser) return "Mütəxəssis qeyd olunmayıb";
+        const users = getUsers();
+        const user = users[currentUser];
+        if (user && user.firstName && user.lastName && user.profession) {
+            return `${user.firstName} ${user.lastName} (${user.profession})`;
+        } else if (user && user.firstName && user.lastName) {
+            return `${user.firstName} ${user.lastName} (Peşə göstərilməyib)`;
+        }
+        return "Mütəxəssis məlumatı tapılmadı";
+    }
+
+    function generateReport(){ 
+        const userData=getCurrentUserData(); let pName="Seçilməyib", pAge=""; 
+        if(selectedPatientId && userData?.patients?.[selectedPatientId]){ pName=userData.patients[selectedPatientId].name; pAge=` (${userData.patients[selectedPatientId].age} yaş)`; }
+        let scores={}, totalWeight=0; for(let s in klinikSuallar){ let avg=getScaleAvg(s); scores[s]=parseFloat(avg.toFixed(2)); totalWeight+=avg; }
+        let riskL="", riskD=""; if(totalWeight>=8){ riskL="YÜKSƏK RİSK"; riskD="Təcili müdaxilə, həftədə 2 dəfə terapiya."; } else if(totalWeight>=5){ riskL="ORTA RİSK"; riskD="Mütəmadi CBT, həftəlik monitorinq."; } else { riskL="AŞAĞI RİSK"; riskD="Profilaktika, stress idarəsi."; }
+        let plan=""; if(scores.Narahatlıq>=2) plan+="🔹 Narahatlıq: ekspozisiya, nəfəs texnikası.\n"; if(scores.Depressiya>=2) plan+="🔸 Depressiya: davranış aktivləşdirmə.\n"; if(scores.Davranış>=2) plan+="🔻 Davranış: token sistemi, qəzəb idarəsi.\n"; if(scores.Diqqət>=2) plan+="🔹 Diqqət: metakoqnitiv təlim, pomodoro.\n"; if(!plan) plan="✅ Yüngül səviyyə, profilaktik müşahidə.";
+        const specialist = getCurrentSpecialist();  // <-- DÜZƏLİŞ BURADA
+        const dateStr = new Date().toLocaleString('az-AZ');
+        const reportText = `🧠 NEUROCBT KLİNİK HESABAT (AN Mərkəzi)
+====================================
+👤 Xəstə: ${pName}${pAge}
+📅 Tarix: ${dateStr}
+📊 Şkalalar: Narahatlıq ${scores.Narahatlıq} | Depressiya ${scores.Depressiya} | Davranış ${scores.Davranış} | Diqqət ${scores.Diqqət}
+⚠️ Risk: ${riskL} - ${riskD}
+💊 Plan:\n${plan}
+--------------------------------------------------
+✅ Hesabatı hazırlayan: ${specialist}
+🏥 AN Psixoloji Dəstək və Reabilitasiya Mərkəzi`;
+        return { reportText, scores, totalWeight, riskL, specialist };
+    }
+    
+    window.runAnalysis=function(){ if(!selectedPatientId){ alert("Xəstə seçin!"); return; } const {reportText}=generateReport(); document.getElementById("currentReport").innerHTML=`<pre>${escapeHtml(reportText)}</pre>`; const patient=getCurrentUserData()?.patients?.[selectedPatientId]; if(patient){ if(!patient.reports) patient.reports=[]; patient.reports.push({date:Date.now(), reportText, totalScore:generateReport().totalWeight, riskLevel:generateReport().riskL, scores:generateReport().scores, specialist:generateReport().specialist}); saveUserData(getCurrentUserData()); loadHistory(); alert("Hesabat saxlanıldı"); } };
+    function downloadHtmlReport(txt,name){ const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Hesabat ${name}</title><style>body{background:#f0f2f5;padding:2rem;font-family:monospace;}</style></head><body><pre>${escapeHtml(txt)}</pre><footer>AN Mərkəzi</footer></body></html>`; const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([html],{type:"text/html"})); a.download=`Klinik_${name.replace(/\s/g,"_")}.html`; a.click(); }
+    window.downloadReportAsHTML=function(){ const c=document.getElementById("currentReport").innerText; if(c.includes("nəticəsi")){ alert("Analiz edilməyib"); return; } const p=getCurrentUserData()?.patients?.[selectedPatientId]; downloadHtmlReport(c, p?p.name:"Xəstə"); };
+    
+    // STORAGE
+    let currentUser=null, selectedPatientId=null;
+    function getUsers(){ return JSON.parse(localStorage.getItem("neurocbt_users")||"{}"); }
+    function saveUsers(u){ localStorage.setItem("neurocbt_users",JSON.stringify(u)); }
+    function getCurrentUserData(){ return currentUser? getUsers()[currentUser] : null; }
+    function saveUserData(d){ let u=getUsers(); u[currentUser]=d; saveUsers(u); }
+    window.handleRegister=function(){ let fn=document.getElementById("regFirstName").value.trim(); let ln=document.getElementById("regLastName").value.trim(); let prof=document.getElementById("regProfession").value; let un=document.getElementById("regUsername").value.trim(); let pw=document.getElementById("regPassword").value.trim(); if(!fn||!ln||!un||!pw){ document.getElementById("authError").innerText="Hamısını doldurun"; return; } let u=getUsers(); if(u[un]){ document.getElementById("authError").innerText="İstifadəçi var"; return; } u[un]={firstName:fn, lastName:ln, profession:prof, password:pw, patients:{}}; saveUsers(u); document.getElementById("authError").innerText="✅ Qeydiyyat oldu"; };
+    window.handleLogin=function(){ let un=document.getElementById("loginUsername").value.trim(); let pw=document.getElementById("loginPassword").value.trim(); let u=getUsers(); if(u[un] && u[un].password===pw){ currentUser=un; localStorage.setItem("neurocbt_currentUser",un); document.getElementById("mainApp").style.display="block"; document.getElementById("authPanel").style.display="none"; document.getElementById("userInfoSpan").innerHTML=`👤 ${u[un].firstName} ${u[un].lastName} (${u[un].profession})`; loadPatients(); renderTest(); updateSelected(); document.getElementById("currentReport").innerHTML="<em>Hesabat gözlənilir</em>"; } else { document.getElementById("authError").innerText="Yanlış məlumat"; } };
+    function logout(){ currentUser=null; localStorage.removeItem("neurocbt_currentUser"); document.getElementById("mainApp").style.display="none"; document.getElementById("authPanel").style.display="block"; }
+    function autoLogin(){ let s=localStorage.getItem("neurocbt_currentUser"); if(s && getUsers()[s]){ currentUser=s; let u=getUsers()[s]; document.getElementById("mainApp").style.display="block"; document.getElementById("authPanel").style.display="none"; document.getElementById("userInfoSpan").innerHTML=`👤 ${u.firstName} ${u.lastName} (${u.profession})`; loadPatients(); renderTest(); updateSelected(); return true; } return false; }
+    window.addPatient=function(){ let n=document.getElementById("patientName").value.trim(); let a=parseInt(document.getElementById("patientAge").value); if(!n||isNaN(a)||a<=0){ alert("Düzgün daxil edin"); return; } let d=getCurrentUserData(); let id=Date.now()+"_"+Math.random().toString(36).substr(2,6); if(!d.patients) d.patients={}; d.patients[id]={name:n, age:a, reports:[]}; saveUserData(d); loadPatients(); document.getElementById("patientName").value=""; document.getElementById("patientAge").value=""; };
+    function loadPatients(){ let d=getCurrentUserData(); let cont=document.getElementById("patientListContainer"); if(!d||!d.patients||Object.keys(d.patients).length===0){ cont.innerHTML="<div>Xəstə yoxdur</div>"; return; } cont.innerHTML=""; for(let [id,p] of Object.entries(d.patients)){ let div=document.createElement("div"); div.className="patient-item"+(selectedPatientId===id?" selected":""); div.innerHTML=`<div><strong>${escapeHtml(p.name)}</strong> (${p.age} yaş)</div><button class="delete-patient" data-id="${id}" style="background:none;border:none;color:#f87171;">🗑️</button>`; div.querySelector(".delete-patient").onclick=(e)=>{ e.stopPropagation(); if(confirm("Sil?")){ delete d.patients[id]; if(selectedPatientId===id) selectedPatientId=null; saveUserData(d); loadPatients(); updateSelected(); document.getElementById("historyReports").innerHTML="Xəstə seçilməyib"; } }; div.onclick=()=>{ selectedPatientId=id; loadPatients(); updateSelected(); loadHistory(); document.getElementById("currentReport").innerHTML="<em>Yeni analiz edin</em>"; }; cont.appendChild(div); } }
+    function updateSelected(){ let p=getCurrentUserData()?.patients?.[selectedPatientId]; let span=document.getElementById("selectedPatientInfo"); let head=document.getElementById("historyHeader"); if(p){ span.innerText=`✅ ${p.name} (${p.age} yaş)`; head.innerText=`📜 ${p.name} - keçmiş hesabatlar`; } else { span.innerText="❌ Xəstə seçilməyib"; head.innerText="📜 Keçmiş hesabatlar"; } }
+    function loadHistory(){ let hist=document.getElementById("historyReports"); if(!selectedPatientId){ hist.innerHTML="Xəstə seçilməyib"; return; } let pat=getCurrentUserData()?.patients?.[selectedPatientId]; if(!pat||!pat.reports||pat.reports.length===0){ hist.innerHTML="Hesabat yoxdur"; return; } let html=""; pat.reports.slice().reverse().forEach((r,idx)=>{ html+=`<div class="history-item" onclick="showModalFromHistory(${idx})"><div class="flex-between"><strong>📅 ${new Date(r.date).toLocaleString()}</strong><span class="badge">${r.riskLevel}</span></div><div>${escapeHtml(r.reportText.substring(0,120))}...</div></div>`; }); hist.innerHTML=html; window.currentReports=pat.reports.slice().reverse(); }
+    window.showModalFromHistory=function(idx){ let r=window.currentReports[idx]; if(r){ document.getElementById("modalReportContent").innerHTML=`<pre>${escapeHtml(r.reportText)}</pre>`; document.getElementById("reportModal").style.display="block"; document.getElementById("modalDownloadBtn").onclick=()=>{ let p=getCurrentUserData()?.patients?.[selectedPatientId]; downloadHtmlReport(r.reportText, p?p.name:"Xəstə"); }; } };
+    function closeModal(){ document.getElementById("reportModal").style.display="none"; }
+    document.querySelector(".close-modal").addEventListener("click",closeModal); window.onclick=e=>{ if(e.target===document.getElementById("reportModal")) closeModal(); };
+    function escapeHtml(s){ return s.replace(/[&<>]/g,m=> m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
+    autoLogin();
+</script>
+</body>
+</html>
