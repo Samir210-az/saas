@@ -451,13 +451,15 @@ Yuxarıda göstərilən klinik nəticələrə əsasən, peşəkar psixoloq və/v
         }
     };
 
-    // ========== REDAKTƏ VƏ SİL (TAM İŞLƏK – ƏVVƏLKİ KİMİ) ==========
-    let currentEditIndex = null;
+    // ========== REDAKTƏ (İNDEKS ƏSASLI, İŞLƏK) ==========
+    let currentEditIndex = null;  // reversedReports sırasındakı indeks
 
-    window.openEditModal = function(index, currentText) {
+    window.openEditModal = function(index) {
+        const rep = window.currentPatientReports ? window.currentPatientReports[index] : null;
+        if (!rep) return;
         currentEditIndex = index;
         const textarea = document.getElementById("editReportText");
-        textarea.value = currentText;
+        textarea.value = rep.reportText;
         document.getElementById("editModal").style.display = "block";
     };
     window.closeEditModal = function() {
@@ -470,11 +472,12 @@ Yuxarıda göstərilən klinik nəticələrə əsasən, peşəkar psixoloq və/v
         const userData = getCurrentUserData();
         const patient = userData?.patients?.[selectedPatientId];
         if (patient && patient.reports) {
+            // reversedReports indeksi -> orijinal array indeksi
             const originalIndex = patient.reports.length - 1 - currentEditIndex;
             if (patient.reports[originalIndex]) {
                 patient.reports[originalIndex].reportText = newText;
                 saveUserData(userData);
-                loadPatientReportsHistory();
+                loadPatientReportsHistory();  // yenilə
                 alert("Hesabat redaktə edildi.");
             }
         }
@@ -500,7 +503,7 @@ Yuxarıda göstərilən klinik nəticələrə əsasən, peşəkar psixoloq və/v
         return null;
     }
 
-    // ========== YÜKLƏMƏ FUNKSİYALARI ==========
+    // ========== YÜKLƏMƏ ==========
     window.downloadReportAsHTML = function() {
         const content = getCurrentReportText();
         if (!content) { alert("Əvvəlcə analiz edin!"); return; }
@@ -514,7 +517,6 @@ Yuxarıda göstərilən klinik nəticələrə əsasən, peşəkar psixoloq və/v
         link.click();
         URL.revokeObjectURL(link.href);
     };
-
     window.downloadReportAsWord = function() {
         const content = getCurrentReportText();
         if (!content) { alert("Əvvəlcə analiz edin!"); return; }
@@ -528,7 +530,6 @@ Yuxarıda göstərilən klinik nəticələrə əsasən, peşəkar psixoloq və/v
         link.click();
         URL.revokeObjectURL(link.href);
     };
-
     window.shareReport = async function() {
         const reportText = getCurrentReportText();
         if (!reportText) { alert("Əvvəlcə 'Klinik Analiz' düyməsi ilə hesabat yaradın!"); return; }
@@ -604,7 +605,7 @@ Yuxarıda göstərilən klinik nəticələrə əsasən, peşəkar psixoloq və/v
                             <span class="badge">${rep.riskLevel || "Risk"}</span>
                         </div>
                         <div class="history-actions">
-                            <button class="btn-icon" onclick="event.stopPropagation(); openEditModal(${idx}, ${JSON.stringify(rep.reportText)})">✏️</button>
+                            <button class="btn-icon" onclick="event.stopPropagation(); openEditModal(${idx})">✏️</button>
                             <button class="btn-icon" onclick="event.stopPropagation(); deleteReport(${idx})">🗑️</button>
                         </div>
                     </div>
@@ -620,11 +621,11 @@ Yuxarıda göstərilən klinik nəticələrə əsasən, peşəkar psixoloq və/v
             const modal = document.getElementById("reportModal");
             document.getElementById("modalReportContent").innerHTML = `<pre>${escapeHtml(rep.reportText)}</pre>`;
             modal.style.display = "block";
-            document.getElementById("modalDownloadBtn").onclick = () => { downloadReportAsHTMLFromModal(rep.reportText); };
+            document.getElementById("modalDownloadBtn").onclick = () => { downloadHtmlReportFromModal(rep.reportText); };
             document.getElementById("modalShareBtn").onclick = async () => { await navigator.clipboard.writeText(rep.reportText); alert("Hesabat kopyalandı, paylaşa bilərsiniz."); };
         }
     };
-    function downloadReportAsHTMLFromModal(reportText) {
+    function downloadHtmlReportFromModal(reportText) {
         const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Klinik Hesabat</title><style>body{background:#f0f2f5;padding:2rem;}pre{white-space:pre-wrap;font-family:monospace;}</style></head><body><pre>${escapeHtml(reportText)}</pre><footer>AN Psixoloji Mərkəzi</footer></body></html>`;
         const blob = new Blob([html], {type:"text/html"});
         const link = document.createElement("a");
@@ -639,7 +640,7 @@ Yuxarıda göstərilən klinik nəticələrə əsasən, peşəkar psixoloq və/v
     window.addEventListener("click", (e) => { if (e.target === document.getElementById("reportModal")) closeModal(); });
     function escapeHtml(str) { return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'); }
     
-    // Avtomatik giriş yoxlaması
+    // Avtogiriş
     (function autoLogin() { const s = localStorage.getItem("neurocbt_currentUser"); if(s && getUsers()[s]) { currentUser=s; currentUserFull={...getUsers()[s], username:s}; document.getElementById("mainApp").style.display="block"; document.getElementById("authPanel").style.display="none"; document.getElementById("userInfoSpan").innerHTML=`👤 ${currentUserFull.firstName} ${currentUserFull.lastName} (${currentUserFull.profession})`; loadPatientsForCurrentUser(); renderTest(); updateSelectedPatientInfo(); } })();
 </script>
 </body>
