@@ -15,6 +15,10 @@
         button:hover { background: #7dd3fc; transform: scale(0.98); color: #ffffff; }
         .btn-outline { background: transparent; border: 1px solid #38bdf8; color: #38bdf8; }
         .btn-outline:hover { background: #38bdf8; color: #ffffff; }
+        .btn-danger { background: #dc2626; color: white; }
+        .btn-danger:hover { background: #b91c1c; }
+        .btn-warning { background: #f59e0b; color: white; }
+        .btn-warning:hover { background: #d97706; }
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; }
         .patient-list { max-height: 400px; overflow-y: auto; }
         .patient-item { background: #111827; padding: 12px 16px; border-radius: 1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid transparent; margin-bottom: 0.5rem; }
@@ -25,8 +29,7 @@
         .scale-options { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 6px; }
         .scale-options label { display: flex; align-items: center; gap: 6px; background: #1e293b; padding: 5px 12px; border-radius: 40px; cursor: pointer; font-size: 0.8rem; }
         .report-box { background: #0f172a; padding: 1rem; border-radius: 1rem; white-space: pre-wrap; font-family: monospace; font-size: 0.85rem; line-height: 1.5; margin-top: 1rem; }
-        .history-item { background: #0f172a; padding: 0.8rem; border-radius: 0.8rem; margin-bottom: 0.6rem; border-left: 3px solid #38bdf8; cursor: pointer; transition: 0.1s; }
-        .history-item:hover { background: #1e293b; transform: translateX(3px); }
+        .history-item { background: #0f172a; padding: 0.8rem; border-radius: 0.8rem; margin-bottom: 0.6rem; border-left: 3px solid #38bdf8; }
         .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .badge { background: #334155; padding: 4px 12px; border-radius: 40px; font-size: 0.7rem; font-weight: bold; }
         footer { text-align: center; margin-top: 2rem; padding: 1rem; font-size: 0.8rem; color: #94a3b8; border-top: 1px solid #334155; }
@@ -35,6 +38,10 @@
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 0.5rem; }
         .close-modal { font-size: 1.8rem; cursor: pointer; color: #f87171; }
         .user-info { background: #0f172a; padding: 0.3rem 1rem; border-radius: 40px; font-size: 0.85rem; }
+        .edit-report { background: #f59e0b; color: white; border: none; padding: 4px 10px; border-radius: 20px; cursor: pointer; font-size: 0.7rem; margin-right: 5px; }
+        .edit-report:hover { background: #d97706; }
+        .delete-report { background: #dc2626; color: white; border: none; padding: 4px 10px; border-radius: 20px; cursor: pointer; font-size: 0.7rem; }
+        .delete-report:hover { background: #b91c1c; }
         @media (max-width: 700px) { .scale-options label { font-size: 0.65rem; padding: 3px 8px; } }
     </style>
 </head>
@@ -50,17 +57,19 @@
     </div>
 
     <div id="mainApp" style="display:none;">
-        <div class="flex-between" style="margin-bottom:1rem;"><h2>📋 BAI/BDI Klinik Qərar Dəstək Sistemi</h2><div style="display:flex; gap:1rem;"><span class="user-info" id="userInfoSpan"></span><button onclick="logout()" class="btn-outline">🚪 Çıxış</button></div></div>
+        <div class="flex-between" style="margin-bottom:1rem;"><h2>📋 BAI (Beck Anksiyete İnventarı) & BDI (Beck Depressiya İnventarı) Klinik Qərar Dəstək Sistemi</h2><div style="display:flex; gap:1rem;"><span class="user-info" id="userInfoSpan"></span><button onclick="logout()" class="btn-outline">🚪 Çıxış</button></div></div>
         <div class="grid-2">
             <div class="card"><div class="card-header">📌 Xəstə CRM</div><div style="display:flex; gap:8px; flex-wrap:wrap;"><input type="text" id="patientName" placeholder="Ad, Soyad" style="flex:2"><input type="number" id="patientAge" placeholder="Yaş" style="flex:1"><button onclick="addPatient()">➕ Əlavə et</button></div><div id="patientListContainer" class="patient-list"></div><div id="selectedPatientInfo" class="badge" style="margin-top:12px;">❌ Xəstə seçilməyib</div></div>
             <div class="card"><div class="card-header">📝 Klinik Test (BAI/BDI uyğun – 28 sual)</div><div id="testContainer" style="max-height:500px; overflow-y:auto; padding-right:5px;"></div><button onclick="runAnalysis()" style="width:100%; margin:12px 0;">🧠 Klinik Analiz və Qərar</button><button onclick="downloadReportAsHTML()" class="btn-outline" style="width:100%;">📄 Son hesabatı HTML yüklə</button><div id="currentReport" class="report-box"><em>Test nəticəsi burada görünəcək...</em></div></div>
         </div>
-        <div class="card"><div class="card-header" id="historyHeader">📜 Keçmiş hesabatlar (klikləyin tam görünsün)</div><div id="historyReports">Xəstə seçin.</div></div>
+        <div class="card"><div class="card-header" id="historyHeader">📜 Keçmiş hesabatlar (Redaktə et / Sil)</div><div id="historyReports">Xəstə seçin.</div></div>
     </div>
     <footer>© 2025 AN Psixoloji Dəstək və Reabilitasiya Mərkəzi | BAI (Beck Anksiyete İnventarı) & BDI (Beck Depressiya İnventarı) əsaslı klinik qiymətləndirmə</footer>
 </div>
 
 <div id="reportModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>📄 Tam Klinik Hesabat (BAI/BDI əsaslı)</h3><span class="close-modal">&times;</span></div><div id="modalReportContent"><pre></pre></div><div class="flex-between" style="margin-top:1rem;"><button id="modalDownloadBtn" class="btn-outline">⬇️ HTML yüklə</button><button id="modalCloseBtn" class="btn-outline">Bağla</button></div></div></div>
+
+<div id="editModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>✏️ Hesabatı Redaktə et</h3><span class="close-modal" id="closeEditModal">&times;</span></div><textarea id="editReportText" rows="15" style="width:100%; background:#0f172a; color:white; border:1px solid #38bdf8; border-radius:10px; padding:10px;"></textarea><div class="flex-between" style="margin-top:1rem;"><button id="saveEditBtn" class="btn-outline">💾 Yadda saxla</button><button id="cancelEditBtn" class="btn-outline">Ləğv et</button></div></div></div>
 
 <script>
     // ---------- KLİNİK TEST SUALLARI ----------
@@ -114,7 +123,11 @@
         container.innerHTML = "";
         for (let skala in klinikSuallar) {
             const group = document.createElement("div"); group.className = "question-group";
-            group.innerHTML = `<div style="font-size:1.2rem; font-weight:bold; margin-bottom:10px; color:#38bdf8;">📍 ${skala} şkalası (7 sual) – ${skala === "Narahatlıq" ? "BAI (Beck Anksiyete)" : skala === "Depressiya" ? "BDI (Beck Depressiya)" : "Klinik davranış/diqqət"}</div>`;
+            let inventoryText = "";
+            if (skala === "Narahatlıq") inventoryText = " (BAI - Beck Anksiyete İnventarı)";
+            else if (skala === "Depressiya") inventoryText = " (BDI - Beck Depressiya İnventarı)";
+            else inventoryText = " (Klinik davranış/diqqət modulu)";
+            group.innerHTML = `<div style="font-size:1.2rem; font-weight:bold; margin-bottom:10px; color:#38bdf8;">📍 ${skala} şkalası${inventoryText} (7 sual)</div>`;
             klinikSuallar[skala].forEach((sual, idx) => {
                 const qDiv = document.createElement("div"); qDiv.style.marginBottom = "15px";
                 qDiv.innerHTML = `<div class="question-text">${idx+1}. ${sual}</div><div class="scale-options" id="opts_${skala}_${idx}"></div>`;
@@ -175,18 +188,16 @@
             medicationAdvice = "\n💊 Dərman müalicəsinə ehtiyac yoxdur. Psixoterapiya ilə yaxşılaşma gözlənilir.\n";
         }
         
-        // Psixoloqla iş tövsiyəsi
         if (totalScore >= 4) {
-            therapyRecommendation = "\n🪑 **PSİXOLOQLA İŞ TÖVSİYƏSİ**: Simptomların şiddətinə əsasən, həftədə 1-2 dəfə CBT əsaslı fərdi psixoterapiya tövsiyə olunur. Mütəxəssis tərəfindən tərtib edilmiş terapiya planına əməl edilməlidir.\n";
+            therapyRecommendation = "\n🪑 **PSİXOLOQLA İŞ TÖVSİYƏSİ**: Simptomların şiddətinə əsasən, həftədə 1-2 dəfə CBT əsaslı fərdi psixoterapiya tövsiyə olunur.\n";
         } else {
             therapyRecommendation = "\n🪑 **PSİXOLOQLA İŞ**: Profilaktik məqsədlə ayda 1 dəfə psixoloji konsultasiya faydalı ola bilər.\n";
         }
         
-        // Reabilitasiya mərkəzinə müraciət
         if (totalScore >= 7) {
-            rehabilitationAdvice = "\n🏥 **PSİXOLOJİ REABİLİTASİYA MƏRKƏZLƏRİNƏ MÜRACİƏT**: Orta-ağır səviyyədə simptomlar olduğu üçün ixtisaslaşmış psixoloji reabilitasiya mərkəzlərinə (AN Psixoloji Dəstək və Reabilitasiya Mərkəzi, dövlət psixiatriya xəstəxanalarının reabilitasiya şöbələri) müraciət edilməsi tövsiyə olunur. Qrup terapiyası, sosial bacarıq təlimi və gündəlik fəaliyyət dəstəyi üçün bu mərkəzlər faydalıdır.\n";
+            rehabilitationAdvice = "\n🏥 **PSİXOLOJİ REABİLİTASİYA MƏRKƏZLƏRİNƏ MÜRACİƏT**: Orta-ağır səviyyədə simptomlar olduğu üçün ixtisaslaşmış psixoloji reabilitasiya mərkəzlərinə müraciət edilməsi tövsiyə olunur.\n";
         } else if (totalScore >= 4) {
-            rehabilitationAdvice = "\n🏥 **PSİXOLOJİ REABİLİTASİYA MƏRKƏZLƏRİ**: Yüngül-orta simptomlar üçün ambulator reabilitasiya proqramları (stress idarəsi, relaksasiya qrupları) faydalı ola bilər. AN Psixoloji Mərkəzi bu sahədə xidmət göstərir.\n";
+            rehabilitationAdvice = "\n🏥 **PSİXOLOJİ REABİLİTASİYA MƏRKƏZLƏRİ**: Yüngül-orta simptomlar üçün ambulator reabilitasiya proqramları faydalı ola bilər.\n";
         } else {
             rehabilitationAdvice = "\n🏥 **PSİXOLOJİ REABİLİTASİYA**: Profilaktik məqsədlə sağlam həyat tərzi dəstək qruplarına qatılmaq tövsiyə olunur.\n";
         }
@@ -231,8 +242,8 @@
 ==================================================
 🏥 AN Psixoloji Dəstək və Reabilitasiya Mərkəzi
 📋 Qiymətləndirmə vasitələri: 
-   - BAI (Beck Anksiyete İnventarı) – 7 sual, 0-3 bal
-   - BDI (Beck Depressiya İnventarı) – 7 sual, 0-3 bal
+   - BAI (Beck Anksiyete İnventarı) – 7 sual, 0-3 bal (Narahatlıq şkalası)
+   - BDI (Beck Depressiya İnventarı) – 7 sual, 0-3 bal (Depressiya şkalası)
 
 👤 Xəstə: ${patientName} (Yaş: ${patientAge || "?"})
 📅 Tarix: ${dateStr}
@@ -261,7 +272,7 @@ ${raw.diqqet_tezyayinma ? "• Diqqət məşqləri gündəlik tətbiq edilsin.\n
 --------------------------------------------------
 ✅ Hesabatı hazırlayan mütəxəssis: ${specialist}
 🏥 AN Psixoloji Dəstək və Reabilitasiya Mərkəzi
-📞 Əlaqə: AN Psixoloji Mərkəzi - Klinik psixoloq dəstəyi və reabilitasiya xidmətləri üçün müraciət edə bilərsiniz.
+📞 Əlaqə: AN Psixoloji Mərkəzi - Klinik psixoloq dəstəyi və reabilitasiya xidmətləri
 ==================================================
         `;
         return { reportText, scores, totalWeighted, riskLevel, plan, specialist };
@@ -299,6 +310,88 @@ ${raw.diqqet_tezyayinma ? "• Diqqət məşqləri gündəlik tətbiq edilsin.\n
         const patient = getCurrentUserData()?.patients?.[selectedPatientId];
         downloadHtmlReport(content, patient ? patient.name : "Xəstə");
     };
+
+    // Redaktə et və sil funksiyaları
+    let currentEditReportIndex = null;
+    let currentEditPatientId = null;
+    
+    function editReport(patientId, reportIndex) {
+        const userData = getCurrentUserData();
+        const patient = userData?.patients?.[patientId];
+        if (patient && patient.reports && patient.reports[reportIndex]) {
+            currentEditReportIndex = reportIndex;
+            currentEditPatientId = patientId;
+            const reportText = patient.reports[reportIndex].reportText;
+            document.getElementById("editReportText").value = reportText;
+            document.getElementById("editModal").style.display = "block";
+        }
+    }
+    
+    function deleteReport(patientId, reportIndex) {
+        if (confirm("Bu hesabatı silmək istədiyinizə əminsiniz?")) {
+            const userData = getCurrentUserData();
+            const patient = userData?.patients?.[patientId];
+            if (patient && patient.reports) {
+                patient.reports.splice(reportIndex, 1);
+                saveUserData(userData);
+                if (selectedPatientId === patientId) {
+                    loadPatientReportsHistory();
+                }
+                alert("Hesabat silindi!");
+            }
+        }
+    }
+    
+    function saveEditedReport() {
+        if (currentEditReportIndex !== null && currentEditPatientId !== null) {
+            const newText = document.getElementById("editReportText").value;
+            const userData = getCurrentUserData();
+            const patient = userData?.patients?.[currentEditPatientId];
+            if (patient && patient.reports && patient.reports[currentEditReportIndex]) {
+                patient.reports[currentEditReportIndex].reportText = newText;
+                saveUserData(userData);
+                if (selectedPatientId === currentEditPatientId) {
+                    loadPatientReportsHistory();
+                    if (currentEditReportIndex === patient.reports.length - 1) {
+                        document.getElementById("currentReport").innerHTML = `<pre style="white-space:pre-wrap;">${escapeHtml(newText)}</pre>`;
+                    }
+                }
+                alert("Hesabat redaktə edildi!");
+                closeEditModal();
+            }
+        }
+    }
+    
+    function closeEditModal() {
+        document.getElementById("editModal").style.display = "none";
+        currentEditReportIndex = null;
+        currentEditPatientId = null;
+    }
+
+    function loadPatientReportsHistory() {
+        const histDiv = document.getElementById("historyReports");
+        if (!selectedPatientId) { histDiv.innerHTML = "Xəstə seçilməyib"; return; }
+        const userData = getCurrentUserData();
+        const patient = userData?.patients?.[selectedPatientId];
+        if (!patient || !patient.reports || patient.reports.length === 0) { histDiv.innerHTML = "Bu xəstə üçün hesabat yoxdur."; return; }
+        let html = "";
+        patient.reports.slice().reverse().forEach((rep, idx) => {
+            const originalIdx = patient.reports.length - 1 - idx;
+            const short = rep.reportText.substring(0, 160) + "...";
+            html += `<div class="history-item">
+                        <div class="flex-between">
+                            <strong>📅 ${new Date(rep.date).toLocaleString()}</strong>
+                            <span class="badge">${rep.riskLevel} (${rep.totalScore?.toFixed(1) || "-"})</span>
+                        </div>
+                        <div style="font-size:0.7rem; margin-bottom:8px;">${escapeHtml(short)}</div>
+                        <div style="display:flex; gap:8px; justify-content:flex-end;">
+                            <button class="edit-report" onclick="editReport('${selectedPatientId}', ${originalIdx})">✏️ Redaktə et</button>
+                            <button class="delete-report" onclick="deleteReport('${selectedPatientId}', ${originalIdx})">🗑️ Sil</button>
+                        </div>
+                      </div>`;
+        });
+        histDiv.innerHTML = html;
+    }
 
     // --- LocalStorage və CRM ---
     let currentUser = null, currentUserFull = null, selectedPatientId = null;
@@ -349,18 +442,17 @@ ${raw.diqqet_tezyayinma ? "• Diqqət məşqləri gündəlik tətbiq edilsin.\n
     
     function deletePatientById(id){ const data=getCurrentUserData(); delete data.patients[id]; if(selectedPatientId===id) selectedPatientId=null; saveUserData(data); loadPatientsForCurrentUser(); updateSelectedPatientInfo(); document.getElementById("historyReports").innerHTML="Xəstə seçilməyib";}
     function selectPatient(id){ selectedPatientId=id; loadPatientsForCurrentUser(); updateSelectedPatientInfo(); loadPatientReportsHistory(); document.getElementById("currentReport").innerHTML="<em>Analiz et düyməsi ilə yeni hesabat yaradın</em>";}
-    function updateSelectedPatientInfo(){ const p=getCurrentUserData()?.patients?.[selectedPatientId]; const span=document.getElementById("selectedPatientInfo"); const header=document.getElementById("historyHeader"); if(p){ span.innerText=`✅ Seçilmiş: ${p.name} (${p.age} yaş)`; header.innerHTML=`📜 ${p.name} - keçmiş klinik hesabatları (klikləyin)`; } else { span.innerText="❌ Xəstə seçilməyib"; header.innerHTML="📜 Keçmiş hesabatlar"; } }
-    
-    function loadPatientReportsHistory(){ const histDiv=document.getElementById("historyReports"); if(!selectedPatientId){histDiv.innerHTML="Xəstə seçilməyib";return;} const patient=getCurrentUserData()?.patients?.[selectedPatientId]; if(!patient||!patient.reports||patient.reports.length===0){histDiv.innerHTML="Bu xəstə üçün hesabat yoxdur.";return;} let html=""; patient.reports.slice().reverse().forEach((rep,idx)=>{ const short=rep.reportText.substring(0,160)+"..."; html+=`<div class="history-item" data-idx="${idx}"><div class="flex-between"><strong>📅 ${new Date(rep.date).toLocaleString()}</strong><span class="badge">${rep.riskLevel} (${rep.totalScore?.toFixed(1)||"-"})</span></div><div style="font-size:0.7rem;">${escapeHtml(short)}</div></div>`; }); histDiv.innerHTML=html; 
-        document.querySelectorAll(".history-item").forEach(el=>{ el.addEventListener("click",(e)=>{ const idx=el.getAttribute("data-idx"); if(idx!==null) showModalFromHistory(parseInt(idx)); }); });
-        window.currentPatientReports = patient.reports.slice().reverse();
-    }
-    
-    window.showModalFromHistory=function(idx){ const rep=window.currentPatientReports[idx]; if(rep){ const modal=document.getElementById("reportModal"); document.getElementById("modalReportContent").innerHTML=`<pre>${escapeHtml(rep.reportText)}</pre>`; modal.style.display="block";
-        document.getElementById("modalDownloadBtn").onclick=()=>{ downloadHtmlReport(rep.reportText, getCurrentUserData()?.patients?.[selectedPatientId]?.name||"Xəstə"); }; } };
+    function updateSelectedPatientInfo(){ const p=getCurrentUserData()?.patients?.[selectedPatientId]; const span=document.getElementById("selectedPatientInfo"); const header=document.getElementById("historyHeader"); if(p){ span.innerText=`✅ Seçilmiş: ${p.name} (${p.age} yaş)`; header.innerHTML=`📜 ${p.name} - keçmiş klinik hesabatları (Redaktə et / Sil)`; } else { span.innerText="❌ Xəstə seçilməyib"; header.innerHTML="📜 Keçmiş hesabatlar (Redaktə et / Sil)"; } }
     
     function closeModal(){ document.getElementById("reportModal").style.display="none"; }
     document.querySelector(".close-modal").addEventListener("click",closeModal); document.getElementById("modalCloseBtn").addEventListener("click",closeModal); window.addEventListener("click",(e)=>{if(e.target===document.getElementById("reportModal")) closeModal();});
+    
+    // Edit modal eventləri
+    document.getElementById("closeEditModal").addEventListener("click", closeEditModal);
+    document.getElementById("cancelEditBtn").addEventListener("click", closeEditModal);
+    document.getElementById("saveEditBtn").addEventListener("click", saveEditedReport);
+    window.addEventListener("click", (e) => { if (e.target === document.getElementById("editModal")) closeEditModal(); });
+    
     function escapeHtml(str){ return str.replace(/[&<>]/g, m=> m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
     autoLogin();
 </script>
