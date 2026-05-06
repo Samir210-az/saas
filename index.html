@@ -451,20 +451,20 @@ Yuxarıda göstərilən klinik nəticələrə əsasən, peşəkar psixoloq və/v
         }
     };
 
-    // Redaktə və sil funksiyaları (tam işlək)
+    // ========== REDAKTƏ VƏ SİL (TAM İŞLƏK – ƏVVƏLKİ KİMİ) ==========
     let currentEditIndex = null;
 
-    function openEditModal(index, currentText) {
+    window.openEditModal = function(index, currentText) {
         currentEditIndex = index;
         const textarea = document.getElementById("editReportText");
         textarea.value = currentText;
         document.getElementById("editModal").style.display = "block";
-    }
-    function closeEditModal() {
+    };
+    window.closeEditModal = function() {
         document.getElementById("editModal").style.display = "none";
         currentEditIndex = null;
-    }
-    function saveEditedReport() {
+    };
+    window.saveEditedReport = function() {
         if (currentEditIndex === null) return;
         const newText = document.getElementById("editReportText").value;
         const userData = getCurrentUserData();
@@ -479,8 +479,8 @@ Yuxarıda göstərilən klinik nəticələrə əsasən, peşəkar psixoloq və/v
             }
         }
         closeEditModal();
-    }
-    function deleteReport(index) {
+    };
+    window.deleteReport = function(index) {
         if (confirm("Bu hesabatı silmək istədiyinizə əminsiniz?")) {
             const userData = getCurrentUserData();
             const patient = userData?.patients?.[selectedPatientId];
@@ -492,7 +492,7 @@ Yuxarıda göstərilən klinik nəticələrə əsasən, peşəkar psixoloq və/v
                 alert("Hesabat silindi.");
             }
         }
-    }
+    };
 
     function getCurrentReportText() {
         const preElem = document.querySelector("#currentReport pre");
@@ -500,30 +500,26 @@ Yuxarıda göstərilən klinik nəticələrə əsasən, peşəkar psixoloq və/v
         return null;
     }
 
-    // HTML yükləmə (əvvəlki)
-    function downloadHtmlReport(reportText, patientName) {
-        const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Klinik Hesabat</title><style>body{background:#f0f2f5;padding:2rem;}pre{white-space:pre-wrap;font-family:monospace;}</style></head><body><pre>${escapeHtml(reportText)}</pre><footer>AN Psixoloji Mərkəzi</footer></body></html>`;
+    // ========== YÜKLƏMƏ FUNKSİYALARI ==========
+    window.downloadReportAsHTML = function() {
+        const content = getCurrentReportText();
+        if (!content) { alert("Əvvəlcə analiz edin!"); return; }
+        const patient = getCurrentUserData()?.patients?.[selectedPatientId];
+        const patientName = patient ? patient.name : "Xəstə";
+        const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Klinik Hesabat</title><style>body{background:#f0f2f5;padding:2rem;}pre{white-space:pre-wrap;font-family:monospace;}</style></head><body><pre>${escapeHtml(content)}</pre><footer>AN Psixoloji Mərkəzi</footer></body></html>`;
         const blob = new Blob([html], {type:"text/html"});
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
         link.download = `Klinik_${patientName.replace(/\s/g,"_")}_${Date.now()}.html`;
         link.click();
         URL.revokeObjectURL(link.href);
-    }
-    window.downloadReportAsHTML = function() {
-        const content = getCurrentReportText();
-        if (!content) { alert("Əvvəlcə analiz edin!"); return; }
-        const patient = getCurrentUserData()?.patients?.[selectedPatientId];
-        downloadHtmlReport(content, patient ? patient.name : "Xəstə");
     };
 
-    // WORD sənəd kimi yükləmə (DOC faylı - məzmun eyni)
     window.downloadReportAsWord = function() {
         const content = getCurrentReportText();
         if (!content) { alert("Əvvəlcə analiz edin!"); return; }
         const patient = getCurrentUserData()?.patients?.[selectedPatientId];
         const patientName = patient ? patient.name : "Xəstə";
-        // Word faylı üçün HTML məzmun (eyni reportText, lakin .doc uzantısı)
         const docHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Klinik Hesabat</title><style>body{font-family:Calibri, Arial, sans-serif; margin:2cm;} pre{white-space:pre-wrap; font-family:'Courier New', monospace;}</style></head><body><pre>${escapeHtml(content)}</pre><p style="text-align:center; margin-top:1cm;">AN Psixoloji Dəstək və Reabilitasiya Mərkəzi</p></body></html>`;
         const blob = new Blob([docHtml], {type: "application/msword"});
         const link = document.createElement("a");
@@ -533,7 +529,7 @@ Yuxarıda göstərilən klinik nəticələrə əsasən, peşəkar psixoloq və/v
         URL.revokeObjectURL(link.href);
     };
 
-    async function shareReport() {
+    window.shareReport = async function() {
         const reportText = getCurrentReportText();
         if (!reportText) { alert("Əvvəlcə 'Klinik Analiz' düyməsi ilə hesabat yaradın!"); return; }
         if (navigator.share) {
@@ -547,9 +543,9 @@ Yuxarıda göstərilən klinik nəticələrə əsasən, peşəkar psixoloq və/v
             await navigator.clipboard.writeText(reportText);
             alert("Hesabat mətni kopyalandı. İndi WhatsApp və ya digər tətbiqdə yapışdıra bilərsiniz.");
         }
-    }
+    };
 
-    // --- LocalStorage və CRM ---
+    // --- LocalStorage və CRM (əvvəlki kimi) ---
     let currentUser = null, currentUserFull = null, selectedPatientId = null;
     function getUsers() { return JSON.parse(localStorage.getItem("neurocbt_users") || "{}"); }
     function saveUsers(u) { localStorage.setItem("neurocbt_users", JSON.stringify(u)); }
@@ -584,8 +580,7 @@ Yuxarıda göstərilən klinik nəticələrə əsasən, peşəkar psixoloq və/v
             document.getElementById("currentReport").innerHTML = "<pre>Test nəticəsi burada görünəcək...</pre>";
         } else document.getElementById("authError").innerText = "Yanlış istifadəçi adı və ya şifrə";
     };
-    function logout() { currentUser=null; currentUserFull=null; selectedPatientId=null; localStorage.removeItem("neurocbt_currentUser"); document.getElementById("mainApp").style.display="none"; document.getElementById("authPanel").style.display="block"; }
-    function autoLogin() { const s = localStorage.getItem("neurocbt_currentUser"); if(s && getUsers()[s]) { currentUser=s; currentUserFull={...getUsers()[s], username:s}; document.getElementById("mainApp").style.display="block"; document.getElementById("authPanel").style.display="none"; document.getElementById("userInfoSpan").innerHTML=`👤 ${currentUserFull.firstName} ${currentUserFull.lastName} (${currentUserFull.profession})`; loadPatientsForCurrentUser(); renderTest(); updateSelectedPatientInfo(); return true; } return false; }
+    window.logout = function() { currentUser=null; currentUserFull=null; selectedPatientId=null; localStorage.removeItem("neurocbt_currentUser"); document.getElementById("mainApp").style.display="none"; document.getElementById("authPanel").style.display="block"; };
     window.addPatient = function() { const name = document.getElementById("patientName").value.trim(); const age = parseInt(document.getElementById("patientAge").value); if(!name||isNaN(age)||age<=0){alert("Ad və yaş düzgün deyil");return;} const data=getCurrentUserData(); const id=Date.now()+"_"+Math.random().toString(36).substr(2,6); if(!data.patients) data.patients={}; data.patients[id]={name,age,reports:[]}; saveUserData(data); document.getElementById("patientName").value=""; document.getElementById("patientAge").value=""; loadPatientsForCurrentUser(); };
     function loadPatientsForCurrentUser() { const data=getCurrentUserData(); const container=document.getElementById("patientListContainer"); if(!data||!data.patients||Object.keys(data.patients).length===0){container.innerHTML="<div>Xəstə yoxdur</div>";return;} container.innerHTML=""; for(let [id,p] of Object.entries(data.patients)){const div=document.createElement("div"); div.className="patient-item"+(selectedPatientId===id?" selected":""); div.innerHTML=`<div><strong>${escapeHtml(p.name)}</strong> (${p.age} yaş)</div><button class="delete-patient" data-id="${id}">🗑️</button>`; div.querySelector(".delete-patient").addEventListener("click",(e)=>{e.stopPropagation(); if(confirm("Xəstəni sil?")) deletePatientById(id);}); div.addEventListener("click",()=>selectPatient(id)); container.appendChild(div);} }
     function deletePatientById(id){ const data=getCurrentUserData(); delete data.patients[id]; if(selectedPatientId===id) selectedPatientId=null; saveUserData(data); loadPatientsForCurrentUser(); updateSelectedPatientInfo(); document.getElementById("historyReports").innerHTML="Xəstə seçilməyib"; document.getElementById("currentReport").innerHTML="<pre>Test nəticəsi burada görünəcək...</pre>";}
@@ -625,16 +620,27 @@ Yuxarıda göstərilən klinik nəticələrə əsasən, peşəkar psixoloq və/v
             const modal = document.getElementById("reportModal");
             document.getElementById("modalReportContent").innerHTML = `<pre>${escapeHtml(rep.reportText)}</pre>`;
             modal.style.display = "block";
-            document.getElementById("modalDownloadBtn").onclick = () => { downloadHtmlReport(rep.reportText, getCurrentUserData()?.patients?.[selectedPatientId]?.name || "Xəstə"); };
+            document.getElementById("modalDownloadBtn").onclick = () => { downloadReportAsHTMLFromModal(rep.reportText); };
             document.getElementById("modalShareBtn").onclick = async () => { await navigator.clipboard.writeText(rep.reportText); alert("Hesabat kopyalandı, paylaşa bilərsiniz."); };
         }
     };
+    function downloadReportAsHTMLFromModal(reportText) {
+        const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Klinik Hesabat</title><style>body{background:#f0f2f5;padding:2rem;}pre{white-space:pre-wrap;font-family:monospace;}</style></head><body><pre>${escapeHtml(reportText)}</pre><footer>AN Psixoloji Mərkəzi</footer></body></html>`;
+        const blob = new Blob([html], {type:"text/html"});
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `Klinik_Hesabat_${Date.now()}.html`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    }
     function closeModal() { document.getElementById("reportModal").style.display = "none"; }
     document.querySelector(".close-modal").addEventListener("click", closeModal);
     document.getElementById("modalCloseBtn").addEventListener("click", closeModal);
     window.addEventListener("click", (e) => { if (e.target === document.getElementById("reportModal")) closeModal(); });
     function escapeHtml(str) { return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'); }
-    autoLogin();
+    
+    // Avtomatik giriş yoxlaması
+    (function autoLogin() { const s = localStorage.getItem("neurocbt_currentUser"); if(s && getUsers()[s]) { currentUser=s; currentUserFull={...getUsers()[s], username:s}; document.getElementById("mainApp").style.display="block"; document.getElementById("authPanel").style.display="none"; document.getElementById("userInfoSpan").innerHTML=`👤 ${currentUserFull.firstName} ${currentUserFull.lastName} (${currentUserFull.profession})`; loadPatientsForCurrentUser(); renderTest(); updateSelectedPatientInfo(); } })();
 </script>
 </body>
 </html>
