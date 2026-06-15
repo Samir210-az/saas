@@ -43,6 +43,15 @@
         textarea { width: 100%; font-family: monospace; font-size: 0.8rem; }
         @media (max-width: 480px) { button, .btn-outline { white-space: normal; font-size: 0.85rem; } .card { padding: 1rem; } .scale-options label { font-size: 0.65rem; padding: 3px 8px; } }
     </style>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a3a6b">
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/saas/service-worker.js');
+        });
+      }
+    </script>
 </head>
 <body>
 <div class="container">
