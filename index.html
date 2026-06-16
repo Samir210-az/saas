@@ -124,12 +124,13 @@ footer a{color:var(--accent);text-decoration:none}
 <body>
 <div class="container">
 
-<div class="logo-bar">
+<div class="logo-bar" onclick="goHome()" style="cursor:pointer;user-select:none">
   <div class="logo-icon">🧠</div>
   <div class="logo-text">
     <h1>NeuroCBT Klinik</h1>
     <p>AN Psixoloji Dəstək və Reabilitasiya Mərkəzi</p>
   </div>
+  <div style="margin-left:auto;font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:4px" id="homeHint"></div>
 </div>
 
 <!-- AUTH PANEL -->
@@ -457,23 +458,43 @@ function loadSession(){
 // ══════════════════════════════════════
 // PANEL GÖSTƏRİCİLƏR
 // ══════════════════════════════════════
+function setHint(txt){
+  const el=document.getElementById('homeHint');
+  if(el) el.innerHTML=txt;
+}
 function showAuth(){
   document.getElementById('authPanel').style.display='block';
   document.getElementById('pendingPanel').style.display='none';
   document.getElementById('adminPanel').style.display='none';
   document.getElementById('mainApp').style.display='none';
+  setHint('');
 }
 function showMain(){
   document.getElementById('authPanel').style.display='none';
   document.getElementById('pendingPanel').style.display='none';
   document.getElementById('adminPanel').style.display='none';
   document.getElementById('mainApp').style.display='block';
+  setHint('🏠 Ana səhifə');
 }
+function showPending(){
+  document.getElementById('authPanel').style.display='none';
+  document.getElementById('pendingPanel').style.display='block';
+  document.getElementById('adminPanel').style.display='none';
+  document.getElementById('mainApp').style.display='none';
+  setHint('');
+}
+function goHome(){
+  if(!currentUser) return;
+  if(currentUser.isAdmin){showAdmin();return}
+  showMain();
+}
+
 function showAdmin(){
   document.getElementById('authPanel').style.display='none';
   document.getElementById('pendingPanel').style.display='none';
   document.getElementById('adminPanel').style.display='block';
   document.getElementById('mainApp').style.display='none';
+  setHint('🛡️ Admin Panel');
   loadAdminUsers();
 }
 function showPending(){
@@ -958,24 +979,23 @@ function shareText(text){
 // ══════════════════════════════════════
 window.onclick=function(e){if(e.target.classList.contains('modal'))e.target.style.display='none'}
 
-(function initApp(){
+function initApp(){
   const session=loadSession();
-  if(session){
-    currentUser=session;
-    if(session.isAdmin){showAdmin();return}
-    // User hələ də approved-dur?
-    const users=getUsers();
-    if(users[session.username]&&users[session.username].status==='approved'){
-      document.getElementById('userInfoSpan').textContent=`${currentUser.fn} ${currentUser.ln}`;
-      document.getElementById('userProfSpan').textContent=`${currentUser.prof} | ${currentUser.workplace||''}`;
-      showMain();loadPatients();renderInstruction();
-    } else {
-      saveSession(null);showAuth();
-    }
+  if(!session){showAuth();return}
+  currentUser=session;
+  if(session.isAdmin){showAdmin();return}
+  const users=getUsers();
+  const u=users[session.username];
+  if(u&&u.status==='approved'){
+    document.getElementById('userInfoSpan').textContent=`${currentUser.fn} ${currentUser.ln}`;
+    document.getElementById('userProfSpan').textContent=`${currentUser.prof} | ${currentUser.workplace||''}`;
+    showMain();loadPatients();renderInstruction();
   } else {
-    showAuth();
+    saveSession(null);showAuth();
   }
-})();
+}
+
+window.addEventListener('DOMContentLoaded', initApp);
 </script>
 <script>
 if('serviceWorker' in navigator){
