@@ -234,7 +234,10 @@ footer a:hover{text-decoration:underline}
       <button class="btn-outline" onclick="handleRegister()" style="width:100%">✅ Qeydiyyat</button>
     </div>
   </div>
-  <div id="authError" style="color:var(--red);margin-top:.75rem;font-size:.85rem;text-align:center"></div>
+  <div id="authError" style="margin-top:.75rem;font-size:.85rem;text-align:center"></div>
+  <div style="text-align:center;margin-top:.5rem">
+    <button class="btn-sm" onclick="resetAllUsers()" style="background:transparent;color:var(--muted);font-size:.72rem;border:1px solid var(--border)">🔄 Bütün qeydiyyatları sıfırla</button>
+  </div>
 </div>
 
 <!-- ANA PANEL -->
@@ -502,6 +505,14 @@ let editingHistoryId = null;
 // ═══════════════════════════════════════════
 // AUTH
 // ═══════════════════════════════════════════
+function resetAllUsers(){
+  if(!confirm('Bütün qeydiyyatlar silinəcək. Davam et?')) return;
+  localStorage.removeItem('ncbt_users');
+  const err=document.getElementById('authError');
+  err.style.color='var(--green)';
+  err.textContent='✅ Sıfırlandı. İndi yenidən qeydiyyatdan keç.';
+}
+
 function getUsers(){ return JSON.parse(localStorage.getItem('ncbt_users')||'{}') }
 function saveUsers(u){ localStorage.setItem('ncbt_users',JSON.stringify(u)) }
 
@@ -512,10 +523,10 @@ function handleRegister(){
   const un=document.getElementById('regUsername').value.trim();
   const pw=document.getElementById('regPassword').value;
   const err=document.getElementById('authError');
-  if(!fn||!ln||!prof||!un||!pw){err.textContent='⚠️ Bütün xanaları doldurun';return}
-  if(pw.length<6){err.textContent='⚠️ Şifrə minimum 6 xarakter olmalıdır';return}
-  if(!['Klinik Psixoloq','Psixiatr','Uşaq Psixiatrı','Nevroloq','Psixoterapevt','Psixopedaqoq','Loqoped','Klinik Sosial İşçi'].includes(prof)){
-    err.textContent='⚠️ İxtisas seçin';return}
+  err.style.color='var(--red)';
+  if(!fn||!ln||!un||!pw){err.textContent='⚠️ Ad, soyad, istifadəçi adı və şifrə daxil edin';return}
+  if(!prof||prof===''){err.textContent='⚠️ İxtisas seçin';return}
+  if(pw.length<4){err.textContent='⚠️ Şifrə minimum 4 xarakter olmalıdır';return}
   const users=getUsers();
   if(users[un]){err.textContent='⚠️ Bu istifadəçi adı artıq var';return}
   users[un]={fn,ln,prof,pw};
@@ -523,15 +534,18 @@ function handleRegister(){
   err.style.color='var(--green)';
   err.textContent='✅ Qeydiyyat uğurlu! İndi daxil ola bilərsiniz.';
   document.getElementById('loginUsername').value=un;
+  document.getElementById('loginPassword').value='';
 }
 
 function handleLogin(){
   const un=document.getElementById('loginUsername').value.trim();
   const pw=document.getElementById('loginPassword').value;
   const err=document.getElementById('authError');
-  if(!un||!pw){err.style.color='var(--red)';err.textContent='⚠️ Məlumatları daxil edin';return}
+  err.style.color='var(--red)';
+  if(!un||!pw){err.textContent='⚠️ Məlumatları daxil edin';return}
   const users=getUsers();
-  if(!users[un]||users[un].pw!==pw){err.style.color='var(--red)';err.textContent='❌ İstifadəçi adı və ya şifrə yanlışdır';return}
+  if(!users[un]){err.textContent='❌ Bu istifadəçi adı tapılmadı';return}
+  if(users[un].pw!==pw){err.textContent='❌ Şifrə yanlışdır';return}
   currentUser=users[un];
   currentUser.username=un;
   document.getElementById('authPanel').style.display='none';
