@@ -7,82 +7,60 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0f172a">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0;max-width:100%}
 :root{
-  --bg:#0f172a;--card:#1e293b;--card2:#111827;--accent:#38bdf8;--accent2:#818cf8;
-  --green:#34d399;--yellow:#fbbf24;--red:#f87171;--text:#f1f5f9;--muted:#94a3b8;
-  --border:#334155;--danger:#ef4444;
+  --bg:#0f172a;--card:#1e293b;--accent:#38bdf8;--accent2:#818cf8;
+  --green:#34d399;--yellow:#fbbf24;--red:#f87171;--text:#f1f5f9;
+  --muted:#94a3b8;--border:#334155;--danger:#ef4444;
 }
-body{background:var(--bg);color:var(--text);font-family:system-ui,'Segoe UI',sans-serif;min-height:100vh;padding:12px;overflow-x:hidden;max-width:100vw}
-*{max-width:100%;word-break:break-word}
+body{background:var(--bg);color:var(--text);font-family:system-ui,'Segoe UI',sans-serif;min-height:100vh;padding:12px;overflow-x:hidden}
 .container{max-width:900px;margin:0 auto}
-
-/* LOGO */
 .logo-bar{display:flex;align-items:center;gap:12px;padding:16px 0 8px}
 .logo-icon{width:48px;height:48px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 4px 20px rgba(56,189,248,0.3);flex-shrink:0}
 .logo-text h1{font-size:1.2rem;font-weight:800;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.logo-text p{font-size:0.7rem;color:var(--muted)}
-
-/* CARDS */
+.logo-text p{font-size:.7rem;color:var(--muted)}
 .card{background:var(--card);border-radius:1.25rem;padding:1.25rem;margin-bottom:1.25rem;box-shadow:0 8px 24px rgba(0,0,0,0.3);animation:fadeIn .35s ease}
 .card-header{font-size:1.1rem;font-weight:700;margin-bottom:1rem;border-left:4px solid var(--accent);padding-left:.75rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-
-/* INPUTS */
 input,select,textarea{padding:10px 14px;border-radius:12px;border:1.5px solid var(--border);font-size:.9rem;background:var(--bg);color:var(--text);width:100%;transition:.2s;outline:none}
 input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(56,189,248,.15)}
 input::placeholder{color:var(--muted)}
-
-/* BUTTONS */
 button{padding:10px 16px;border-radius:12px;border:none;font-size:.9rem;font-weight:600;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:6px;justify-content:center}
 .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 14px rgba(56,189,248,.3)}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(56,189,248,.4)}
+.btn-primary:hover{transform:translateY(-1px)}
 .btn-outline{background:transparent;border:1.5px solid var(--accent);color:var(--accent)}
 .btn-outline:hover{background:var(--accent);color:#fff}
 .btn-danger{background:transparent;border:1.5px solid var(--red);color:var(--red)}
 .btn-danger:hover{background:var(--red);color:#fff}
 .btn-green{background:linear-gradient(135deg,#059669,var(--green));color:#fff}
-.btn-green:hover{transform:translateY(-1px)}
+.btn-yellow{background:linear-gradient(135deg,#d97706,var(--yellow));color:#fff}
 .btn-sm{padding:6px 12px;font-size:.8rem;border-radius:8px}
-
-/* GRID */
 .grid-2{display:grid;grid-template-columns:1fr;gap:1.25rem}
 @media(min-width:700px){.grid-2{grid-template-columns:1fr 1fr}}
 .flex-wrap{display:flex;flex-wrap:wrap;gap:8px;width:100%}
 .flex-between{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;width:100%}
-
-/* BADGE */
 .badge{padding:4px 12px;border-radius:40px;font-size:.7rem;font-weight:700;display:inline-block}
 .badge-blue{background:rgba(56,189,248,.15);color:var(--accent);border:1px solid rgba(56,189,248,.3)}
 .badge-green{background:rgba(52,211,153,.15);color:var(--green);border:1px solid rgba(52,211,153,.3)}
 .badge-yellow{background:rgba(251,191,36,.15);color:var(--yellow);border:1px solid rgba(251,191,36,.3)}
 .badge-red{background:rgba(248,113,113,.15);color:var(--red);border:1px solid rgba(248,113,113,.3)}
 .badge-purple{background:rgba(129,140,248,.15);color:var(--accent2);border:1px solid rgba(129,140,248,.3)}
-
-/* TABS */
+.badge-orange{background:rgba(251,146,60,.15);color:#fb923c;border:1px solid rgba(251,146,60,.3)}
 .tabs{display:flex;gap:6px;background:var(--bg);padding:6px;border-radius:14px;margin-bottom:1.2rem}
 .tab{flex:1;padding:10px;border-radius:10px;border:none;cursor:pointer;font-weight:600;font-size:.85rem;transition:.25s;background:transparent;color:var(--muted)}
 .tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 14px rgba(56,189,248,.3)}
-
-/* WARNING BOX */
 .warning-box{background:rgba(251,191,36,.08);border:1.5px solid rgba(251,191,36,.4);border-radius:1rem;padding:1rem;margin-bottom:1rem}
 .warning-box .w-title{color:var(--yellow);font-weight:700;font-size:.9rem;margin-bottom:.5rem;display:flex;align-items:center;gap:6px}
 .warning-box p,.warning-box li{color:#e2c97e;font-size:.82rem;line-height:1.6}
 .warning-box ul{padding-left:1.2rem}
-
-/* INFO BOX */
 .info-box{background:rgba(56,189,248,.07);border:1.5px solid rgba(56,189,248,.25);border-radius:1rem;padding:1rem;margin-bottom:1rem}
 .info-box .i-title{color:var(--accent);font-weight:700;font-size:.9rem;margin-bottom:.5rem;display:flex;align-items:center;gap:6px}
 .info-box p,.info-box li{color:#93d5f0;font-size:.82rem;line-height:1.6}
 .info-box ul{padding-left:1.2rem}
-
-/* SCALE TABLE */
 .scale-table{width:100%;border-collapse:collapse;margin:.75rem 0;font-size:.82rem}
 .scale-table th{background:rgba(56,189,248,.1);color:var(--accent);padding:8px 10px;text-align:left;font-weight:600}
 .scale-table td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text)}
 .scale-table tr:last-child td{border-bottom:none}
-
-/* QUESTIONS */
 .question-group{background:var(--bg);padding:.9rem;border-radius:1rem;margin-bottom:.8rem;border:1px solid var(--border);transition:.2s}
 .question-group:hover{border-color:rgba(56,189,248,.3)}
 .question-num{font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:4px}
@@ -92,40 +70,26 @@ button{padding:10px 16px;border-radius:12px;border:none;font-size:.9rem;font-wei
 .scale-options label:hover{border-color:var(--accent);background:rgba(56,189,248,.1)}
 .scale-options input[type=radio]{accent-color:var(--accent)}
 .scale-options input[type=radio]:checked+span{color:var(--accent);font-weight:700}
-
-/* PROGRESS BAR */
 .progress-bar-wrap{background:var(--border);border-radius:40px;height:8px;margin:.5rem 0}
 .progress-bar{height:8px;border-radius:40px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.4s}
-
-/* PATIENT LIST */
 .patient-list{max-height:260px;overflow-y:auto;margin-top:.75rem}
 .patient-item{background:var(--bg);padding:10px 12px;border-radius:.8rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-left:3px solid transparent;margin-bottom:.4rem;transition:.2s;flex-wrap:wrap;gap:6px}
 .patient-item:hover{border-left-color:rgba(56,189,248,.5);background:rgba(56,189,248,.05)}
 .patient-item.selected{border-left-color:var(--accent);background:rgba(56,189,248,.08)}
 .patient-name{font-weight:600;font-size:.88rem}
 .patient-age{font-size:.75rem;color:var(--muted)}
-
-/* REPORT BOX */
 .report-box{background:var(--bg);padding:1rem;border-radius:1rem;margin-top:1rem;border:1px solid var(--border)}
 .report-box pre{white-space:pre-wrap;word-break:break-word;font-family:'Courier New',monospace;font-size:.8rem;line-height:1.6;color:#e2e8f0}
-
-/* HISTORY */
 .history-item{background:var(--bg);padding:.8rem;border-radius:.8rem;margin-bottom:.6rem;border-left:3px solid var(--accent);word-break:break-word}
 .history-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:6px}
-
-/* MODAL */
-.modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);animation:fadeIn .2s ease}
+.modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.75);backdrop-filter:blur(6px)}
 .modal-content{background:var(--card);margin:5% auto;padding:1.25rem;border-radius:1.25rem;width:94%;max-width:720px;max-height:85vh;overflow-y:auto;border:1.5px solid var(--accent)}
 .modal-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:.75rem;margin-bottom:1rem}
 .close-modal{font-size:1.6rem;cursor:pointer;color:var(--red);background:none;border:none;line-height:1}
-
-/* INSTRUCTION SECTION */
 .instr-section{margin-bottom:1rem}
 .instr-section h4{color:var(--accent);font-size:.88rem;font-weight:700;margin-bottom:.4rem;display:flex;align-items:center;gap:6px}
 .instr-section p,.instr-section li{font-size:.82rem;color:#cbd5e1;line-height:1.7}
 .instr-section ul{padding-left:1.2rem}
-
-/* STEP INDICATOR */
 .step-indicator{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem}
 .step{display:flex;align-items:center;gap:6px}
 .step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;border:2px solid var(--border);color:var(--muted);transition:.3s}
@@ -135,48 +99,31 @@ button{padding:10px 16px;border-radius:12px;border:none;font-size:.9rem;font-wei
 .step-label.active{color:var(--accent)}
 .step-divider{flex:1;height:2px;background:var(--border);border-radius:2px}
 .step-divider.done{background:var(--green)}
-
-/* USER INFO BAR */
 .user-bar{background:var(--card);border-radius:12px;padding:.6rem 1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:1rem;overflow:hidden;width:100%}
-
-/* RESULT CARD */
 .result-card{border-radius:1rem;padding:1rem;margin:.5rem 0;border:1.5px solid}
 .result-normal{background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.3)}
 .result-mild{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.3)}
 .result-moderate{background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.3)}
 .result-severe{background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.3)}
-
-/* FOOTER */
+/* ADMIN */
+.admin-user-item{background:var(--bg);padding:.8rem 1rem;border-radius:.8rem;margin-bottom:.5rem;border-left:3px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.admin-user-item.pending{border-left-color:var(--yellow)}
+.admin-user-item.approved{border-left-color:var(--green)}
+.admin-user-item.rejected{border-left-color:var(--red)}
 footer{text-align:center;margin-top:2rem;padding:1rem;font-size:.72rem;color:var(--muted);border-top:1px solid var(--border)}
 footer a{color:var(--accent);text-decoration:none}
-footer a:hover{text-decoration:underline}
-
-/* DIVIDER */
-.divider{height:1px;background:var(--border);margin:1rem 0}
-
-/* SCROLL */
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
-
-@media(max-width:480px){
-  .tabs{flex-direction:column}
-  .step-label{display:none}
-  button{font-size:.82rem}
-}
-
-/* PULSE animation for warning */
+@media(max-width:480px){.tabs{flex-direction:column}.step-label{display:none}button{font-size:.82rem}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
 .pulse{animation:pulse 2s infinite}
-
-/* GLOW */
 .glow{box-shadow:0 0 20px rgba(56,189,248,.2)}
 </style>
 </head>
 <body>
 <div class="container">
 
-<!-- LOGO BAR -->
 <div class="logo-bar">
   <div class="logo-icon">🧠</div>
   <div class="logo-text">
@@ -188,8 +135,6 @@ footer a:hover{text-decoration:underline}
 <!-- AUTH PANEL -->
 <div id="authPanel" class="card glow">
   <div class="card-header">🔐 Klinik Sistemə Giriş</div>
-
-  <!-- XƏBƏRDARLIQ -->
   <div class="warning-box pulse">
     <div class="w-title">⚠️ MÜHİM XƏBƏRDARLIQ</div>
     <p style="margin-bottom:.5rem">Bu sistem <strong>yalnız lisenziyalı klinik mütəxəssislər</strong> tərəfindən istifadə edilməlidir:</p>
@@ -200,18 +145,15 @@ footer a:hover{text-decoration:underline}
       <li>Psixoterapevt (lisenziyalı)</li>
       <li>Klinik sosial işçi (superviziya altında)</li>
     </ul>
-    <p style="margin-top:.6rem">BAI və BDI testləri <strong>diaqnostik alət deyil</strong> — yalnız simptom şiddətini ölçür. Yekun diaqnoz mütəxəssis tərəfindən qoyulmalıdır.</p>
+    <p style="margin-top:.6rem">BAI və BDI testləri <strong>diaqnostik alət deyil</strong> — yalnız simptom şiddətini ölçür.</p>
   </div>
-
   <div class="grid-2">
-    <!-- GİRİŞ -->
     <div>
       <h3 style="margin-bottom:.75rem;font-size:.95rem;color:var(--accent)">👤 Daxil ol</h3>
       <input type="text" id="loginUsername" placeholder="İstifadəçi adı" style="margin-bottom:.5rem">
       <input type="password" id="loginPassword" placeholder="Şifrə" style="margin-bottom:.75rem">
       <button class="btn-primary" onclick="handleLogin()" style="width:100%">🔑 Daxil ol</button>
     </div>
-    <!-- QEYDİYYAT -->
     <div>
       <h3 style="margin-bottom:.75rem;font-size:.95rem;color:var(--accent2)">📋 Mütəxəssis Qeydiyyatı</h3>
       <div class="grid-2" style="gap:.5rem;margin-bottom:.5rem">
@@ -229,21 +171,47 @@ footer a:hover{text-decoration:underline}
         <option value="Loqoped">Loqoped</option>
         <option value="Klinik Sosial İşçi">Klinik Sosial İşçi</option>
       </select>
+      <input type="text" id="regWorkplace" placeholder="İş yeri / Klinika" style="margin-bottom:.5rem">
+      <input type="tel" id="regPhone" placeholder="Telefon nömrəsi" style="margin-bottom:.5rem">
       <input type="text" id="regUsername" placeholder="İstifadəçi adı" style="margin-bottom:.5rem">
-      <input type="password" id="regPassword" placeholder="Şifrə (min 6 xarakter)" style="margin-bottom:.75rem">
+      <input type="password" id="regPassword" placeholder="Şifrə (min 4 xarakter)" style="margin-bottom:.75rem">
       <button class="btn-outline" onclick="handleRegister()" style="width:100%">✅ Qeydiyyat</button>
     </div>
   </div>
   <div id="authError" style="margin-top:.75rem;font-size:.85rem;text-align:center"></div>
-  <div style="text-align:center;margin-top:.5rem">
-    <button class="btn-sm" onclick="resetAllUsers()" style="background:transparent;color:var(--muted);font-size:.72rem;border:1px solid var(--border)">🔄 Bütün qeydiyyatları sıfırla</button>
+</div>
+
+<!-- GÖZLƏMƏ PANELİ -->
+<div id="pendingPanel" class="card" style="display:none">
+  <div class="card-header">⏳ Təsdiq Gözlənilir</div>
+  <div class="info-box">
+    <div class="i-title">📋 Qeydiyyatınız alındı</div>
+    <p>Qeydiyyatınız admin tərəfindən nəzərdən keçirilir. Təsdiq edildikdən sonra sistemə daxil ola bilərsiniz.</p>
+    <p style="margin-top:.5rem">Zəhmət olmasa bir az gözləyin və yenidən daxil olmağa cəhd edin.</p>
+  </div>
+  <button class="btn-outline" onclick="showAuth()" style="width:100%">← Geri qayıt</button>
+</div>
+
+<!-- ADMİN PANELİ -->
+<div id="adminPanel" style="display:none">
+  <div class="user-bar">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span style="font-size:1.2rem">🛡️</span>
+      <div>
+        <div style="font-weight:700;font-size:.9rem">Administrator</div>
+        <div style="font-size:.72rem;color:var(--muted)">AN Mərkəzi — İdarəetmə Paneli</div>
+      </div>
+    </div>
+    <button class="btn-danger btn-sm" onclick="logout()">🚪 Çıxış</button>
+  </div>
+  <div class="card">
+    <div class="card-header">👥 Qeydiyyat İdarəetməsi</div>
+    <div id="adminUserList"></div>
   </div>
 </div>
 
 <!-- ANA PANEL -->
 <div id="mainApp" style="display:none">
-
-  <!-- USER BAR -->
   <div class="user-bar">
     <div style="display:flex;align-items:center;gap:8px">
       <span style="font-size:1.2rem">👨‍⚕️</span>
@@ -255,10 +223,7 @@ footer a:hover{text-decoration:underline}
     <button class="btn-danger btn-sm" onclick="logout()">🚪 Çıxış</button>
   </div>
 
-  <!-- XƏSTƏ + TEST -->
   <div class="grid-2">
-
-    <!-- XƏSTƏ CRM -->
     <div class="card">
       <div class="card-header">📌 Xəstə CRM</div>
       <div class="flex-wrap" style="margin-bottom:.5rem">
@@ -277,17 +242,12 @@ footer a:hover{text-decoration:underline}
       <div id="selectedPatientInfo" class="badge badge-blue" style="margin-top:.75rem">❌ Xəstə seçilməyib</div>
     </div>
 
-    <!-- TEST PANEL -->
     <div class="card">
       <div class="card-header">🧪 Test Seçimi</div>
-
-      <!-- TABS -->
       <div class="tabs">
         <button class="tab active" id="tabBAI" onclick="switchTab('BAI')">😰 BAI — Narahatlıq</button>
         <button class="tab" id="tabBDI" onclick="switchTab('BDI')">😔 BDI — Depressiya</button>
       </div>
-
-      <!-- STEP INDICATOR -->
       <div class="step-indicator">
         <div class="step">
           <div class="step-num active" id="step1num">1</div>
@@ -305,17 +265,15 @@ footer a:hover{text-decoration:underline}
         </div>
       </div>
 
-      <!-- STEP 1: TƏLİMAT -->
       <div id="stepInstruction">
         <div style="display:flex;flex-direction:column;gap:10px;margin-top:.5rem">
-          <button class="btn-outline" onclick="openInstruction()" style="width:100%;border-color:#f87171;color:#f87171;font-size:.9rem">
+          <button class="btn-outline" onclick="openInstruction()" style="width:100%;border-color:#f87171;color:#f87171">
             📋 Keçirilmə Təlimatını Oxu
           </button>
           <button class="btn-primary" onclick="goToTest()" style="width:100%">📝 Testi Başlat →</button>
         </div>
       </div>
 
-      <!-- STEP 2: TEST -->
       <div id="stepTest" style="display:none">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
           <span id="progressLabel" style="font-size:.78rem;color:var(--muted)"></span>
@@ -329,7 +287,6 @@ footer a:hover{text-decoration:underline}
         </div>
       </div>
 
-      <!-- STEP 3: NƏTİCƏ -->
       <div id="stepResult" style="display:none">
         <div id="resultSummary"></div>
         <div id="currentReport" class="report-box" style="margin-top:.75rem"><pre>Nəticə burada görünəcək...</pre></div>
@@ -344,14 +301,12 @@ footer a:hover{text-decoration:underline}
     </div>
   </div>
 
-  <!-- KEÇMİŞ HESABATLAR -->
   <div class="card">
     <div class="card-header" id="historyHeader">📜 Keçmiş hesabatlar</div>
     <div id="historyReports" style="color:var(--muted);font-size:.85rem">Xəstə seçin.</div>
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   © 2025 AN Psixoloji Dəstək və Reabilitasiya Mərkəzi &nbsp;|&nbsp;
   BAI & BDI Beck Klinik Testləri &nbsp;|&nbsp;
@@ -380,7 +335,7 @@ footer a:hover{text-decoration:underline}
       <h3>📄 Tam Klinik Hesabat</h3>
       <button class="close-modal" onclick="closeModal('reportModal')">&times;</button>
     </div>
-    <div id="modalReportContent"><pre style="white-space:pre-wrap;font-family:monospace;font-size:.82rem;line-height:1.6;color:#e2e8f0"></pre></div>
+    <div id="modalReportContent"></div>
     <div class="flex-wrap" style="margin-top:1rem">
       <button class="btn-outline btn-sm" id="modalDownloadBtn">⬇️ HTML yüklə</button>
       <button class="btn-outline btn-sm" id="modalShareBtn">📤 Paylaş</button>
@@ -405,9 +360,12 @@ footer a:hover{text-decoration:underline}
 </div>
 
 <script>
-// ═══════════════════════════════════════════
-// DATA: BAI — 21 Sual (Beck Anksiyete)
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════
+// CONSTANTS
+// ══════════════════════════════════════
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'AN2026';
+
 const BAI_QUESTIONS = [
   "Bədənimdə uyuşma və ya gıcışma hissi",
   "Bədənimdə istilik hissi",
@@ -431,108 +389,125 @@ const BAI_QUESTIONS = [
   "Tərləmə (hərarətlə əlaqəli deyil)",
   "Üzüm sapsarı olur (ağarma)"
 ];
-
-const BAI_OPTIONS = [
-  {val:0, label:"Heç olmayıb"},
-  {val:1, label:"Yüngül — narahat etməyib"},
-  {val:2, label:"Orta — narahat edib, dözə bilmişəm"},
-  {val:3, label:"Şiddətli — dözə bilməmişəm"}
+const BAI_OPTIONS=[{val:0,label:"Heç olmayıb"},{val:1,label:"Yüngül — narahat etməyib"},{val:2,label:"Orta — narahat edib, dözə bilmişəm"},{val:3,label:"Şiddətli — dözə bilməmişəm"}];
+const BAI_SCALE=[
+  {min:0,max:7,label:"Minimal / Normal",cls:"result-normal",badge:"badge-green",color:"#34d399",icon:"✅",desc:"Narahatlıq simptomları klinik əhəmiyyət kəsb etmir."},
+  {min:8,max:15,label:"Yüngül narahatlıq",cls:"result-mild",badge:"badge-yellow",color:"#fbbf24",icon:"🟡",desc:"Yüngül narahatlıq var. Müşahidə tövsiyə olunur."},
+  {min:16,max:25,label:"Orta narahatlıq",cls:"result-moderate",badge:"badge-yellow",color:"#fb923c",icon:"🟠",desc:"Klinik əhəmiyyətli narahatlıq. Müdaxilə tövsiyə olunur."},
+  {min:26,max:63,label:"Şiddətli narahatlıq",cls:"result-severe",badge:"badge-red",color:"#f87171",icon:"🔴",desc:"Ağır narahatlıq. Təcili klinik müdaxilə tələb olunur."}
+];
+const BDI_QUESTIONS=[
+  {text:"Kədər",opts:["Özümü kədərli hiss etmirəm","Özümü kədərli hiss edirəm","Hər zaman kədərli hiss edirəm, bundan çıxa bilmirəm","O qədər kədərli və bədbəxtəm ki, buna dözə bilmirəm"]},
+  {text:"Ümidsizlik",opts:["Gələcəyə dair ümidsiz deyiləm","Gələcəyə dair bir az ümidsizəm","Gələcəkdə heç nəyin yaxşılaşmayacağını hiss edirəm","Gələcəyin son dərəcə pis olacağını hiss edirəm"]},
+  {text:"Uğursuzluq hissi",opts:["Özümü uğursuz saymıram","Adi insanlardan daha çox uğursuzluğa düçar olmuşam","Geridə baxdıqda çoxlu uğursuzluqlar görürəm","Tamamilə uğursuz bir insan olduğumu hiss edirəm"]},
+  {text:"Məmnunsuzluq",opts:["Hər şeydən zövq alıram","Əvvəlki kimi hər şeydən zövq almıram","Artıq heç nədən həqiqi zövq almıram","Hər şeydən narazıyam, heç nə məni razı salmır"]},
+  {text:"Günahkarlıq",opts:["Özümü xüsusilə günahkar hiss etmirəm","Çox vaxt özümü günahkar hiss edirəm","Çox vaxt çox günahkar hiss edirəm","Həmişə özümü günahkar hiss edirəm"]},
+  {text:"Cəza gözləməsi",opts:["Cəzalandırılacağımı hiss etmirəm","Cəzalandırıla biləcəyimi hiss edirəm","Cəzalandırılacağımı gözləyirəm","Cəzalandırıldığımı hiss edirəm"]},
+  {text:"Özündən narazılıq",opts:["Özümdən narazı deyiləm","Özümdən narazıyam","Özümdən çox iyrənirəm","Özümdən nifrət edirəm"]},
+  {text:"Özünütənqid",opts:["Özümü başqalarından daha pis saymıram","Zəifliklərimi və ya səhvlərimi özüm-özümə tənqid edirəm","Xətaları üçün özümü həmişə günahlandırıram","Hər pis hadisədə özümü günahkarlayıram"]},
+  {text:"İntihara meyl",opts:["Özümü öldürmək fikirlərini ağlıma gətirmirəm","Özümü öldürmək fikirlərini düşünürəm, lakin bunu etmərəm","Özümü öldürmək istərdim","Fürsətim olsaydı özümü öldürərdim"]},
+  {text:"Ağlamaq",opts:["Adi həddən artıq ağlamıram","İndilər əvvəlkindən çox ağlayıram","İndilər hər zaman ağlayıram","Əvvəllər ağlaya bilirdim amma indi ağlaya da bilmirəm"]},
+  {text:"Əsəbilik",opts:["İndilər əvvəlkindən daha əsəbi deyiləm","İndilər daha tez əsəbiləşirəm","Hər zaman əsəbi hiss edirəm","Əvvəllər məni əsəbiləşdirən şeylər artıq məni əsəbiləşdirmir"]},
+  {text:"Sosial geri çəkilmə",opts:["İnsanlarla maraqlanmağı itirməmişəm","İnsanlara keçmişdəkindən az maraq göstərirəm","İnsanlara olan marağımın çox hissəsini itirmişəm","İnsanlara olan bütün marağımı itirmişəm"]},
+  {text:"Qərar verə bilməmə",opts:["Əvvəlki kimi qərar verə bilirəm","Əvvəlkindən daha çox qərar verməyi gecikdirirəm","Qərar vermək əvvəlkindən çox çətindir","Artıq heç vaxt qərar verə bilmirəm"]},
+  {text:"Görünüş dəyişikliyi",opts:["Görünüşümün daha pis olduğunu düşünmürəm","Yaşlandığımdan narahatam","Görünüşümdə daimi dəyişikliklər olduğunu hiss edirəm","Çirkin göründüyümü hiss edirəm"]},
+  {text:"İş qabiliyyəti",opts:["Əvvəlki kimi yaxşı işləyə bilirəm","Bir işə başlamaq üçün əlavə cəhd göstərməliyəm","Hər hansı işi görə bilmək üçün özümü çox məcbur etməliyəm","Heç bir iş görə bilmirəm"]},
+  {text:"Yuxu pozğunluğu",opts:["Əvvəlki kimi yatıram","Həmişəki kimi yatmıram","Hər gün 1-2 saat tez oyanıram","Çox tez oyanıram, yenidən yata bilmirəm"]},
+  {text:"Yorğunluq",opts:["Həmişəkindən daha çox yorulmuram","Əvvəlkindən çox tez yoruluram","Demək olar ki, hər şey məni yorur","Hətta ən kiçik şeylər belə məni çox yorur"]},
+  {text:"İştah dəyişikliyi",opts:["İştahım həmişəkindən pisləşməyib","İştahım əvvəlki qədər deyil","İştahım xeyli azalıb","Artıq heç iştahım yoxdur"]},
+  {text:"Çəki itkisi",opts:["Son zamanlarda çəki itirməmişəm","2 kq-dan çox çəki itirmişəm","5 kq-dan çox çəki itirmişəm","7 kq-dan çox çəki itirmişəm"]},
+  {text:"Somatik narahatlıqlar",opts:["Sağlamlığım barədə keçmişdəkindən daha çox narahat olmuram","Ağrı, mədə narahatlığı kimi problemlər barədə çox narahatam","Bu narahatlıqlar diqqətimi çox cəlb edir","Bu narahatlıqlar haqqında o qədər narahatam ki, başqa şeylər haqqında düşünə bilmirəm"]},
+  {text:"Cinsi maraq",opts:["Cinsi maraqda dəyişiklik görmürəm","Əvvəlkindən daha az cinsi marağım var","Cinsi marağım xeyli azalıb","Cinsi marağımı tamamilə itirmişəm"]}
+];
+const BDI_SCALE=[
+  {min:0,max:9,label:"Normal / Minimal",cls:"result-normal",badge:"badge-green",color:"#34d399",icon:"✅",desc:"Depressiya simptomları klinik əhəmiyyət kəsb etmir."},
+  {min:10,max:16,label:"Yüngül depressiya",cls:"result-mild",badge:"badge-yellow",color:"#fbbf24",icon:"🟡",desc:"Əhval əzginliyi mövcuddur. Müşahidə və dəstək tövsiyə olunur."},
+  {min:17,max:20,label:"Yüngül-orta depressiya",cls:"result-mild",badge:"badge-yellow",color:"#fb923c",icon:"🟠",desc:"Klinik müdaxilə tövsiyə olunur."},
+  {min:21,max:30,label:"Orta depressiya",cls:"result-moderate",badge:"badge-yellow",color:"#f97316",icon:"🟠",desc:"Klinik əhəmiyyətli depressiya. Müdaxilə tövsiyə olunur."},
+  {min:31,max:40,label:"Ağır depressiya",cls:"result-severe",badge:"badge-red",color:"#f87171",icon:"🔴",desc:"Ağır depressiya. Təcili müdaxilə tələb olunur."},
+  {min:41,max:63,label:"Ekstremal ağır depressiya",cls:"result-severe",badge:"badge-red",color:"#ef4444",icon:"🚨",desc:"Krizis müdaxiləsi tələb olunur. Dərhal psixiatr/psixologa müraciət."}
 ];
 
-const BAI_SCALE = [
-  {min:0,  max:7,  label:"Minimal / Normal",        cls:"result-normal", badge:"badge-green",  color:"#34d399", icon:"✅",
-   desc:"Narahatlıq simptomları klinik əhəmiyyət kəsb etmir. Müəyyən həyati narahatlıqlar ola bilər."},
-  {min:8,  max:15, label:"Yüngül narahatlıq",        cls:"result-mild",   badge:"badge-yellow", color:"#fbbf24", icon:"🟡",
-   desc:"Yüngül narahatlıq var. Müşahidə tövsiyə olunur, müdaxilə tələb oluna bilər."},
-  {min:16, max:25, label:"Orta narahatlıq",           cls:"result-moderate",badge:"badge-yellow",color:"#fb923c", icon:"🟠",
-   desc:"Klinik əhəmiyyətli narahatlıq. Mütəxəssis müdaxiləsi tövsiyə olunur."},
-  {min:26, max:63, label:"Şiddətli narahatlıq",       cls:"result-severe", badge:"badge-red",   color:"#f87171", icon:"🔴",
-   desc:"Ağır narahatlıq. Təcili klinik müdaxilə tələb olunur."}
-];
-
-// ═══════════════════════════════════════════
-// DATA: BDI — 21 Sual (Beck Depressiya)
-// ═══════════════════════════════════════════
-const BDI_QUESTIONS = [
-  {text:"Kədər", opts:["Özümü kədərli hiss etmirəm","Özümü kədərli hiss edirəm","Hər zaman kədərli hiss edirəm, bundan çıxa bilmirəm","O qədər kədərli və bədbəxtəm ki, buna dözə bilmirəm"]},
-  {text:"Ümidsizlik", opts:["Gələcəyə dair ümidsiz deyiləm","Gələcəyə dair bir az ümidsizəm","Gələcəkdə heç nəyin yaxşılaşmayacağını hiss edirəm","Gələcəyin son dərəcə pis olacağını hiss edirəm"]},
-  {text:"Uğursuzluq hissi", opts:["Özümü uğursuz saymıram","Adi insanlardan daha çox uğursuzluğa düçar olmuşam","Geridə baxdıqda çoxlu uğursuzluqlar görürəm","Tamamilə uğursuz bir insan olduğumu hiss edirəm"]},
-  {text:"Məmnunsuzluq", opts:["Hər şeydən zövq alıram","Əvvəlki kimi hər şeydən zövq almıram","Artıq heç nədən həqiqi zövq almıram","Hər şeydən narazıyam, heç nə məni razı salmır"]},
-  {text:"Günahkarlıq", opts:["Özümü xüsusilə günahkar hiss etmirəm","Çox vaxt özümü günahkar hiss edirəm","Çox vaxt çox günahkar hiss edirəm","Həmişə özümü günahkar hiss edirəm"]},
-  {text:"Cəza gözləməsi", opts:["Cəzalandırılacağımı hiss etmirəm","Cəzalandırıla biləcəyimi hiss edirəm","Cəzalandırılacağımı gözləyirəm","Cəzalandırıldığımı hiss edirəm"]},
-  {text:"Özündən narazılıq", opts:["Özümdən narazı deyiləm","Özümdən narazıyam","Özümdən çox iyrənirəm","Özümdən nifrət edirəm"]},
-  {text:"Özünütənqid", opts:["Özümü başqalarından daha pis saymıram","Zəifliklərimi və ya səhvlərimi özüm-özümə tənqid edirəm","Xətaları üçün özümü həmişə günahlandırıram","Hər pis hadisədə özümü günahkarlayıram"]},
-  {text:"İntihara meyl", opts:["Özümü öldürmək fikirlərini ağlıma gətirmirəm","Özümü öldürmək fikirlərini düşünürəm, lakin bunu etmərəm","Özümü öldürmək istərdim","Fürsətim olsaydı özümü öldürərdim"]},
-  {text:"Ağlamaq", opts:["Adi həddən artıq ağlamıram","İndilər əvvəlkindən çox ağlayıram","İndilər hər zaman ağlayıram","Əvvəllər ağlaya bilirdim amma indi ağlaya da bilmirəm"]},
-  {text:"Əsəbilik", opts:["İndilər əvvəlkindən daha əsəbi deyiləm","İndilər daha tez əsəbiləşirəm","Hər zaman əsəbi hiss edirəm","Əvvəllər məni əsəbiləşdirən şeylər artıq məni əsəbiləşdirmir"]},
-  {text:"Sosial geri çəkilmə", opts:["İnsanlarla maraqlanmağı itirməmişəm","İnsanlara keçmişdəkindən az maraq göstərirəm","İnsanlara olan marağımın çox hissəsini itirmişəm","İnsanlara olan bütün marağımı itirmişəm"]},
-  {text:"Qərar verə bilməmə", opts:["Əvvəlki kimi qərar verə bilirəm","Əvvəlkindən daha çox qərar verməyi gecikdirirəm","Qərar vermək əvvəlkindən çox çətindir","Artıq heç vaxt qərar verə bilmirəm"]},
-  {text:"Görünüş dəyişikliyi", opts:["Görünüşümün daha pis olduğunu düşünmürəm","Yaşlandığımdan narahatam","Görünüşümdə daimidir dəyişikliklər olduğunu hiss edirəm","Çirkin göründüyümü hiss edirəm"]},
-  {text:"İş qabiliyyəti", opts:["Əvvəlki kimi yaxşı işləyə bilirəm","Bir işə başlamaq üçün əlavə cəhd göstərməliyəm","Hər hansı işi görə bilmək üçün özümü çox məcbur etməliyəm","Heç bir iş görə bilmirəm"]},
-  {text:"Yuxu pozğunluğu", opts:["Əvvəlki kimi yatıram","Həmişəki kimi yatmıram","Hər gün 1-2 saat tez oyanıram","Çox tez oyanıram, yenidən yata bilmirəm"]},
-  {text:"Yorğunluq", opts:["Həmişəkindən daha çox yorulmuram","Əvvəlkindən çox tez yoruluram","Demək olar ki, hər şey məni yorur","Hətta ən kiçik şeylər belə məni çox yorur"]},
-  {text:"İştah dəyişikliyi", opts:["İştahım həmişəkindən pisləşməyib","İştahım əvvəlki qədər deyil","İştahım xeyli azalıb","Artıq heç iştahım yoxdur"]},
-  {text:"Çəki itkisi", opts:["Son zamanlarda çəki itirməmişəm","2 kq-dan çox çəki itirmişəm","5 kq-dan çox çəki itirmişəm","7 kq-dan çox çəki itirmişəm"]},
-  {text:"Somatik narahatlıqlar", opts:["Sağlamlığım barədə keçmişdəkindən daha çox narahat olmuram","Ağrı, mədə narahatlığı kimi problemlər barədə çox narahatam","Bu narahatlıqlar diqqətimi çox cəlb edir","Bu narahatlıqlar haqqında o qədər narahatam ki, başqa şeylər haqqında düşünə bilmirəm"]},
-  {text:"Cinsi maraq", opts:["Cinsi maraqda dəyişiklik görmürəm","Əvvəlkindən daha az cinsi marağım var","Cinsi marağım xeyli azalıb","Cinsi marağımı tamamilə itirmişəm"]}
-];
-
-const BDI_SCALE = [
-  {min:0,  max:9,  label:"Normal / Minimal",         cls:"result-normal", badge:"badge-green",  color:"#34d399", icon:"✅",
-   desc:"Depressiya simptomları klinik əhəmiyyət kəsb etmir."},
-  {min:10, max:16, label:"Yüngül depressiya",         cls:"result-mild",   badge:"badge-yellow", color:"#fbbf24", icon:"🟡",
-   desc:"Əhval əzginliyi mövcuddur. Müşahidə və dəstək tövsiyə olunur."},
-  {min:17, max:20, label:"Yüngül-orta depressiya",    cls:"result-mild",   badge:"badge-yellow", color:"#fb923c", icon:"🟠",
-   desc:"Klinik müdaxilə tövsiyə olunur. Mütəxəssis dəstəyi faydalı olacaq."},
-  {min:21, max:30, label:"Orta depressiya",            cls:"result-moderate",badge:"badge-yellow",color:"#f97316", icon:"🟠",
-   desc:"Klinik əhəmiyyətli depressiya. Mütəxəssis müdaxiləsi tövsiyə olunur."},
-  {min:31, max:40, label:"Ağır depressiya",            cls:"result-severe", badge:"badge-red",   color:"#f87171", icon:"🔴",
-   desc:"Ağır depressiya simptomları. Təcili müdaxilə tələb olunur."},
-  {min:41, max:63, label:"Ekstremal ağır depressiya",  cls:"result-severe", badge:"badge-red",   color:"#ef4444", icon:"🚨",
-   desc:"Krizis müdaxiləsi tələb olunur. Dərhal psixiatr/psixologa müraciət."}
-];
-
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════
 // STATE
-// ═══════════════════════════════════════════
-let currentUser = null;
-let selectedPatient = null;
-let currentTab = 'BAI';
-let currentStep = 'instruction'; // instruction | test | result
-let lastReport = '';
-let editingHistoryId = null;
+// ══════════════════════════════════════
+let currentUser=null;
+let selectedPatient=null;
+let currentTab='BAI';
+let lastReport='';
+let editingHistoryId=null;
 
-// ═══════════════════════════════════════════
-// AUTH
-// ═══════════════════════════════════════════
-function resetAllUsers(){
-  if(!confirm('Bütün qeydiyyatlar silinəcək. Davam et?')) return;
-  localStorage.removeItem('ncbt_users');
-  const err=document.getElementById('authError');
-  err.style.color='var(--green)';
-  err.textContent='✅ Sıfırlandı. İndi yenidən qeydiyyatdan keç.';
+// ══════════════════════════════════════
+// USER STORAGE
+// ══════════════════════════════════════
+function getUsers(){return JSON.parse(localStorage.getItem('ncbt_users')||'{}')}
+function saveUsers(u){localStorage.setItem('ncbt_users',JSON.stringify(u))}
+
+// ══════════════════════════════════════
+// SESSION — səhifə yenilənsə saxla
+// ══════════════════════════════════════
+function saveSession(user){
+  if(user) localStorage.setItem('ncbt_session',JSON.stringify(user));
+  else localStorage.removeItem('ncbt_session');
+}
+function loadSession(){
+  try{return JSON.parse(localStorage.getItem('ncbt_session'))}catch(e){return null}
 }
 
-function getUsers(){ return JSON.parse(localStorage.getItem('ncbt_users')||'{}') }
-function saveUsers(u){ localStorage.setItem('ncbt_users',JSON.stringify(u)) }
+// ══════════════════════════════════════
+// PANEL GÖSTƏRİCİLƏR
+// ══════════════════════════════════════
+function showAuth(){
+  document.getElementById('authPanel').style.display='block';
+  document.getElementById('pendingPanel').style.display='none';
+  document.getElementById('adminPanel').style.display='none';
+  document.getElementById('mainApp').style.display='none';
+}
+function showMain(){
+  document.getElementById('authPanel').style.display='none';
+  document.getElementById('pendingPanel').style.display='none';
+  document.getElementById('adminPanel').style.display='none';
+  document.getElementById('mainApp').style.display='block';
+}
+function showAdmin(){
+  document.getElementById('authPanel').style.display='none';
+  document.getElementById('pendingPanel').style.display='none';
+  document.getElementById('adminPanel').style.display='block';
+  document.getElementById('mainApp').style.display='none';
+  loadAdminUsers();
+}
+function showPending(){
+  document.getElementById('authPanel').style.display='none';
+  document.getElementById('pendingPanel').style.display='block';
+  document.getElementById('adminPanel').style.display='none';
+  document.getElementById('mainApp').style.display='none';
+}
 
+// ══════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════
 function handleRegister(){
   const fn=document.getElementById('regFirstName').value.trim();
   const ln=document.getElementById('regLastName').value.trim();
   const prof=document.getElementById('regProfession').value;
+  const workplace=document.getElementById('regWorkplace').value.trim();
+  const phone=document.getElementById('regPhone').value.trim();
   const un=document.getElementById('regUsername').value.trim();
   const pw=document.getElementById('regPassword').value;
   const err=document.getElementById('authError');
   err.style.color='var(--red)';
   if(!fn||!ln||!un||!pw){err.textContent='⚠️ Ad, soyad, istifadəçi adı və şifrə daxil edin';return}
-  if(!prof||prof===''){err.textContent='⚠️ İxtisas seçin';return}
+  if(!prof){err.textContent='⚠️ İxtisas seçin';return}
+  if(!workplace){err.textContent='⚠️ İş yeri daxil edin';return}
+  if(!phone){err.textContent='⚠️ Telefon nömrəsi daxil edin';return}
   if(pw.length<4){err.textContent='⚠️ Şifrə minimum 4 xarakter olmalıdır';return}
+  if(un===ADMIN_USER){err.textContent='⚠️ Bu istifadəçi adından istifadə edilə bilməz';return}
   const users=getUsers();
   if(users[un]){err.textContent='⚠️ Bu istifadəçi adı artıq var';return}
-  users[un]={fn,ln,prof,pw};
+  users[un]={fn,ln,prof,workplace,phone,pw,status:'pending',regDate:new Date().toLocaleString('az-AZ')};
   saveUsers(users);
   err.style.color='var(--green)';
-  err.textContent='✅ Qeydiyyat uğurlu! İndi daxil ola bilərsiniz.';
+  err.textContent='✅ Qeydiyyat uğurlu! Admin təsdiqini gözləyin.';
   document.getElementById('loginUsername').value=un;
   document.getElementById('loginPassword').value='';
 }
@@ -543,34 +518,95 @@ function handleLogin(){
   const err=document.getElementById('authError');
   err.style.color='var(--red)';
   if(!un||!pw){err.textContent='⚠️ Məlumatları daxil edin';return}
+  // Admin yoxla
+  if(un===ADMIN_USER&&pw===ADMIN_PASS){
+    currentUser={fn:'Admin',ln:'',prof:'Administrator',username:ADMIN_USER,isAdmin:true};
+    saveSession(currentUser);
+    showAdmin();
+    return;
+  }
   const users=getUsers();
   if(!users[un]){err.textContent='❌ Bu istifadəçi adı tapılmadı';return}
   if(users[un].pw!==pw){err.textContent='❌ Şifrə yanlışdır';return}
+  if(users[un].status==='pending'){err.textContent='⏳ Qeydiyyatınız hələ admin tərəfindən təsdiq edilməyib';showPending();return}
+  if(users[un].status==='rejected'){err.textContent='❌ Qeydiyyatınız rədd edilmişdir. Adminlə əlaqə saxlayın';return}
   currentUser=users[un];
   currentUser.username=un;
-  document.getElementById('authPanel').style.display='none';
-  document.getElementById('mainApp').style.display='block';
+  saveSession(currentUser);
   document.getElementById('userInfoSpan').textContent=`${currentUser.fn} ${currentUser.ln}`;
-  document.getElementById('userProfSpan').textContent=currentUser.prof;
+  document.getElementById('userProfSpan').textContent=`${currentUser.prof} | ${currentUser.workplace||''}`;
+  showMain();
   loadPatients();
   renderInstruction();
 }
 
 function logout(){
-  currentUser=null; selectedPatient=null;
-  document.getElementById('authPanel').style.display='block';
-  document.getElementById('mainApp').style.display='none';
+  currentUser=null;
+  selectedPatient=null;
+  saveSession(null);
+  showAuth();
   document.getElementById('authError').textContent='';
-  document.getElementById('authError').style.color='var(--red)';
   document.getElementById('loginPassword').value='';
 }
 
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════
+// ADMİN
+// ══════════════════════════════════════
+function loadAdminUsers(){
+  const users=getUsers();
+  const list=document.getElementById('adminUserList');
+  const entries=Object.entries(users);
+  if(!entries.length){list.innerHTML='<p style="color:var(--muted);font-size:.85rem">Hələ qeydiyyat yoxdur.</p>';return}
+  const pending=entries.filter(([,u])=>u.status==='pending');
+  const approved=entries.filter(([,u])=>u.status==='approved');
+  const rejected=entries.filter(([,u])=>u.status==='rejected');
+
+  list.innerHTML=`
+    ${pending.length?`<div style="margin-bottom:.5rem"><span class="badge badge-yellow">⏳ Gözləyən (${pending.length})</span></div>`:''}
+    ${[...pending,...approved,...rejected].map(([un,u])=>`
+    <div class="admin-user-item ${u.status}">
+      <div>
+        <div style="font-weight:700;font-size:.9rem">${u.fn} ${u.ln}</div>
+        <div style="font-size:.75rem;color:var(--muted)">${u.prof} | ${u.workplace||'—'} | ${u.phone||'—'}</div>
+        <div style="font-size:.72rem;color:var(--muted)">@${un} | ${u.regDate||''}</div>
+        <span class="badge ${u.status==='approved'?'badge-green':u.status==='rejected'?'badge-red':'badge-yellow'}" style="margin-top:4px">
+          ${u.status==='approved'?'✅ Təsdiqlənib':u.status==='rejected'?'❌ Rədd edilib':'⏳ Gözləyir'}
+        </span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        ${u.status!=='approved'?`<button class="btn-green btn-sm" onclick="approveUser('${un}')">✅ Təsdiqlə</button>`:''}
+        ${u.status!=='rejected'?`<button class="btn-danger btn-sm" onclick="rejectUser('${un}')">❌ Rədd et</button>`:''}
+        <button class="btn-outline btn-sm" onclick="deleteUser('${un}')">🗑 Sil</button>
+      </div>
+    </div>`).join('')}`;
+}
+
+function approveUser(un){
+  const users=getUsers();
+  if(users[un]) users[un].status='approved';
+  saveUsers(users);
+  loadAdminUsers();
+}
+function rejectUser(un){
+  const users=getUsers();
+  if(users[un]) users[un].status='rejected';
+  saveUsers(users);
+  loadAdminUsers();
+}
+function deleteUser(un){
+  if(!confirm(`"${un}" istifadəçisini silmək istəyirsiniz?`))return;
+  const users=getUsers();
+  delete users[un];
+  saveUsers(users);
+  loadAdminUsers();
+}
+
+// ══════════════════════════════════════
 // PATIENTS
-// ═══════════════════════════════════════════
-function getPatientsKey(){ return `ncbt_patients_${currentUser.username}` }
-function getPatients(){ return JSON.parse(localStorage.getItem(getPatientsKey())||'[]') }
-function savePatients(p){ localStorage.setItem(getPatientsKey(),JSON.stringify(p)) }
+// ══════════════════════════════════════
+function getPatientsKey(){return `ncbt_patients_${currentUser.username}`}
+function getPatients(){return JSON.parse(localStorage.getItem(getPatientsKey())||'[]')}
+function savePatients(p){localStorage.setItem(getPatientsKey(),JSON.stringify(p))}
 
 function addPatient(){
   const name=document.getElementById('patientName').value.trim();
@@ -578,8 +614,7 @@ function addPatient(){
   const gender=document.getElementById('patientGender').value;
   if(!name){alert('Ad daxil edin');return}
   const patients=getPatients();
-  const id=Date.now().toString();
-  patients.push({id,name,age,gender,history:[]});
+  patients.push({id:Date.now().toString(),name,age,gender});
   savePatients(patients);
   document.getElementById('patientName').value='';
   document.getElementById('patientAge').value='';
@@ -602,8 +637,7 @@ function loadPatients(){
 }
 
 function selectPatient(id){
-  const patients=getPatients();
-  selectedPatient=patients.find(p=>p.id===id);
+  selectedPatient=getPatients().find(p=>p.id===id);
   loadPatients();
   document.getElementById('selectedPatientInfo').textContent=`✅ Seçildi: ${selectedPatient.name}`;
   document.getElementById('selectedPatientInfo').className='badge badge-green';
@@ -612,8 +646,7 @@ function selectPatient(id){
 
 function deletePatient(id){
   if(!confirm('Bu xəstəni silmək istəyirsiniz?'))return;
-  let patients=getPatients();
-  patients=patients.filter(p=>p.id!==id);
+  let patients=getPatients().filter(p=>p.id!==id);
   savePatients(patients);
   if(selectedPatient&&selectedPatient.id===id){
     selectedPatient=null;
@@ -624,29 +657,24 @@ function deletePatient(id){
   loadPatients();
 }
 
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════
 // TABS & STEPS
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════
 function switchTab(tab){
   currentTab=tab;
   document.getElementById('tabBAI').className='tab'+(tab==='BAI'?' active':'');
   document.getElementById('tabBDI').className='tab'+(tab==='BDI'?' active':'');
-  currentStep='instruction';
   showStep('instruction');
-  renderInstruction();
 }
 
 function showStep(step){
-  currentStep=step;
   document.getElementById('stepInstruction').style.display=step==='instruction'?'block':'none';
   document.getElementById('stepTest').style.display=step==='test'?'block':'none';
   document.getElementById('stepResult').style.display=step==='result'?'block':'none';
-  // Update step indicators
   ['1','2','3'].forEach((n,i)=>{
     const num=document.getElementById(`step${n}num`);
     const lbl=document.getElementById(`step${n}lbl`);
-    const stepMap=['instruction','test','result'];
-    const idx=stepMap.indexOf(step);
+    const idx=['instruction','test','result'].indexOf(step);
     if(i<idx){num.className='step-num done';lbl.className='step-label'}
     else if(i===idx){num.className='step-num active';lbl.className='step-label active'}
     else{num.className='step-num';lbl.className='step-label'}
@@ -655,159 +683,76 @@ function showStep(step){
   document.getElementById('div2').className='step-divider'+(step==='result'?' done':'');
 }
 
-function goToInstruction(){ showStep('instruction'); }
-function goToTest(){ renderTest(); showStep('test'); }
+function goToInstruction(){showStep('instruction')}
+function goToTest(){renderTest();showStep('test')}
 
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════
 // INSTRUCTIONS
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════
 function openInstruction(){
   renderInstruction();
   document.getElementById('instructionModalTitle').textContent=
     currentTab==='BAI'?'📋 BAI — Keçirilmə Təlimatı':'📋 BDI — Keçirilmə Təlimatı';
   document.getElementById('instructionModal').style.display='block';
 }
-
 function renderInstruction(){
-  const el=document.getElementById('instructionContent');
-  if(currentTab==='BAI') el.innerHTML=getBAIInstruction();
-  else el.innerHTML=getBDIInstruction();
+  document.getElementById('instructionContent').innerHTML=
+    currentTab==='BAI'?getBAIInstruction():getBDIInstruction();
 }
+function getBAIInstruction(){return`
+  <div class="warning-box"><div class="w-title">⚠️ Xəbərdarlıq</div>
+  <p>Bu test yalnız <strong>sertifikatlı klinik mütəxəssis</strong> tərəfindən keçirilə bilər: Klinik Psixoloq, Psixiatr, Nevroloq, Psixoterapevt.</p></div>
+  <div class="info-box"><div class="i-title">📋 BAI Haqqında</div>
+  <p>Beck Anksiyete İnventarı (BAI) — Dr. Aaron T. Beck tərəfindən 1988-ci ildə hazırlanmışdır. 21 maddəlik özünüqiymətləndirmə vasitəsidir.</p></div>
+  <div class="instr-section"><h4>🎯 Məqsəd</h4><p>Son <strong>1 həftə</strong> ərzindəki narahatlıq simptomlarının şiddətini ölçmək.</p></div>
+  <div class="instr-section"><h4>📝 Keçirilmə qaydası</h4><ul>
+    <li>Xəstəyə hər simptom oxunur</li><li>Son <strong>1 həftə</strong> ərzindəki vəziyyəti qiymətləndirilir</li>
+    <li>Hər sual üçün 0–3 bal arasında cavab seçilir</li><li>Test 5–10 dəqiqə çəkir</li></ul></div>
+  <div class="instr-section"><h4>🔢 Ballaşdırma</h4><ul>
+    <li><strong>0</strong> — Heç olmayıb</li><li><strong>1</strong> — Yüngül</li>
+    <li><strong>2</strong> — Orta</li><li><strong>3</strong> — Şiddətli</li></ul></div>
+  <div class="instr-section"><h4>📊 Qiymətləndirmə</h4>
+  <table class="scale-table"><tr><th>Bal</th><th>Səviyyə</th></tr>
+    <tr><td style="color:#34d399;font-weight:700">0–7</td><td>Minimal / Normal</td></tr>
+    <tr><td style="color:#fbbf24;font-weight:700">8–15</td><td>Yüngül narahatlıq</td></tr>
+    <tr><td style="color:#fb923c;font-weight:700">16–25</td><td>Orta narahatlıq</td></tr>
+    <tr><td style="color:#f87171;font-weight:700">26–63</td><td>Şiddətli narahatlıq</td></tr></table></div>
+  <div class="instr-section"><h4>⚕️ Klinik qeydlər</h4><ul>
+    <li>BAI diaqnostik alət <strong>deyil</strong></li>
+    <li>Fiziki xəstəliklərdə yüksək bal çıxa bilər</li>
+    <li>BDI ilə birlikdə tətbiq tövsiyə olunur</li></ul></div>`}
 
-function getBAIInstruction(){
-  return `
-  <div class="warning-box" style="margin-bottom:1rem">
-    <div class="w-title">⚠️ Xəbərdarlıq</div>
-    <p>Bu test yalnız <strong>sertifikatlı klinik mütəxəssis</strong> tərəfindən keçirilə bilər: Klinik Psixoloq, Psixiatr, Nevroloq, Psixoterapevt. Yekun diaqnoz yalnız mütəxəssis tərəfindən qoyulur.</p>
-  </div>
-
-  <div class="info-box">
-    <div class="i-title">📋 BAI Haqqında</div>
-    <p>Beck Anksiyete İnventarı (BAI) — Dr. Aaron T. Beck tərəfindən 1988-ci ildə hazırlanmışdır. Narahatlıq (anksiyete) simptomlarının şiddətini ölçən 21 maddəlik özünüqiymətləndirmə vasitəsidir. Depressiyadan anksiyeteni fərqləndirmək üçün xüsusi olaraq hazırlanmışdır.</p>
-  </div>
-
+function getBDIInstruction(){return`
+  <div class="warning-box"><div class="w-title">⚠️ Xəbərdarlıq</div>
+  <p>Bu test yalnız <strong>sertifikatlı klinik mütəxəssis</strong> tərəfindən keçirilə bilər: Klinik Psixoloq, Psixiatr, Nevroloq, Psixoterapevt.</p></div>
+  <div class="info-box"><div class="i-title">📋 BDI Haqqında</div>
+  <p>Beck Depressiya İnventarı (BDI) — Dr. Aaron T. Beck tərəfindən 1961-ci ildə hazırlanmış, 1996-da BDI-II kimi yenilənmişdir. 21 maddəlik özünüqiymətləndirmə vasitəsidir.</p></div>
+  <div class="instr-section"><h4>🎯 Məqsəd</h4><p>Son <strong>2 həftə</strong> ərzindəki depressiya simptomlarının şiddətini ölçmək.</p></div>
+  <div class="instr-section"><h4>📝 Keçirilmə qaydası</h4><ul>
+    <li>Xəstəyə hər maddə oxunur (4 ifadə arasından seçim)</li>
+    <li>Son <strong>2 həftə</strong> ərzindəki ən uyğun ifadəni seçir</li>
+    <li>Birdən çox uyğun varsa <strong>ən yüksək ballı</strong> seçilir</li>
+    <li>9-cu sual (intihara meyl) xüsusi diqqət tələb edir</li></ul></div>
+  <div class="instr-section"><h4>📊 Qiymətləndirmə</h4>
+  <table class="scale-table"><tr><th>Bal</th><th>Səviyyə</th></tr>
+    <tr><td style="color:#34d399;font-weight:700">0–9</td><td>Normal / Minimal</td></tr>
+    <tr><td style="color:#fbbf24;font-weight:700">10–16</td><td>Yüngül depressiya</td></tr>
+    <tr><td style="color:#fb923c;font-weight:700">17–20</td><td>Yüngül-orta depressiya</td></tr>
+    <tr><td style="color:#f97316;font-weight:700">21–30</td><td>Orta depressiya</td></tr>
+    <tr><td style="color:#f87171;font-weight:700">31–40</td><td>Ağır depressiya</td></tr>
+    <tr><td style="color:#ef4444;font-weight:700">41–63</td><td>Ekstremal ağır</td></tr></table></div>
   <div class="instr-section">
-    <h4>🎯 Məqsəd</h4>
-    <p>Son <strong>1 həftə</strong> (bu gün daxil) ərzində yaşanan narahatlıq simptomlarının şiddətini ölçmək.</p>
-  </div>
+    <h4>🚨 İntihara meyl (9-cu sual)</h4>
+    <div style="background:rgba(239,68,68,.1);border:1.5px solid rgba(239,68,68,.3);border-radius:.75rem;padding:.75rem">
+    <p style="color:#fca5a5;font-size:.82rem">9-cu suala <strong>2 və ya 3 bal</strong> verilsə — dərhal psixiatr konsultasiyası tələb olunur!</p></div></div>
+  <div class="instr-section"><h4>⚕️ Klinik qeydlər</h4><ul>
+    <li>BDI diaqnostik alət <strong>deyil</strong></li>
+    <li>DSM-5 kriteriyaları ilə birgə istifadə edilməlidir</li>
+    <li>2-4 həftəlik intervalda dinamika izlənilə bilər</li></ul></div>`}
 
-  <div class="instr-section">
-    <h4>📝 Keçirilmə qaydası</h4>
-    <ul>
-      <li>Xəstəyə hər simptom oxunur (və ya xəstə özü oxuyur)</li>
-      <li>Son <strong>1 həftə</strong> ərzindəki vəziyyəti qiymətləndirməsi xahiş olunur</li>
-      <li>Hər sual üçün 0–3 bal aralığında bir cavab seçilir</li>
-      <li>Test 5–10 dəqiqə çəkir</li>
-      <li>Xəstə rahat, sakit mühitdə olmalıdır</li>
-    </ul>
-  </div>
-
-  <div class="instr-section">
-    <h4>🔢 Ballaşdırma sistemi</h4>
-    <ul>
-      <li><strong>0</strong> — Heç olmayıb</li>
-      <li><strong>1</strong> — Yüngül (narahat etməyib)</li>
-      <li><strong>2</strong> — Orta (narahat edib, dözə bilmişəm)</li>
-      <li><strong>3</strong> — Şiddətli (dözə bilməmişəm)</li>
-    </ul>
-    <p style="margin-top:.4rem">Maksimum bal: <strong>63</strong></p>
-  </div>
-
-  <div class="instr-section">
-    <h4>📊 Qiymətləndirmə cədvəli</h4>
-    <table class="scale-table">
-      <tr><th>Bal</th><th>Səviyyə</th><th>Klinik məna</th></tr>
-      <tr><td><span style="color:#34d399;font-weight:700">0 – 7</span></td><td>Minimal / Normal</td><td>Klinik əhəmiyyət yoxdur</td></tr>
-      <tr><td><span style="color:#fbbf24;font-weight:700">8 – 15</span></td><td>Yüngül narahatlıq</td><td>Müşahidə tövsiyə olunur</td></tr>
-      <tr><td><span style="color:#fb923c;font-weight:700">16 – 25</span></td><td>Orta narahatlıq</td><td>Müdaxilə tövsiyə olunur</td></tr>
-      <tr><td><span style="color:#f87171;font-weight:700">26 – 63</span></td><td>Şiddətli narahatlıq</td><td>Təcili müdaxilə tələb olunur</td></tr>
-    </table>
-  </div>
-
-  <div class="instr-section">
-    <h4>⚕️ Klinik qeydlər</h4>
-    <ul>
-      <li>BAI diaqnostik alət <strong>deyil</strong> — simptom şiddətini ölçür</li>
-      <li>Fiziki xəstəliklərdə (qalxanabənzər bez, ürək) yüksək bal çıxa bilər — diferensial diaqnoz vacibdir</li>
-      <li>BDI ilə birlikdə tətbiq etsəniz daha hərtərəfli klinik mənzərə əldə edəcəksiniz</li>
-      <li>Dinamika üçün vaxtaşırı (4-6 həftə) ölçmə tövsiyə olunur</li>
-    </ul>
-  </div>`;
-}
-
-function getBDIInstruction(){
-  return `
-  <div class="warning-box" style="margin-bottom:1rem">
-    <div class="w-title">⚠️ Xəbərdarlıq</div>
-    <p>Bu test yalnız <strong>sertifikatlı klinik mütəxəssis</strong> tərəfindən keçirilə bilər: Klinik Psixoloq, Psixiatr, Uşaq Psixiatrı, Nevroloq, Psixoterapevt. Yekun diaqnoz yalnız mütəxəssis tərəfindən qoyulur.</p>
-  </div>
-
-  <div class="info-box">
-    <div class="i-title">📋 BDI Haqqında</div>
-    <p>Beck Depressiya İnventarı (BDI) — Dr. Aaron T. Beck tərəfindən 1961-ci ildə hazırlanmış, 1996-cı ildə BDI-II kimi yenilənmişdir. Depressiya simptomlarının şiddətini ölçən 21 maddəlik özünüqiymətləndirmə vasitəsidir. Dünyada ən geniş yayılmış depressiya ölçmə alətlərindən biridir.</p>
-  </div>
-
-  <div class="instr-section">
-    <h4>🎯 Məqsəd</h4>
-    <p>Son <strong>2 həftə</strong> (bu gün daxil) ərzindəki depressiya simptomlarının şiddətini ölçmək — emosional, idrak, davranış və fiziki simptomları əhatə edir.</p>
-  </div>
-
-  <div class="instr-section">
-    <h4>📝 Keçirilmə qaydası</h4>
-    <ul>
-      <li>Xəstəyə hər maddə oxunur (4 ifadə arasından seçim)</li>
-      <li>Son <strong>2 həftə</strong> ərzindəki ən uyğun ifadəni seçməsi xahiş olunur</li>
-      <li>Birdən çox uyğun ifadə varsa, <strong>ən yüksək ballı</strong> seçilir</li>
-      <li>Test 5–10 dəqiqə çəkir</li>
-      <li>9-cu sual (intihara meyl) xüsusi diqqət tələb edir</li>
-    </ul>
-  </div>
-
-  <div class="instr-section">
-    <h4>🔢 Ballaşdırma sistemi</h4>
-    <ul>
-      <li><strong>0</strong> — Simptom yoxdur</li>
-      <li><strong>1</strong> — Yüngül</li>
-      <li><strong>2</strong> — Orta</li>
-      <li><strong>3</strong> — Şiddətli</li>
-    </ul>
-    <p style="margin-top:.4rem">Maksimum bal: <strong>63</strong></p>
-  </div>
-
-  <div class="instr-section">
-    <h4>📊 Qiymətləndirmə cədvəli</h4>
-    <table class="scale-table">
-      <tr><th>Bal</th><th>Səviyyə</th><th>Klinik məna</th></tr>
-      <tr><td><span style="color:#34d399;font-weight:700">0 – 9</span></td><td>Normal / Minimal</td><td>Klinik əhəmiyyət yoxdur</td></tr>
-      <tr><td><span style="color:#fbbf24;font-weight:700">10 – 16</span></td><td>Yüngül depressiya</td><td>Müşahidə tövsiyə olunur</td></tr>
-      <tr><td><span style="color:#fb923c;font-weight:700">17 – 20</span></td><td>Yüngül-orta depressiya</td><td>Müdaxilə faydalı olar</td></tr>
-      <tr><td><span style="color:#f97316;font-weight:700">21 – 30</span></td><td>Orta depressiya</td><td>Müdaxilə tövsiyə olunur</td></tr>
-      <tr><td><span style="color:#f87171;font-weight:700">31 – 40</span></td><td>Ağır depressiya</td><td>Təcili müdaxilə tələb olunur</td></tr>
-      <tr><td><span style="color:#ef4444;font-weight:700">41 – 63</span></td><td>Ekstremal ağır</td><td>Krizis müdaxiləsi tələb olunur</td></tr>
-    </table>
-  </div>
-
-  <div class="instr-section">
-    <h4>🚨 Xüsusi diqqət: İntihara meyl (9-cu sual)</h4>
-    <div style="background:rgba(239,68,68,.1);border:1.5px solid rgba(239,68,68,.3);border-radius:.75rem;padding:.75rem;margin-top:.3rem">
-      <p style="color:#fca5a5;font-size:.82rem">Əgər xəstə 9-cu suala <strong>2 və ya 3 bal</strong> veribsə — bu krizis müdaxilə protokolunu aktivləşdirir. Dərhal psixiatr konsultasiyası və güvenlik planı tələb olunur.</p>
-    </div>
-  </div>
-
-  <div class="instr-section">
-    <h4>⚕️ Klinik qeydlər</h4>
-    <ul>
-      <li>BDI diaqnostik alət <strong>deyil</strong> — simptom şiddətini ölçür</li>
-      <li>DSM-5 kriteriyaları ilə birgə istifadə edilməlidir</li>
-      <li>BAI ilə birlikdə tətbiq etsəniz həm narahatlıq, həm depressiyanı eyni vaxtda ölçmüş olursunuz</li>
-      <li>Müalicə dinamikasını izləmək üçün 2-4 həftəlik intervalda tətbiq tövsiyə olunur</li>
-    </ul>
-  </div>`;
-}
-
-// ═══════════════════════════════════════════
-// TEST RENDERING
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════
+// TEST
+// ══════════════════════════════════════
 function renderTest(){
   const container=document.getElementById('testContainer');
   const isBDI=currentTab==='BDI';
@@ -816,37 +761,31 @@ function renderTest(){
   document.getElementById('progressLabel').textContent=`${currentTab} — ${period} ərzindəki vəziyyəti qiymətləndirin`;
   document.getElementById('progressCount').textContent=`0 / ${questions.length}`;
   document.getElementById('progressBar').style.width='0%';
-
   container.innerHTML=questions.map((q,i)=>{
     const text=isBDI?q.text:q;
     const opts=isBDI?q.opts.map((o,j)=>({val:j,label:o})):BAI_OPTIONS;
-    return `<div class="question-group" id="qg${i}">
+    return`<div class="question-group" id="qg${i}">
       <div class="question-num">Sual ${i+1} / ${questions.length}</div>
-      <div class="question-text">${isBDI?`<strong>${text}</strong>`:`${text}`}</div>
-      <div class="scale-options">
-        ${opts.map(o=>`<label>
-          <input type="radio" name="q${i}" value="${o.val}" onchange="updateProgress()">
-          <span>${isBDI?`${o.val}. ${o.label}`:`${o.val} — ${o.label}`}</span>
-        </label>`).join('')}
-      </div>
-    </div>`;
+      <div class="question-text">${isBDI?`<strong>${text}</strong>`:text}</div>
+      <div class="scale-options">${opts.map(o=>`<label>
+        <input type="radio" name="q${i}" value="${o.val}" onchange="updateProgress()">
+        <span>${isBDI?`${o.val}. ${o.label}`:`${o.val} — ${o.label}`}</span>
+      </label>`).join('')}</div></div>`;
   }).join('');
 }
 
 function updateProgress(){
   const questions=currentTab==='BDI'?BDI_QUESTIONS:BAI_QUESTIONS;
   let answered=0;
-  questions.forEach((_,i)=>{
-    if(document.querySelector(`input[name="q${i}"]:checked`)) answered++;
-  });
+  questions.forEach((_,i)=>{if(document.querySelector(`input[name="q${i}"]:checked`))answered++;});
   const pct=Math.round(answered/questions.length*100);
   document.getElementById('progressBar').style.width=pct+'%';
   document.getElementById('progressCount').textContent=`${answered} / ${questions.length}`;
 }
 
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════
 // ANALYSIS
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════
 function runAnalysis(){
   if(!selectedPatient){alert('⚠️ Xəstə seçin!');return}
   const questions=currentTab==='BDI'?BDI_QUESTIONS:BAI_QUESTIONS;
@@ -854,61 +793,49 @@ function runAnalysis(){
   let unanswered=[];
   questions.forEach((_,i)=>{
     const el=document.querySelector(`input[name="q${i}"]:checked`);
-    if(!el) unanswered.push(i+1);
+    if(!el)unanswered.push(i+1);
     else totalScore+=parseInt(el.value);
   });
-  if(unanswered.length>0){
-    alert(`⚠️ Cavabsız suallar: ${unanswered.join(', ')}\nBütün suallara cavab verin.`);
-    return;
-  }
+  if(unanswered.length){alert(`⚠️ Cavabsız suallar: ${unanswered.join(', ')}`);return}
   const scale=currentTab==='BAI'?BAI_SCALE:BDI_SCALE;
   const result=scale.find(s=>totalScore>=s.min&&totalScore<=s.max)||scale[scale.length-1];
-
-  // Intihara meyl yoxla (BDI q9)
   let crisisNote='';
   if(currentTab==='BDI'){
     const q9=document.querySelector('input[name="q8"]:checked');
-    if(q9&&parseInt(q9.value)>=2){
-      crisisNote='\n🚨 KRİZİS XƏBƏRDARLIĞI: 9-cu sual (intihara meyl) ≥2 bal\nDərhal psixiatr konsultasiyası və güvenlik planı tələb olunur!\n';
-    }
+    if(q9&&parseInt(q9.value)>=2)crisisNote='\n🚨 KRİZİS: 9-cu sual (intihara meyl) ≥2 bal\nDərhal psixiatr konsultasiyası tələb olunur!\n';
   }
-
   const now=new Date().toLocaleString('az-AZ');
   const testName=currentTab==='BAI'?'Beck Anksiyete İnventarı (BAI)':'Beck Depressiya İnventarı (BDI)';
   const period=currentTab==='BAI'?'Son 1 həftə':'Son 2 həftə';
-
   const report=`═══════════════════════════════════════
 KLİNİK HESABAT — ${testName}
 ═══════════════════════════════════════
 Tarix         : ${now}
 Mütəxəssis    : ${currentUser.fn} ${currentUser.ln} (${currentUser.prof})
+İş yeri       : ${currentUser.workplace||'—'}
 Xəstə         : ${selectedPatient.name}${selectedPatient.age?' | '+selectedPatient.age+' yaş':''}${selectedPatient.gender?' | '+selectedPatient.gender:''}
 Test          : ${testName}
-Qiymətləndir. : ${period}
+Dövr          : ${period}
 ───────────────────────────────────────
 ÜMUMİ BAL     : ${totalScore} / 63
 NƏTİCƏ        : ${result.icon} ${result.label}
 ───────────────────────────────────────
-KLİNİK MƏNA   :
+KLİNİK MƏNA:
 ${result.desc}
 ${crisisNote}───────────────────────────────────────
-SUAL-CAVAB CƏDVƏLİ:
+SUAL-CAVAB:
 ${questions.map((q,i)=>{
   const el=document.querySelector(`input[name="q${i}"]:checked`);
   const val=el?parseInt(el.value):0;
   const text=currentTab==='BDI'?q.text:q;
-  return `  ${String(i+1).padStart(2,'0')}. ${text.substring(0,40).padEnd(40,' ')} → ${val} bal`;
+  return`  ${String(i+1).padStart(2,'0')}. ${text.substring(0,38).padEnd(38,' ')} → ${val}`;
 }).join('\n')}
 ───────────────────────────────────────
 XƏBƏRDARLIQ: Bu hesabat diaqnoz deyil.
-Yekun qərar mütəxəssis tərəfindən verilir.
 © AN Psixoloji Mərkəz | @s_akhundoff
 ═══════════════════════════════════════`;
-
   lastReport=report;
   document.getElementById('currentReport').innerHTML=`<pre>${report}</pre>`;
-
-  // Result summary
   document.getElementById('resultSummary').innerHTML=`
     <div class="result-card ${result.cls}">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
@@ -917,34 +844,28 @@ Yekun qərar mütəxəssis tərəfindən verilir.
           <div style="font-weight:700;margin:.2rem 0">${result.label}</div>
           <div style="font-size:.82rem;color:#cbd5e1">${result.desc}</div>
         </div>
-        <span class="badge ${result.badge}" style="font-size:.85rem">${testName}</span>
+        <span class="badge ${result.badge}">${testName}</span>
       </div>
-      ${crisisNote?`<div style="background:rgba(239,68,68,.2);border:1.5px solid var(--red);border-radius:.75rem;padding:.75rem;margin-top:.75rem;color:#fca5a5;font-size:.82rem;font-weight:600">🚨 KRİZİS: İntihara meyl ≥2 bal. Dərhal psixiatr konsultasiyası!</div>`:''}
+      ${crisisNote?`<div style="background:rgba(239,68,68,.2);border:1.5px solid var(--red);border-radius:.75rem;padding:.75rem;margin-top:.75rem;color:#fca5a5;font-size:.82rem;font-weight:600">🚨 KRİZİS: İntihara meyl ≥2 bal!</div>`:''}
     </div>`;
-
   saveToHistory(report,totalScore,result.label);
   showStep('result');
 }
 
-function resetTest(){
-  showStep('instruction');
-  renderInstruction();
-}
+function resetTest(){showStep('instruction');renderInstruction();}
 
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════
 // HISTORY
-// ═══════════════════════════════════════════
-function getHistoryKey(){ return `ncbt_history_${currentUser.username}_${selectedPatient?.id}` }
-function getHistory(){ return JSON.parse(localStorage.getItem(getHistoryKey())||'[]') }
-function saveHistory(h){ localStorage.setItem(getHistoryKey(),JSON.stringify(h)) }
+// ══════════════════════════════════════
+function getHistoryKey(){return`ncbt_history_${currentUser.username}_${selectedPatient?.id}`}
+function getHistory(){return JSON.parse(localStorage.getItem(getHistoryKey())||'[]')}
+function saveHistory(h){localStorage.setItem(getHistoryKey(),JSON.stringify(h))}
 
 function saveToHistory(report,score,label){
   const h=getHistory();
-  const id=Date.now().toString();
-  h.unshift({id,report,score,label,tab:currentTab,date:new Date().toLocaleString('az-AZ')});
-  if(h.length>30) h.splice(30);
-  saveHistory(h);
-  loadHistory();
+  h.unshift({id:Date.now().toString(),report,score,label,tab:currentTab,date:new Date().toLocaleString('az-AZ')});
+  if(h.length>30)h.splice(30);
+  saveHistory(h);loadHistory();
 }
 
 function loadHistory(){
@@ -970,8 +891,7 @@ function loadHistory(){
 }
 
 function viewReport(id){
-  const h=getHistory();
-  const item=h.find(x=>x.id===id);
+  const item=getHistory().find(x=>x.id===id);
   if(!item)return;
   document.getElementById('modalReportContent').innerHTML=`<pre style="white-space:pre-wrap;font-family:monospace;font-size:.8rem;line-height:1.6;color:#e2e8f0">${item.report}</pre>`;
   document.getElementById('reportModal').style.display='block';
@@ -981,92 +901,85 @@ function viewReport(id){
 
 function editReport(id){
   editingHistoryId=id;
-  const h=getHistory();
-  const item=h.find(x=>x.id===id);
+  const item=getHistory().find(x=>x.id===id);
   if(!item)return;
   document.getElementById('editReportText').value=item.report;
   document.getElementById('editModal').style.display='block';
 }
 
 function saveEditedReport(){
-  if(!editingHistoryId)return;
   const h=getHistory();
   const idx=h.findIndex(x=>x.id===editingHistoryId);
-  if(idx!==-1) h[idx].report=document.getElementById('editReportText').value;
-  saveHistory(h);
-  closeModal('editModal');
-  loadHistory();
+  if(idx!==-1)h[idx].report=document.getElementById('editReportText').value;
+  saveHistory(h);closeModal('editModal');loadHistory();
 }
 
 function deleteReport(id){
   if(!confirm('Bu hesabatı silmək istəyirsiniz?'))return;
-  let h=getHistory();
-  h=h.filter(x=>x.id!==id);
-  saveHistory(h);
+  saveHistory(getHistory().filter(x=>x.id!==id));
   loadHistory();
 }
 
 function closeModal(id){document.getElementById(id).style.display='none'}
 
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════
 // EXPORT
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════
 function downloadHTML(text){
   text=text||lastReport;
   if(!text){alert('Hesabat yoxdur');return}
   const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>NeuroCBT Hesabat</title>
   <style>body{font-family:monospace;padding:2rem;background:#0f172a;color:#e2e8f0}pre{white-space:pre-wrap;line-height:1.6}</style>
   </head><body><pre>${text}</pre></body></html>`;
-  const blob=new Blob([html],{type:'text/html'});
   const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download=`NeuroCBT_${selectedPatient?.name||'hesabat'}_${Date.now()}.html`;
-  a.click();
+  a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
+  a.download=`NeuroCBT_${selectedPatient?.name||'hesabat'}_${Date.now()}.html`;a.click();
 }
-
 function downloadReportAsHTML(){downloadHTML(lastReport)}
-
 function downloadReportAsWord(){
   if(!lastReport){alert('Hesabat yoxdur');return}
-  const blob=new Blob([lastReport],{type:'application/msword'});
   const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download=`NeuroCBT_${selectedPatient?.name||'hesabat'}_${Date.now()}.doc`;
-  a.click();
+  a.href=URL.createObjectURL(new Blob([lastReport],{type:'application/msword'}));
+  a.download=`NeuroCBT_${selectedPatient?.name||'hesabat'}_${Date.now()}.doc`;a.click();
 }
-
 function copyReportToClipboard(){
   if(!lastReport){alert('Hesabat yoxdur');return}
   navigator.clipboard.writeText(lastReport).then(()=>alert('✅ Kopyalandı!'));
 }
-
 function shareReport(){shareText(lastReport)}
-
 function shareText(text){
   if(!text){alert('Hesabat yoxdur');return}
-  if(navigator.share){navigator.share({title:'NeuroCBT Hesabat',text:text}).catch(()=>{})}
-  else{copyReportToClipboard()}
+  if(navigator.share)navigator.share({title:'NeuroCBT Hesabat',text}).catch(()=>{});
+  else copyReportToClipboard();
 }
 
-function openReportInBrowser(){
-  if(!lastReport){alert('Hesabat yoxdur');return}
-  const w=window.open('','_blank');
-  w.document.write(`<pre style="font-family:monospace;padding:2rem;background:#0f172a;color:#e2e8f0;white-space:pre-wrap">${lastReport}</pre>`);
-}
+// ══════════════════════════════════════
+// INIT — session yoxla
+// ══════════════════════════════════════
+window.onclick=function(e){if(e.target.classList.contains('modal'))e.target.style.display='none'}
 
-// ═══════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════
-window.onclick=function(e){
-  if(e.target.classList.contains('modal')) e.target.style.display='none';
-}
-renderInstruction();
+(function initApp(){
+  const session=loadSession();
+  if(session){
+    currentUser=session;
+    if(session.isAdmin){showAdmin();return}
+    // User hələ də approved-dur?
+    const users=getUsers();
+    if(users[session.username]&&users[session.username].status==='approved'){
+      document.getElementById('userInfoSpan').textContent=`${currentUser.fn} ${currentUser.ln}`;
+      document.getElementById('userProfSpan').textContent=`${currentUser.prof} | ${currentUser.workplace||''}`;
+      showMain();loadPatients();renderInstruction();
+    } else {
+      saveSession(null);showAuth();
+    }
+  } else {
+    showAuth();
+  }
+})();
 </script>
 <script>
 if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('/saas/service-worker.js').catch(()=>{});
-  });
+  window.addEventListener('load',()=>navigator.serviceWorker.register('/saas/service-worker.js').catch(()=>{}));
 }
 </script>
 </body>
