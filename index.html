@@ -13,7 +13,8 @@
   --green:#34d399;--yellow:#fbbf24;--red:#f87171;--text:#f1f5f9;--muted:#94a3b8;
   --border:#334155;--danger:#ef4444;
 }
-body{background:var(--bg);color:var(--text);font-family:system-ui,'Segoe UI',sans-serif;min-height:100vh;padding:12px;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:system-ui,'Segoe UI',sans-serif;min-height:100vh;padding:12px;overflow-x:hidden;max-width:100vw}
+*{max-width:100%;word-break:break-word}
 .container{max-width:900px;margin:0 auto}
 
 /* LOGO */
@@ -47,8 +48,8 @@ button{padding:10px 16px;border-radius:12px;border:none;font-size:.9rem;font-wei
 /* GRID */
 .grid-2{display:grid;grid-template-columns:1fr;gap:1.25rem}
 @media(min-width:700px){.grid-2{grid-template-columns:1fr 1fr}}
-.flex-between{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-.flex-wrap{display:flex;flex-wrap:wrap;gap:8px}
+.flex-wrap{display:flex;flex-wrap:wrap;gap:8px;width:100%}
+.flex-between{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;width:100%}
 
 /* BADGE */
 .badge{padding:4px 12px;border-radius:40px;font-size:.7rem;font-weight:700;display:inline-block}
@@ -136,7 +137,7 @@ button{padding:10px 16px;border-radius:12px;border:none;font-size:.9rem;font-wei
 .step-divider.done{background:var(--green)}
 
 /* USER INFO BAR */
-.user-bar{background:var(--card);border-radius:12px;padding:.6rem 1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:1rem}
+.user-bar{background:var(--card);border-radius:12px;padding:.6rem 1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:1rem;overflow:hidden;width:100%}
 
 /* RESULT CARD */
 .result-card{border-radius:1rem;padding:1rem;margin:.5rem 0;border:1.5px solid}
@@ -303,8 +304,12 @@ footer a:hover{text-decoration:underline}
 
       <!-- STEP 1: TƏLİMAT -->
       <div id="stepInstruction">
-        <div id="instructionContent"></div>
-        <button class="btn-primary" onclick="goToTest()" style="width:100%;margin-top:.75rem">📝 Testi Başlat →</button>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:.5rem">
+          <button class="btn-outline" onclick="openInstruction()" style="width:100%;border-color:#f87171;color:#f87171;font-size:.9rem">
+            📋 Keçirilmə Təlimatını Oxu
+          </button>
+          <button class="btn-primary" onclick="goToTest()" style="width:100%">📝 Testi Başlat →</button>
+        </div>
       </div>
 
       <!-- STEP 2: TEST -->
@@ -349,6 +354,20 @@ footer a:hover{text-decoration:underline}
   BAI & BDI Beck Klinik Testləri &nbsp;|&nbsp;
   By <a href="https://instagram.com/s_akhundoff" target="_blank">@s_akhundoff</a>
 </footer>
+</div>
+
+<!-- TƏLİMAT MODAL -->
+<div id="instructionModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="instructionModalTitle">📋 Keçirilmə Təlimatı</h3>
+      <button class="close-modal" onclick="closeModal('instructionModal')">&times;</button>
+    </div>
+    <div id="instructionContent"></div>
+    <div style="margin-top:1rem">
+      <button class="btn-primary" onclick="closeModal('instructionModal');goToTest()" style="width:100%">📝 Testi Başlat →</button>
+    </div>
+  </div>
 </div>
 
 <!-- REPORT MODAL -->
@@ -628,6 +647,13 @@ function goToTest(){ renderTest(); showStep('test'); }
 // ═══════════════════════════════════════════
 // INSTRUCTIONS
 // ═══════════════════════════════════════════
+function openInstruction(){
+  renderInstruction();
+  document.getElementById('instructionModalTitle').textContent=
+    currentTab==='BAI'?'📋 BAI — Keçirilmə Təlimatı':'📋 BDI — Keçirilmə Təlimatı';
+  document.getElementById('instructionModal').style.display='block';
+}
+
 function renderInstruction(){
   const el=document.getElementById('instructionContent');
   if(currentTab==='BAI') el.innerHTML=getBAIInstruction();
