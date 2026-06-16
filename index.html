@@ -573,33 +573,66 @@ function logout(){
 // ══════════════════════════════════════
 // ADMİN
 // ══════════════════════════════════════
+function getUserStats(un){
+  const patients=JSON.parse(localStorage.getItem(`ncbt_patients_${un}`)||'[]');
+  let reports=0;
+  patients.forEach(p=>{
+    const h=JSON.parse(localStorage.getItem(`ncbt_history_${un}_${p.id}`)||'[]');
+    reports+=h.length;
+  });
+  return {patients:patients.length, reports};
+}
+
 function loadAdminUsers(){
   const users=getUsers();
   const list=document.getElementById('adminUserList');
   const entries=Object.entries(users);
-  if(!entries.length){list.innerHTML='<p style="color:var(--muted);font-size:.85rem">Hələ qeydiyyat yoxdur.</p>';return}
+  if(!entries.length){
+    list.innerHTML=`
+      <div style="text-align:center;padding:2rem">
+        <div style="font-size:2.5rem;margin-bottom:.5rem">👥</div>
+        <p style="color:var(--muted);font-size:.85rem">Hələ heç bir qeydiyyat yoxdur.</p>
+        <p style="color:var(--muted);font-size:.75rem;margin-top:.3rem">İstifadəçilər qeydiyyatdan keçdikdən sonra burada görünəcək.</p>
+      </div>`;
+    return;
+  }
   const pending=entries.filter(([,u])=>u.status==='pending');
   const approved=entries.filter(([,u])=>u.status==='approved');
   const rejected=entries.filter(([,u])=>u.status==='rejected');
 
   list.innerHTML=`
-    ${pending.length?`<div style="margin-bottom:.5rem"><span class="badge badge-yellow">⏳ Gözləyən (${pending.length})</span></div>`:''}
-    ${[...pending,...approved,...rejected].map(([un,u])=>`
-    <div class="admin-user-item ${u.status}">
-      <div>
-        <div style="font-weight:700;font-size:.9rem">${u.fn} ${u.ln}</div>
-        <div style="font-size:.75rem;color:var(--muted)">${u.prof} | ${u.workplace||'—'} | ${u.phone||'—'}</div>
-        <div style="font-size:.72rem;color:var(--muted)">@${un} | ${u.regDate||''}</div>
-        <span class="badge ${u.status==='approved'?'badge-green':u.status==='rejected'?'badge-red':'badge-yellow'}" style="margin-top:4px">
-          ${u.status==='approved'?'✅ Təsdiqlənib':u.status==='rejected'?'❌ Rədd edilib':'⏳ Gözləyir'}
-        </span>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:6px">
-        ${u.status!=='approved'?`<button class="btn-green btn-sm" onclick="approveUser('${un}')">✅ Təsdiqlə</button>`:''}
-        ${u.status!=='rejected'?`<button class="btn-danger btn-sm" onclick="rejectUser('${un}')">❌ Rədd et</button>`:''}
-        <button class="btn-outline btn-sm" onclick="deleteUser('${un}')">🗑 Sil</button>
-      </div>
-    </div>`).join('')}`;
+    <div class="flex-wrap" style="margin-bottom:1rem">
+      <span class="badge badge-yellow">⏳ Gözləyən: ${pending.length}</span>
+      <span class="badge badge-green">✅ Təsdiqlənmiş: ${approved.length}</span>
+      <span class="badge badge-red">❌ Rədd edilmiş: ${rejected.length}</span>
+    </div>
+    ${[...pending,...approved,...rejected].map(([un,u])=>{
+      const stats=getUserStats(un);
+      return`<div class="admin-user-item ${u.status}">
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:.92rem;margin-bottom:2px">${u.fn} ${u.ln}</div>
+          <div style="font-size:.75rem;color:var(--muted);margin-bottom:2px">🏥 ${u.prof}</div>
+          <div style="font-size:.75rem;color:var(--muted);margin-bottom:2px">🏢 ${u.workplace||'—'}</div>
+          <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">📞 ${u.phone||'—'}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px">
+            <span class="badge badge-blue">👤 @${un}</span>
+            <span class="badge badge-purple">🗓 ${u.regDate||'—'}</span>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">
+            <span class="badge badge-blue">🧑‍⚕️ ${stats.patients} xəstə</span>
+            <span class="badge badge-purple">📋 ${stats.reports} hesabat</span>
+          </div>
+          <span class="badge ${u.status==='approved'?'badge-green':u.status==='rejected'?'badge-red':'badge-yellow'}">
+            ${u.status==='approved'?'✅ Təsdiqlənib':u.status==='rejected'?'❌ Rədd edilib':'⏳ Gözləyir'}
+          </span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+          ${u.status!=='approved'?`<button class="btn-green btn-sm" onclick="approveUser('${un}')">✅ Təsdiqlə</button>`:''}
+          ${u.status!=='rejected'?`<button class="btn-danger btn-sm" onclick="rejectUser('${un}')">❌ Rədd et</button>`:''}
+          <button class="btn-outline btn-sm" onclick="deleteUser('${un}')">🗑 Sil</button>
+        </div>
+      </div>`;
+    }).join('')}`;
 }
 
 function approveUser(un){
