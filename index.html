@@ -125,12 +125,12 @@ footer a{color:var(--accent);text-decoration:none}
 <div class="container">
 
 <div class="logo-bar" onclick="goHome()" style="cursor:pointer;user-select:none">
-  <div class="logo-icon">🧠</div>
-  <div class="logo-text">
+  <div class="logo-icon" style="pointer-events:none">🧠</div>
+  <div class="logo-text" style="pointer-events:none">
     <h1>NeuroCBT Klinik</h1>
     <p>AN Psixoloji Dəstək və Reabilitasiya Mərkəzi</p>
   </div>
-  <div style="margin-left:auto;font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:4px" id="homeHint"></div>
+  <div style="margin-left:auto;font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:4px;pointer-events:none" id="homeHint"></div>
 </div>
 
 <!-- AUTH PANEL -->
@@ -983,7 +983,10 @@ function initApp(){
   const session=loadSession();
   if(!session){showAuth();return}
   currentUser=session;
-  if(session.isAdmin){showAdmin();return}
+  if(session.isAdmin){
+    showAdmin();
+    return;
+  }
   const users=getUsers();
   const u=users[session.username];
   if(u&&u.status==='approved'){
