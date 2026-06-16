@@ -204,7 +204,6 @@ footer a{color:var(--accent);text-decoration:none}
       </div>
     </div>
     <div style="display:flex;gap:8px">
-      <button class="btn-outline btn-sm" onclick="logout()">← Giriş səhifəsi</button>
       <button class="btn-danger btn-sm" onclick="logout()">🚪 Çıxış</button>
     </div>
   </div>
@@ -225,7 +224,6 @@ footer a{color:var(--accent);text-decoration:none}
       </div>
     </div>
     <div style="display:flex;gap:8px">
-      <button class="btn-outline btn-sm" onclick="showAuth()">← Giriş</button>
       <button class="btn-danger btn-sm" onclick="logout()">🚪 Çıxış</button>
     </div>
   </div>
@@ -490,18 +488,8 @@ function showPending(){
   setHint('');
 }
 function goHome(){
-  if(!currentUser){showAuth();return}
-  if(currentUser.isAdmin){
-    // Admin artıq admin panelindədirsə — çıxış
-    if(document.getElementById('adminPanel').style.display!=='none'){
-      logout();return;
-    }
-    showAdmin();return;
-  }
-  // Normal user — test səhifəsinə qayıt
-  if(document.getElementById('mainApp').style.display!=='none'){
-    showStep('instruction');renderInstruction();return;
-  }
+  if(!currentUser) return;
+  if(currentUser.isAdmin){showAdmin();return}
   showMain();loadPatients();renderInstruction();
 }
 
