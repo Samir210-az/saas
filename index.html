@@ -203,7 +203,10 @@ footer a{color:var(--accent);text-decoration:none}
         <div style="font-size:.72rem;color:var(--muted)">AN Mərkəzi — İdarəetmə Paneli</div>
       </div>
     </div>
-    <button class="btn-danger btn-sm" onclick="logout()">🚪 Çıxış</button>
+    <div style="display:flex;gap:8px">
+      <button class="btn-outline btn-sm" onclick="logout()">← Giriş səhifəsi</button>
+      <button class="btn-danger btn-sm" onclick="logout()">🚪 Çıxış</button>
+    </div>
   </div>
   <div class="card">
     <div class="card-header">👥 Qeydiyyat İdarəetməsi</div>
@@ -221,7 +224,10 @@ footer a{color:var(--accent);text-decoration:none}
         <div id="userProfSpan" style="font-size:.72rem;color:var(--muted)"></div>
       </div>
     </div>
-    <button class="btn-danger btn-sm" onclick="logout()">🚪 Çıxış</button>
+    <div style="display:flex;gap:8px">
+      <button class="btn-outline btn-sm" onclick="showAuth()">← Giriş</button>
+      <button class="btn-danger btn-sm" onclick="logout()">🚪 Çıxış</button>
+    </div>
   </div>
 
   <div class="grid-2">
@@ -484,9 +490,19 @@ function showPending(){
   setHint('');
 }
 function goHome(){
-  if(!currentUser) return;
-  if(currentUser.isAdmin){showAdmin();return}
-  showMain();
+  if(!currentUser){showAuth();return}
+  if(currentUser.isAdmin){
+    // Admin artıq admin panelindədirsə — çıxış
+    if(document.getElementById('adminPanel').style.display!=='none'){
+      logout();return;
+    }
+    showAdmin();return;
+  }
+  // Normal user — test səhifəsinə qayıt
+  if(document.getElementById('mainApp').style.display!=='none'){
+    showStep('instruction');renderInstruction();return;
+  }
+  showMain();loadPatients();renderInstruction();
 }
 
 function showAdmin(){
