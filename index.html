@@ -204,6 +204,7 @@ footer a{color:var(--accent);text-decoration:none}
       </div>
     </div>
     <div style="display:flex;gap:8px">
+      <button class="btn-outline btn-sm" onclick="adminGoToTests()">🧪 Testlərə keç</button>
       <button class="btn-danger btn-sm" onclick="logout()">🚪 Çıxış</button>
     </div>
   </div>
@@ -224,13 +225,9 @@ footer a{color:var(--accent);text-decoration:none}
       </div>
     </div>
     <div style="display:flex;gap:8px">
+      <button id="backToAdminBtn" class="btn-outline btn-sm" style="display:none" onclick="showAdmin()">🛡️ Admin Panel</button>
       <button class="btn-danger btn-sm" onclick="logout()">🚪 Çıxış</button>
     </div>
-  </div>
-
-  <div class="grid-2">
-    <div class="card">
-      <div class="card-header">📌 Xəstə CRM</div>
       <div class="flex-wrap" style="margin-bottom:.5rem">
         <input type="text" id="patientName" placeholder="Ad, Soyad" style="flex:2;min-width:120px">
         <input type="number" id="patientAge" placeholder="Yaş" style="flex:1;min-width:60px;max-width:80px">
@@ -516,7 +513,16 @@ function showMain(){
   document.getElementById('pendingPanel').style.display='none';
   document.getElementById('adminPanel').style.display='none';
   document.getElementById('mainApp').style.display='block';
+  const backBtn=document.getElementById('backToAdminBtn');
+  if(backBtn) backBtn.style.display=(currentUser&&currentUser.isAdmin)?'inline-block':'none';
   setHint('🏠 Ana səhifə');
+}
+function adminGoToTests(){
+  document.getElementById('userInfoSpan').textContent='Administrator';
+  document.getElementById('userProfSpan').textContent='🧪 Admin test rejimi';
+  showMain();
+  loadPatients();
+  renderInstruction();
 }
 function showPending(){
   document.getElementById('authPanel').style.display='none';
