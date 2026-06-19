@@ -364,6 +364,39 @@ footer a{color:var(--accent);text-decoration:none}
   </div>
 </div>
 
+<script type="module">
+// ══════════════════════════════════════
+// FIREBASE — mərkəzi istifadəçi bazası (multi-device)
+// ══════════════════════════════════════
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCBhyGNzZRGgQShP_C9kwAzTm_g_0zJlzg",
+  authDomain: "an-psixoloji-33442.firebaseapp.com",
+  databaseURL: "https://an-psixoloji-33442-default-rtdb.firebaseio.com",
+  projectId: "an-psixoloji-33442",
+  storageBucket: "an-psixoloji-33442.firebasestorage.app",
+  messagingSenderId: "528809299356",
+  appId: "1:528809299356:web:59cae89a64e446dc520c59"
+};
+
+const fbApp = initializeApp(firebaseConfig);
+const fbDb = getDatabase(fbApp);
+const usersRef = ref(fbDb, 'saas_users');
+
+window.__usersCache = {};
+window.__usersReady = false;
+window.__fbSetUser = (un, val) => set(ref(fbDb, `saas_users/${un}`), val);
+window.__fbSetUserField = (un, field, val) => set(ref(fbDb, `saas_users/${un}/${field}`), val);
+window.__fbRemoveUser = (un) => remove(ref(fbDb, `saas_users/${un}`));
+
+onValue(usersRef, (snap) => {
+  window.__usersCache = snap.val() || {};
+  window.__usersReady = true;
+  if (typeof window.onUsersUpdated === 'function') window.onUsersUpdated();
+});
+</script>
 <script>
 // ══════════════════════════════════════
 // CONSTANTS
@@ -445,8 +478,13 @@ let editingHistoryId=null;
 // ══════════════════════════════════════
 // USER STORAGE
 // ══════════════════════════════════════
-function getUsers(){return JSON.parse(localStorage.getItem('ncbt_users')||'{}')}
-function saveUsers(u){localStorage.setItem('ncbt_users',JSON.stringify(u))}
+function getUsers(){return window.__usersCache||{}}
+// Qeyd: artıq saveUsers() istifadə olunmur — yazılar birbaşa window.__fbSetUser/__fbSetUserField/__fbRemoveUser ilə Firebase-ə gedir.
+// window.onUsersUpdated admin panel açıqdırsa avtomatik yenilənməsini təmin edir (real bildiriş).
+window.onUsersUpdated = function(){
+  const adminPanel=document.getElementById('adminPanel');
+  if(adminPanel && adminPanel.style.display!=='none'){ loadAdminUsers(); }
+};
 
 // ══════════════════════════════════════
 // SESSION — səhifə yenilənsə saxla
@@ -527,14 +565,18 @@ function handleRegister(){
   if(!phone){err.textContent='⚠️ Telefon nömrəsi daxil edin';return}
   if(pw.length<4){err.textContent='⚠️ Şifrə minimum 4 xarakter olmalıdır';return}
   if(un===ADMIN_USER){err.textContent='⚠️ Bu istifadəçi adından istifadə edilə bilməz';return}
+  if(!window.__usersReady){err.textContent='⏳ Yüklənir, bir neçə saniyə sonra yenidən cəhd edin';return}
   const users=getUsers();
   if(users[un]){err.textContent='⚠️ Bu istifadəçi adı artıq var';return}
-  users[un]={fn,ln,prof,workplace,phone,pw,status:'pending',regDate:new Date().toLocaleString('az-AZ')};
-  saveUsers(users);
-  err.style.color='var(--green)';
-  err.textContent='✅ Qeydiyyat uğurlu! Admin təsdiqini gözləyin.';
-  document.getElementById('loginUsername').value=un;
-  document.getElementById('loginPassword').value='';
+  const newUser={fn,ln,prof,workplace,phone,pw,status:'pending',regDate:new Date().toLocaleString('az-AZ')};
+  window.__fbSetUser(un,newUser).then(()=>{
+    err.style.color='var(--green)';
+    err.textContent='✅ Qeydiyyat uğurlu! Admin təsdiqini gözləyin.';
+    document.getElementById('loginUsername').value=un;
+    document.getElementById('loginPassword').value='';
+  }).catch(e=>{
+    err.textContent='❌ Xəta: qeydiyyat göndərilmədi (internet yoxlayın)';
+  });
 }
 
 function handleLogin(){
@@ -550,6 +592,7 @@ function handleLogin(){
     showAdmin();
     return;
   }
+  if(!window.__usersReady){err.textContent='⏳ Yüklənir, bir neçə saniyə sonra yenidən cəhd edin';return}
   const users=getUsers();
   if(!users[un]){err.textContent='❌ Bu istifadəçi adı tapılmadı';return}
   if(users[un].pw!==pw){err.textContent='❌ Şifrə yanlışdır';return}
@@ -640,23 +683,14 @@ function loadAdminUsers(){
 }
 
 function approveUser(un){
-  const users=getUsers();
-  if(users[un]) users[un].status='approved';
-  saveUsers(users);
-  loadAdminUsers();
+  window.__fbSetUserField(un,'status','approved').then(loadAdminUsers);
 }
 function rejectUser(un){
-  const users=getUsers();
-  if(users[un]) users[un].status='rejected';
-  saveUsers(users);
-  loadAdminUsers();
+  window.__fbSetUserField(un,'status','rejected').then(loadAdminUsers);
 }
 function deleteUser(un){
   if(!confirm(`"${un}" istifadəçisini silmək istəyirsiniz?`))return;
-  const users=getUsers();
-  delete users[un];
-  saveUsers(users);
-  loadAdminUsers();
+  window.__fbRemoveUser(un).then(loadAdminUsers);
 }
 
 // ══════════════════════════════════════
@@ -1024,14 +1058,26 @@ function initApp(){
     showAdmin();
     return;
   }
-  const users=getUsers();
-  const u=users[session.username];
-  if(u&&u.status==='approved'){
-    document.getElementById('userInfoSpan').textContent=`${currentUser.fn} ${currentUser.ln}`;
-    document.getElementById('userProfSpan').textContent=`${currentUser.prof} | ${currentUser.workplace||''}`;
-    showMain();loadPatients();renderInstruction();
-  } else {
-    saveSession(null);showAuth();
+  // Firebase-dən istifadəçi siyahısı yüklənənə qədər gözlə
+  function checkUserStatus(){
+    const users=getUsers();
+    const u=users[session.username];
+    if(u&&u.status==='approved'){
+      document.getElementById('userInfoSpan').textContent=`${currentUser.fn} ${currentUser.ln}`;
+      document.getElementById('userProfSpan').textContent=`${currentUser.prof} | ${currentUser.workplace||''}`;
+      showMain();loadPatients();renderInstruction();
+    } else {
+      saveSession(null);showAuth();
+    }
+  }
+  if(window.__usersReady){ checkUserStatus(); }
+  else {
+    let tries=0;
+    const waitInterval=setInterval(()=>{
+      tries++;
+      if(window.__usersReady){ clearInterval(waitInterval); checkUserStatus(); }
+      else if(tries>50){ clearInterval(waitInterval); checkUserStatus(); }
+    },100);
   }
 }
 
