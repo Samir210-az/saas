@@ -367,6 +367,7 @@ footer a{color:var(--accent);text-decoration:none}
 // ══════════════════════════════════════
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCBhyGNzZRGgQShP_C9kwAzTm_g_0zJlzg",
@@ -380,6 +381,7 @@ const firebaseConfig = {
 
 const fbApp = initializeApp(firebaseConfig);
 const fbDb = getDatabase(fbApp);
+const fbAuth = getAuth(fbApp);
 const usersRef = ref(fbDb, 'saas_users');
 
 window.__usersCache = {};
@@ -388,11 +390,14 @@ window.__fbSetUser = (un, val) => set(ref(fbDb, `saas_users/${un}`), val);
 window.__fbSetUserField = (un, field, val) => set(ref(fbDb, `saas_users/${un}/${field}`), val);
 window.__fbRemoveUser = (un) => remove(ref(fbDb, `saas_users/${un}`));
 
-onValue(usersRef, (snap) => {
-  window.__usersCache = snap.val() || {};
-  window.__usersReady = true;
-  if (typeof window.onUsersUpdated === 'function') window.onUsersUpdated();
-});
+// Firebase Rules "auth != null" tələb etdiyi üçün əvvəlcə görünməz (anonim) giriş edirik.
+signInAnonymously(fbAuth).then(() => {
+  onValue(usersRef, (snap) => {
+    window.__usersCache = snap.val() || {};
+    window.__usersReady = true;
+    if (typeof window.onUsersUpdated === 'function') window.onUsersUpdated();
+  });
+}).catch(err => console.error('Firebase auth xətası:', err));
 </script>
 <script>
 // ══════════════════════════════════════
