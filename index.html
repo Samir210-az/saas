@@ -805,37 +805,118 @@ function renderInstruction(){
 function getBAIInstruction(){return`
   <div class="warning-box"><div class="w-title">⚠️ Xəbərdarlıq</div>
   <p>Bu test yalnız <strong>sertifikatlı klinik mütəxəssis</strong> tərəfindən keçirilə bilər: Klinik Psixoloq, Psixiatr, Nevroloq, Psixoterapevt.</p></div>
+
   <div class="info-box"><div class="i-title">📋 BAI Haqqında</div>
-  <p>Beck Anksiyete İnventarı (BAI) — Dr. Aaron T. Beck tərəfindən 1988-ci ildə hazırlanmışdır. 21 maddəlik özünüqiymətləndirmə vasitəsidir.</p></div>
-  <div class="instr-section"><h4>🎯 Məqsəd</h4><p>Son <strong>1 həftə</strong> ərzindəki narahatlıq simptomlarının şiddətini ölçmək.</p></div>
-  <div class="instr-section"><h4>📝 Keçirilmə qaydası</h4><ul>
-    <li>Xəstəyə hər simptom oxunur</li><li>Son <strong>1 həftə</strong> ərzindəki vəziyyəti qiymətləndirilir</li>
-    <li>Hər sual üçün 0–3 bal arasında cavab seçilir</li><li>Test 5–10 dəqiqə çəkir</li></ul></div>
+  <p>Beck Anksiyete İnventarı (BAI — Beck Anxiety Inventory) — Dr. Aaron T. Beck və həmkarları tərəfindən 1988-ci ildə hazırlanmış, klinik təcrübədə ən çox istifadə olunan özünüqiymətləndirmə alətlərindən biridir. 21 maddədən ibarətdir və narahatlığın <strong>somatik (bədən) və koqnitiv</strong> komponentlərini birgə ölçür. Depressiya simptomlarından ayırd etmək üçün xüsusi olaraq dizayn edilib — bu, onu BDI ilə birgə istifadə edildikdə xüsusilə dəyərli edir.</p></div>
+
+  <div class="instr-section"><h4>🎯 Məqsəd</h4><p>Son <strong>1 həftə</strong> (bu gün daxil) ərzindəki narahatlıq simptomlarının <strong>şiddətini</strong> (tezliyini yox!) ölçmək. Diaqnoz qoymaq üçün deyil, klinik şəkilin obyektiv ölçüsünü almaq və zaman içində dinamikanı izləmək üçündür.</p></div>
+
+  <div class="instr-section"><h4>🏠 1-ci addım — Hazırlıq və mühit</h4><ul>
+    <li>Sakit, işıqlı, kənar səs-küydən uzaq otaq seçin — xəstə narahat mühitdə həqiqi simptomlarını düzgün qiymətləndirə bilmir</li>
+    <li>Xəstəni oturaq, rahat vəziyyətdə əyləşdirin, tələsdirmə hissi yaratmayın</li>
+    <li>Testdən əvvəl 2-3 dəqiqəlik sərbəst söhbətlə (rapport) etimad yaradın</li>
+    <li>Kağız-qələm və ya rəqəmsal formatdan asılı olmayaraq, xəstəyə tərzi əvvəlcədən izah edin</li>
+    <li>Əgər xəstə gözlük/eşitmə aparatı istifadə edirsə, bunların yanında olduğuna əmin olun</li></ul></div>
+
+  <div class="instr-section"><h4>🗣️ 2-ci addım — İnformasiyalı razılıq və giriş cümləsi</h4>
+  <p>Xəstəyə dəqiq bu mənada izah edin (öz sözlərinizlə desəniz belə, məzmun eyni qalmalıdır):</p>
+  <p style="background:rgba(255,255,255,.04);border-radius:.6rem;padding:.7rem;font-style:italic">"İndi sizə 21 simptomdan ibarət bir siyahı oxuyacağam. Hər biri üçün, son bir həftə ərzində (bu gün daxil olmaqla) bu simptomun sizi <u>nə dərəcədə narahat etdiyini</u> deməyinizi istəyirəm. Düzgün və ya səhv cavab yoxdur — sadəcə özünüzü necə hiss etdiyinizi deyin. İstədiyiniz zaman sual verə bilərsiniz."</p></div>
+
+  <div class="instr-section"><h4>📝 3-cü addım — Ətraflı keçirilmə protokolu</h4><ul>
+    <li>Hər maddəni <strong>aydın, sabit templə, mühakimə etmədən</strong> oxuyun — səs tonunuz nə həyəcan, nə də laqeydlik göstərməməlidir</li>
+    <li>Hər sualdan sonra 4 cavab variantını (0-Heç, 1-Yüngül, 2-Orta, 3-Şiddətli) xatırladın, xüsusən ilk suallarda</li>
+    <li>Xəstə tərəddüd edərsə, sualı EYNİ sözlərlə bir dəfə təkrarlayın — İZAH ETMƏYİN (məsələn "əl-qolda titrəmə" sualını "yəni tremor" deyə tərcümə etməyin, bu, cavabı yönləndirə bilər)</li>
+    <li>Əgər xəstə "bəzən bəli, bəzən yox" deyirsə — son 1 həftədəki <strong>ÜMUMİ</strong> vəziyyəti soruşun, orta hesabla deyil, ən çox təcrübə etdiyi səviyyəni</li>
+    <li>Test adətən <strong>5–10 dəqiqə</strong> çəkir; 15 dəqiqədən uzun çəkərsə, yorğunluq amilini qeyd edin</li>
+    <li>Hər cavabı dərhal qeyd edin, yaddaşa güvənməyin</li></ul></div>
+
+  <div class="instr-section"><h4>❓ Tez-tez yaranan aydınlaşdırma sualları</h4><ul>
+    <li><strong>"Bu simptom xroniki xəstəliyimdəndir, narahatlıqdan yox"</strong> — Yenə də son 1 həftədəki intensivliyi qeyd edin, mənbəyini ayrıca qeydə alın (klinik qeyd hissəsində)</li>
+    <li><strong>"Heç vaxt olmayıb, sual mənasızdır"</strong> — 0 bal yazılır, keçin</li>
+    <li><strong>Xəstə emosional reaksiya verirsə (ağlamaq və s.)</strong> — Testi dayandırın, dəstəkləyici mövqe alın, xəstə hazır olanda davam edin</li></ul></div>
+
   <div class="instr-section"><h4>🔢 Ballaşdırma</h4><ul>
-    <li><strong>0</strong> — Heç olmayıb</li><li><strong>1</strong> — Yüngül</li>
-    <li><strong>2</strong> — Orta</li><li><strong>3</strong> — Şiddətli</li></ul></div>
+    <li><strong>0</strong> — Heç olmayıb</li><li><strong>1</strong> — Yüngül (məni əsaslı narahat etmədi)</li>
+    <li><strong>2</strong> — Orta (xoşagəlməz idi, amma dözə bildim)</li><li><strong>3</strong> — Şiddətli (çətinliklə dözdüm)</li>
+    <li>Ümumi bal = bütün 21 maddənin cəmi (diapazon: 0–63)</li></ul></div>
+
   <div class="instr-section"><h4>📊 Qiymətləndirmə</h4>
   <table class="scale-table"><tr><th>Bal</th><th>Səviyyə</th></tr>
     <tr><td style="color:#34d399;font-weight:700">0–7</td><td>Minimal / Normal</td></tr>
     <tr><td style="color:#fbbf24;font-weight:700">8–15</td><td>Yüngül narahatlıq</td></tr>
     <tr><td style="color:#fb923c;font-weight:700">16–25</td><td>Orta narahatlıq</td></tr>
     <tr><td style="color:#f87171;font-weight:700">26–63</td><td>Şiddətli narahatlıq</td></tr></table></div>
+
+  <div class="instr-section"><h4>🩺 Somatik maddələrin klinik təfsiri</h4>
+  <p>BAI-nin 21 maddəsinin çoxu (ürək döyüntüsü, tərləmə, əl-qolda titrəmə, nəfəs darlığı və s.) <strong>bədən simptomlarıdır</strong>. Bu, alətin gücüdür, amma diqqətli olmaq lazımdır: ürək-damar xəstəliyi, tiroid disfunksiyası, astma, menopoz və ya stimulyator (kofein, bəzi dərmanlar) qəbulu olan xəstələrdə bal <strong>süni şəkildə yüksək</strong> çıxa bilər. Nəticəni izah edərkən mütləq tibbi tarixçəni nəzərə alın və lazım gələrsə somatik mənşəni ayırd etmək üçün əlavə müayinəyə yönləndirin.</p></div>
+
+  <div class="instr-section"><h4>👥 Xüsusi hallar</h4><ul>
+    <li><strong>Ürək xəstələri:</strong> "ürək döyüntüsü", "nəfəs darlığı" maddələrini diqqətlə şərh edin — kardioloji simptomla qarışıq ola bilər</li>
+    <li><strong>Hamilə qadınlar:</strong> hormonal dəyişiklik bəzi somatik maddələri təsirləyə bilər</li>
+    <li><strong>Yaşlı xəstələr:</strong> oxumaqda çətinlik ola bilər, sual ölçüsünü böyütmək və ya şifahi keçirmək tövsiyə olunur</li>
+    <li><strong>Dil/oxuma çətinliyi olanlar:</strong> hər maddəni şifahi oxuyun, yazılı formaya güvənməyin</li></ul></div>
+
+  <div class="instr-section"><h4>💬 4-cü addım — Test sonrası geribildirim</h4>
+  <p>Test bitdikdən dərhal sonra xəstəyə boş buraxmayın — nəticəni şərh etməzdən əvvəl belə deyin: "Təşəkkür edirəm, indi cavablarınızı qiymətləndirəcəyəm və nəticəni sizinlə müzakirə edəcəyik." Nəticəni bölüşərkən rəqəmi deyil, mənasını izah edin (məs. "narahatlıq səviyyəniz orta dərəcədədir, bu, bir çox insanın müəyyən dövrlərdə yaşadığı normal reaksiyadır").</p></div>
+
+  <div class="instr-section"><h4>📁 Sənədləşdirmə</h4><ul>
+    <li>Test tarixini, saatını və keçirilmə formatını (üz-üzə/məsafədən) qeyd edin</li>
+    <li>Xəstənin testə göstərdiyi reaksiyanı (əməkdaşlıq, yorğunluq, tərəddüd) qısaca qeyd edin</li>
+    <li>Somatik mənşəli ola biləcək maddələri ayrıca qeydə alın</li>
+    <li>Növbəti test tarixini planlaşdırın</li></ul></div>
+
+  <div class="instr-section"><h4>⛔ Tez-tez edilən səhvlər</h4><ul>
+    <li>Sualları izah etmək və ya nümunə vermək (cavabı yönləndirir)</li>
+    <li>Xəstənin ailə üzvünün onun əvəzinə cavab verməsinə icazə vermək</li>
+    <li>Nəticəni tək rəqəm kimi təqdim edib klinik kontekstsiz buraxmaq</li>
+    <li>Somatik xəstəliyi olan xəstələrdə yüksək balı avtomatik "narahatlıq pozuntusu" kimi qəbul etmək</li></ul></div>
+
+  <div class="instr-section"><h4>🔁 Təkrar tətbiq</h4><p>Dinamikanı izləmək üçün 2–4 həftəlik intervalda təkrarlamaq tövsiyə olunur. Eyni şərtlərdə (gün vaxtı, mühit) keçirməyə çalışın ki, nəticələr müqayisə oluna bilsin.</p></div>
+
   <div class="instr-section"><h4>⚕️ Klinik qeydlər</h4><ul>
-    <li>BAI diaqnostik alət <strong>deyil</strong></li>
-    <li>Fiziki xəstəliklərdə yüksək bal çıxa bilər</li>
-    <li>BDI ilə birlikdə tətbiq tövsiyə olunur</li></ul></div>`}
+    <li>BAI diaqnostik alət <strong>deyil</strong> — yalnız simptom şiddətini ölçür, DSM-5 diaqnozunu əvəz etmir</li>
+    <li>Fiziki xəstəliklərdə yüksək bal çıxa bilər (yuxarıya bax)</li>
+    <li>BDI ilə birlikdə tətbiq tövsiyə olunur — narahatlıq və depressiya çox vaxt birgə (komorbid) rast gəlinir</li></ul></div>`}
 
 function getBDIInstruction(){return`
   <div class="warning-box"><div class="w-title">⚠️ Xəbərdarlıq</div>
   <p>Bu test yalnız <strong>sertifikatlı klinik mütəxəssis</strong> tərəfindən keçirilə bilər: Klinik Psixoloq, Psixiatr, Nevroloq, Psixoterapevt.</p></div>
+
   <div class="info-box"><div class="i-title">📋 BDI Haqqında</div>
-  <p>Beck Depressiya İnventarı (BDI) — Dr. Aaron T. Beck tərəfindən 1961-ci ildə hazırlanmış, 1996-da BDI-II kimi yenilənmişdir. 21 maddəlik özünüqiymətləndirmə vasitəsidir.</p></div>
-  <div class="instr-section"><h4>🎯 Məqsəd</h4><p>Son <strong>2 həftə</strong> ərzindəki depressiya simptomlarının şiddətini ölçmək.</p></div>
-  <div class="instr-section"><h4>📝 Keçirilmə qaydası</h4><ul>
-    <li>Xəstəyə hər maddə oxunur (4 ifadə arasından seçim)</li>
-    <li>Son <strong>2 həftə</strong> ərzindəki ən uyğun ifadəni seçir</li>
-    <li>Birdən çox uyğun varsa <strong>ən yüksək ballı</strong> seçilir</li>
-    <li>9-cu sual (intihara meyl) xüsusi diqqət tələb edir</li></ul></div>
+  <p>Beck Depressiya İnventarı (BDI — Beck Depression Inventory) — Dr. Aaron T. Beck tərəfindən 1961-ci ildə hazırlanmış, 1996-da BDI-II kimi DSM kriteriyalarına uyğunlaşdırılaraq yenilənmişdir. 21 maddəlik özünüqiymətləndirmə vasitəsidir və dünyada ən çox istinad edilən depressiya ölçmə alətlərindən biridir.</p></div>
+
+  <div class="instr-section"><h4>🎯 Məqsəd</h4><p>Son <strong>2 həftə</strong> (bu gün daxil) ərzindəki depressiya simptomlarının <strong>şiddətini</strong> ölçmək. Diaqnoz qoymur — klinik mühakiməni dəstəkləyən obyektiv ölçü vasitəsidir.</p></div>
+
+  <div class="instr-section"><h4>🏠 1-ci addım — Hazırlıq və mühit</h4><ul>
+    <li>Sakit, məxfi otaq seçin — depressiya mövzusu həssasdır, xəstə kənar qulaqdan çəkinməməlidir</li>
+    <li>Otaqda başqa şəxs (ailə üzvü daxil) olmamalıdır, xüsusən yeniyetmələrdə</li>
+    <li>Testdən əvvəl 2-3 dəqiqə rahatlıq yaradan söhbət aparın</li>
+    <li>Xəstənin cari psixi vəziyyətini (yorğun, ağlamaqlı, aqressiv) qısaca müşahidə edib qeyd edin — bu, nəticənin şərhinə kömək edəcək</li></ul></div>
+
+  <div class="instr-section"><h4>🗣️ 2-ci addım — İnformasiyalı razılıq və giriş cümləsi</h4>
+  <p style="background:rgba(255,255,255,.04);border-radius:.6rem;padding:.7rem;font-style:italic">"İndi sizə 21 qrup ifadə oxuyacağam. Hər qrupda 4 fərqli ifadə var. Sizdən, son iki həftə ərzində (bu gün daxil) özünüzü <u>necə hiss etdiyinizi ən yaxşı təsvir edən</u> ifadəni seçməyinizi istəyirəm. Bu sadəcə özünüzü necə hiss etdiyinizin ölçüsüdür, sizi mühakimə etmirəm."</p></div>
+
+  <div class="instr-section"><h4>📝 3-cü addım — Ətraflı keçirilmə protokolu</h4><ul>
+    <li>Hər maddə qrupunun 4 ifadəsini <strong>ardıcıl, sabit tonda</strong> oxuyun (0-dan 3-ə doğru)</li>
+    <li>Xəstəyə tələsdirmə hissi verməyin, hər maddə üçün düşünmə vaxtı verin</li>
+    <li>Əgər birdən çox ifadə uyğun gəlirsə — <strong>ən yüksək ballı</strong> ifadəni seçdirin (BDI-nin rəsmi qaydasıdır)</li>
+    <li>Xəstə "heç biri tam uyğun deyil" deyirsə — "ən yaxın olanı" seçməyi xahiş edin</li>
+    <li>Test adətən 5–10 dəqiqə çəkir</li>
+    <li>Hər maddəni dərhal qeyd edin</li></ul></div>
+
+  <div class="instr-section"><h4>🚨🚨 4-cü addım — 9-cu sual: İNTİHAR RİSKİ PROTOKOLU (ƏN VACİB HİSSƏ)</h4>
+  <div style="background:rgba(239,68,68,.12);border:1.5px solid rgba(239,68,68,.4);border-radius:.75rem;padding:.9rem">
+  <p style="color:#fca5a5;font-weight:700;margin-bottom:.5rem">9-cu maddə intihar fikir və niyyətini ölçür. Bu sualı HEÇ VAXT tələsik keçməyin.</p>
+  <p style="color:#fecaca;font-size:.85rem;margin-bottom:.5rem"><strong>Addım 1 — Sualı ver:</strong> Digər maddələr kimi 4 variantı oxuyun (0: intihar fikri yoxdur → 3: fürsət olsa özümü öldürərdim).</p>
+  <p style="color:#fecaca;font-size:.85rem;margin-bottom:.5rem"><strong>Addım 2 — Bal 1 olsa (ölmək istəyi var, amma cəhd fikri yoxdur):</strong> Şifahi olaraq əlavə sual verin: "Bu fikirlər nə qədər tez-tez gəlir? Onları necə idarə edirsiniz?" Cavabı qeyd edin, izləməyə davam edin.</p>
+  <p style="color:#fecaca;font-size:.85rem;margin-bottom:.5rem"><strong>Addım 3 — Bal 2 və ya 3 olsa:</strong> Testi DAYANDIRIN. Sakit, mühakimə etməyən tonla birbaşa soruşun: "Özünüzə zərər vermək barədə konkret plan düşünmüsünüzmü? Bunu edə biləcəyiniz bir vasitə varmı?" Bu, riski gizlətmir — əksinə, açıq soruşmaq riski AZALDIR.</p>
+  <p style="color:#fecaca;font-size:.85rem;margin-bottom:.5rem"><strong>Addım 4 — Dərhal hərəkət:</strong>
+  <br>• Xəstəni tək buraxmayın
+  <br>• Həmin gün psixiatr konsultasiyası təşkil edin (mümkünsə dərhal, mümkün deyilsə 24 saat ərzində)
+  <br>• Aktiv plan/vasitə mövcuddursa — təcili yardım / böhran xətti prosedurunu işə salın, ailəyə/etibar edilən şəxsə məlumat verin (məxfilik qaydalarınıza uyğun)
+  <br>• Bütün bunları dərhal, dəqiq vaxt qeydi ilə sənədləşdirin</p>
+  <p style="color:#fecaca;font-size:.85rem">Bu, testin nəticəsini gözləməli olduğunuz bir maddə deyil — 9-cu suala yüksək bal, testin qalan hissəsindən <strong>asılı olmayaraq</strong> təcili addım tələb edir.</p></div></div>
+
   <div class="instr-section"><h4>📊 Qiymətləndirmə</h4>
   <table class="scale-table"><tr><th>Bal</th><th>Səviyyə</th></tr>
     <tr><td style="color:#34d399;font-weight:700">0–9</td><td>Normal / Minimal</td></tr>
@@ -844,14 +925,32 @@ function getBDIInstruction(){return`
     <tr><td style="color:#f97316;font-weight:700">21–30</td><td>Orta depressiya</td></tr>
     <tr><td style="color:#f87171;font-weight:700">31–40</td><td>Ağır depressiya</td></tr>
     <tr><td style="color:#ef4444;font-weight:700">41–63</td><td>Ekstremal ağır</td></tr></table></div>
-  <div class="instr-section">
-    <h4>🚨 İntihara meyl (9-cu sual)</h4>
-    <div style="background:rgba(239,68,68,.1);border:1.5px solid rgba(239,68,68,.3);border-radius:.75rem;padding:.75rem">
-    <p style="color:#fca5a5;font-size:.82rem">9-cu suala <strong>2 və ya 3 bal</strong> verilsə — dərhal psixiatr konsultasiyası tələb olunur!</p></div></div>
+
+  <div class="instr-section"><h4>👥 Xüsusi hallar</h4><ul>
+    <li><strong>Yeniyetmələr:</strong> valideyn otaqda olmadan keçirin, iştahasızlıq/yuxu maddələrini böyümə dövrü ilə qarışdırmayın</li>
+    <li><strong>Yaşlı xəstələr:</strong> somatik maddələr (yorğunluq, iştaha) yaşla bağlı dəyişikliklərlə üst-üstə düşə bilər — diqqətli təfsir edin</li>
+    <li><strong>Xroniki xəstəliyi olanlar:</strong> yorğunluq/yuxu problemləri xəstəlikdən ola bilər, mütləq tibbi tarixçəni nəzərə alın</li>
+    <li><strong>Az əməkdaşlıq edən/inkar edən xəstə:</strong> balın süni aşağı çıxa biləcəyini qeyd edin, klinik müşahidə ilə tutuşdurun</li></ul></div>
+
+  <div class="instr-section"><h4>💬 5-ci addım — Test sonrası geribildirim</h4>
+  <p>Xüsusən orta-ağır nəticələrdə, xəstəni tənha buraxmadan sakit şəkildə nəticəni izah edin, növbəti addımları (müalicə planı, təkrar görüş tarixi) birgə müəyyənləşdirin. Ümid verən, amma real mesaj verin.</p></div>
+
+  <div class="instr-section"><h4>📁 Sənədləşdirmə</h4><ul>
+    <li>Ümumi balı və 9-cu sualın nəticəsini AYRICA qeyd edin</li>
+    <li>9-cu suala görülən hər addımı vaxt möhürü ilə sənədləşdirin</li>
+    <li>Xəstənin testə reaksiyasını (əməkdaşlıq, emosional vəziyyət) qeyd edin</li></ul></div>
+
+  <div class="instr-section"><h4>⛔ Tez-tez edilən səhvlər</h4><ul>
+    <li>9-cu sualı digər maddələr kimi "sadəcə bir sual" kimi keçmək</li>
+    <li>Yüksək bal görəndə xəstəni tənha buraxıb "nəticəni sonra müzakirə edərik" demək</li>
+    <li>Somatik simptomları (yorğunluq, iştaha) avtomatik depressiyaya bağlamaq, tibbi səbəbi yoxlamadan</li></ul></div>
+
+  <div class="instr-section"><h4>🔁 Təkrar tətbiq</h4><p>Müalicə effektivliyini izləmək üçün 2–4 həftəlik intervalda təkrarlamaq tövsiyə olunur. Hər təkrarda 9-cu suala xüsusi diqqət davam etdirilməlidir.</p></div>
+
   <div class="instr-section"><h4>⚕️ Klinik qeydlər</h4><ul>
-    <li>BDI diaqnostik alət <strong>deyil</strong></li>
+    <li>BDI diaqnostik alət <strong>deyil</strong> — DSM-5 kriteriyalarını əvəz etmir</li>
     <li>DSM-5 kriteriyaları ilə birgə istifadə edilməlidir</li>
-    <li>2-4 həftəlik intervalda dinamika izlənilə bilər</li></ul></div>`}
+    <li>BAI ilə birgə tətbiq komorbid narahatlığı üzə çıxara bilər</li></ul></div>`}
 
 // ══════════════════════════════════════
 // TEST
