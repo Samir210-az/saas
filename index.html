@@ -719,6 +719,7 @@ function addPatient(){
   const patients=getPatients();
   patients.push({id:Date.now().toString(),name,age,gender});
   savePatients(patients);
+  window.sgTrackRecord && window.sgTrackRecord('Əlavə','Xəstə (NeuroCBT)',name);
   document.getElementById('patientName').value='';
   document.getElementById('patientAge').value='';
   document.getElementById('patientGender').value='';
@@ -1037,6 +1038,7 @@ XƏBƏRDARLIQ: Bu hesabat diaqnoz deyil.
 © AN Psixoloji Mərkəz | @s_akhundoff
 ═══════════════════════════════════════`;
   lastReport=report;
+  window.sgTrackTest && window.sgTrackTest(testName, selectedPatient.name+' — '+totalScore+'/63 — '+result.label);
   document.getElementById('currentReport').innerHTML=`<pre>${report}</pre>`;
   document.getElementById('resultSummary').innerHTML=`
     <div class="result-card ${result.cls}">
@@ -1198,5 +1200,6 @@ if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('/saas/service-worker.js').catch(()=>{}));
 }
 </script>
+<script type="module" src="https://samir210-az.github.io/menyu/analytics.js"></script>
 </body>
 </html>
