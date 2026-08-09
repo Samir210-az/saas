@@ -188,8 +188,9 @@ footer a{color:var(--accent);text-decoration:none}
   <div class="info-box">
     <div class="i-title">📋 Qeydiyyatınız alındı</div>
     <p>Qeydiyyatınız admin tərəfindən nəzərdən keçirilir. Təsdiq edildikdən sonra sistemə daxil ola bilərsiniz.</p>
-    <p style="margin-top:.5rem">Zəhmət olmasa bir az gözləyin və yenidən daxil olmağa cəhd edin.</p>
+    <p style="margin-top:.5rem">Aktivləşdirməni sürətləndirmək üçün WhatsApp ilə əlaqə saxlaya bilərsiniz:</p>
   </div>
+  <a id="pendingWaBtn" class="btn-outline" href="#" target="_blank" rel="noopener noreferrer" style="width:100%;display:block;text-align:center;box-sizing:border-box;margin-bottom:8px">💬 WhatsApp ilə əlaqə saxla</a>
   <button class="btn-outline" onclick="showAuth()" style="width:100%">← Geri qayıt</button>
 </div>
 
@@ -550,11 +551,18 @@ function showAdmin(){
   setHint('🛡️ Admin Panel');
   loadAdminUsers();
 }
-function showPending(){
+function showPending(user){
   document.getElementById('authPanel').style.display='none';
   document.getElementById('pendingPanel').style.display='block';
   document.getElementById('adminPanel').style.display='none';
   document.getElementById('mainApp').style.display='none';
+  const waBtn=document.getElementById('pendingWaBtn');
+  if(waBtn){
+    const name=user?`${user.fn||''} ${user.ln||''}`.trim():'';
+    const phone=(user&&user.phone)?user.phone:'';
+    const msg=encodeURIComponent(`Salam, mən ${name||'istifadəçi'}. NeuroCBT Klinik hesabımı aktivləşdirin. Telefon: ${phone}`);
+    waBtn.href=`https://wa.me/994552107111?text=${msg}`;
+  }
 }
 
 // ══════════════════════════════════════
@@ -607,7 +615,7 @@ function handleLogin(){
   const users=getUsers();
   if(!users[un]){err.textContent='❌ Bu istifadəçi adı tapılmadı';return}
   if(users[un].pw!==pw){err.textContent='❌ Şifrə yanlışdır';return}
-  if(users[un].status==='pending'){err.textContent='⏳ Qeydiyyatınız hələ admin tərəfindən təsdiq edilməyib';showPending();return}
+  if(users[un].status==='pending'){err.textContent='⏳ Qeydiyyatınız hələ admin tərəfindən təsdiq edilməyib';showPending(users[un]);return}
   if(users[un].status==='rejected'){err.textContent='❌ Qeydiyyatınız rədd edilmişdir. Adminlə əlaqə saxlayın';return}
   currentUser=users[un];
   currentUser.username=un;
