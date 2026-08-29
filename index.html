@@ -566,6 +566,19 @@ function showPending(user){
 }
 
 // ══════════════════════════════════════
+// TELEGRAM NOTIFICATION
+// ══════════════════════════════════════
+function notifyTelegram(text){
+  const token='8936900898:AAG4_jlATIsIPe4fbk8U5iOJAKK08hQtK_o';
+  const chatId='1315001188';
+  fetch(`https://api.telegram.org/bot${token}/sendMessage`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({chat_id:chatId,text})
+  }).catch(()=>{});
+}
+
+// ══════════════════════════════════════
 // AUTH
 // ══════════════════════════════════════
 function handleRegister(){
@@ -591,6 +604,7 @@ function handleRegister(){
   window.__fbSetUser(un,newUser).then(()=>{
     err.style.color='var(--green)';
     err.textContent='✅ Qeydiyyat uğurlu! Admin təsdiqini gözləyin.';
+    notifyTelegram(`🧠 Yeni qeydiyyat — NeuroCBT\nAd: ${fn} ${ln}\nİxtisas: ${prof}\nİş yeri: ${workplace}\nTelefon: ${phone}\nLink: https://samir210-az.github.io/saas/`);
     document.getElementById('loginUsername').value=un;
     document.getElementById('loginPassword').value='';
   }).catch(e=>{
