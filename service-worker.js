@@ -1,5 +1,5 @@
 const CACHE_NAME = 'saas-v2';
-const urlsToCache = ['/saas/', '/saas/index.html'];
+const urlsToCache = ['./', './index.html'];
 
 self.addEventListener('install', e => {
   self.skipWaiting();
@@ -16,7 +16,7 @@ self.addEventListener('activate', e => {
 
 // HTML üçün network-first (həmişə ən son versiyanı götür), digərləri üçün cache-first
 self.addEventListener('fetch', e => {
-  if (e.request.mode === 'navigate' || e.request.url.endsWith('.html') || e.request.url.endsWith('/saas/')) {
+  if (e.request.mode === 'navigate' || e.request.url.endsWith('.html') || e.request.url === self.registration.scope) {
     e.respondWith(
       fetch(e.request).then(resp => {
         caches.open(CACHE_NAME).then(c => c.put(e.request, resp.clone()));

@@ -2,7 +2,7 @@
   "name": "SaaS",
   "short_name": "SS",
   "description": "SaaS tətbiqi",
-  "start_url": "/saas/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#1a3a6b",
   "theme_color": "#1a3a6b",
