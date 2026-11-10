@@ -603,13 +603,11 @@ function showPending(user){
 // TELEGRAM NOTIFICATION
 // ══════════════════════════════════════
 function notifyTelegram(text){
-  const token='8936900898:AAG4_jlATIsIPe4fbk8U5iOJAKK08hQtK_o';
-  const chatId='1315001188';
-  fetch(`https://api.telegram.org/bot${token}/sendMessage`,{
+  fetch('https://ai-test.aze-ai.az/api/notify',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({chat_id:chatId,text})
-  }).catch(()=>{});
+    body:JSON.stringify({tool:'neurocbt',text:text})
+  }).catch(function(){});
 }
 
 // ══════════════════════════════════════
