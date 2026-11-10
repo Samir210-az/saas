@@ -364,12 +364,9 @@ footer a{color:var(--accent);text-decoration:none}
 </div>
 
 <script type="module">
-// ══════════════════════════════════════
-// FIREBASE — mərkəzi istifadəçi bazası (multi-device)
-// ══════════════════════════════════════
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+import { getDatabase, ref, onValue, set, get, remove } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+import { getAuth, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, setPersistence, inMemoryPersistence } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCBhyGNzZRGgQShP_C9kwAzTm_g_0zJlzg",
@@ -380,33 +377,69 @@ const firebaseConfig = {
   messagingSenderId: "528809299356",
   appId: "1:528809299356:web:59cae89a64e446dc520c59"
 };
+const ADMIN_EMAIL = "samir.akhundoff@gmail.com";
 
 const fbApp = initializeApp(firebaseConfig);
 const fbDb = getDatabase(fbApp);
 const fbAuth = getAuth(fbApp);
-const usersRef = ref(fbDb, 'saas_users');
+
+// Bu cihazın anonim hesabı: əvvəl saxlanmışı gözlə, yoxdursa bir dəfə yarat.
+const authReady = new Promise(res => {
+  const off = onAuthStateChanged(fbAuth, u => {
+    off();
+    if (u) res(u); else signInAnonymously(fbAuth).then(c => res(c.user), () => res(null));
+  });
+});
+
+// Admin girişi ayrıca və yaddaşsızdır: hər açılışda yenidən Google ilə soruşulur.
+const adminApp = initializeApp(firebaseConfig, 'admin');
+const adminAuth = getAuth(adminApp);
+const adminPersist = setPersistence(adminAuth, inMemoryPersistence);
+let adminDb = null;
 
 window.__usersCache = {};
 window.__usersReady = false;
-window.__fbSetUser = (un, val) => set(ref(fbDb, `saas_users/${un}`), val);
-window.__fbSetUserField = (un, field, val) => set(ref(fbDb, `saas_users/${un}/${field}`), val);
-window.__fbRemoveUser = (un) => remove(ref(fbDb, `saas_users/${un}`));
 
-// Firebase Rules "auth != null" tələb etdiyi üçün əvvəlcə görünməz (anonim) giriş edirik.
-signInAnonymously(fbAuth).then(() => {
-  onValue(usersRef, (snap) => {
-    window.__usersCache = snap.val() || {};
-    window.__usersReady = true;
+function clean(u){ if(!u) return u; const c={...u}; delete c.pw; delete c.devices; return c; }
+
+// Qeydiyyat: qeyd yalnız yoxdursa yaradılır; şifrə qaydalarda yoxlanır, heç kim başqasınınkını oxuya bilmir.
+window.__fbRegister = async (un, val) => {
+  const u = await authReady; if (!u) throw new Error('auth');
+  await set(ref(fbDb, `saas_users/${un}`), { ...val, devices: { [u.uid]: { pw: val.pw, ts: Date.now() } } });
+};
+// Giriş: şifrə doğrudursa bu cihaz hesaba bağlanır, sonra öz qeydini oxuyur.
+window.__fbLogin = async (un, pw) => {
+  const u = await authReady; if (!u) throw new Error('auth');
+  await set(ref(fbDb, `saas_users/${un}/devices/${u.uid}`), { pw, ts: Date.now() });
+  const snap = await get(ref(fbDb, `saas_users/${un}`));
+  return clean(snap.val());
+};
+window.__fbMyUser = async (un) => {
+  await authReady;
+  try { const snap = await get(ref(fbDb, `saas_users/${un}`)); return clean(snap.val()); } catch (e) { return null; }
+};
+window.__fbAdminLogin = async () => {
+  await adminPersist;
+  const provider = new GoogleAuthProvider(); provider.setCustomParameters({ prompt: 'select_account' });
+  const r = await signInWithPopup(adminAuth, provider);
+  if (!(r.user.email === ADMIN_EMAIL && r.user.emailVerified)) { await signOut(adminAuth); throw new Error('not-admin'); }
+  adminDb = getDatabase(adminApp);
+  onValue(ref(adminDb, 'saas_users'), snap => {
+    const v = snap.val() || {}; const out = {};
+    Object.keys(v).forEach(k => { out[k] = clean(v[k]); });
+    window.__usersCache = out; window.__usersReady = true;
     if (typeof window.onUsersUpdated === 'function') window.onUsersUpdated();
   });
-}).catch(err => console.error('Firebase auth xətası:', err));
+};
+window.__fbAdminLogout = () => { window.__usersCache = {}; window.__usersReady = false; return signOut(adminAuth); };
+window.__fbSetUserField = (un, field, val) => set(ref(adminDb, `saas_users/${un}/${field}`), val);
+window.__fbRemoveUser = (un) => remove(ref(adminDb, `saas_users/${un}`));
 </script>
 <script>
 // ══════════════════════════════════════
 // CONSTANTS
 // ══════════════════════════════════════
 const ADMIN_USER = 'admin';
-const ADMIN_PASS = 'AN2026';
 
 const BAI_QUESTIONS = [
   "Bədənimdə uyuşma və ya gıcışma hissi",
@@ -598,18 +631,16 @@ function handleRegister(){
   if(!phone){err.textContent='⚠️ Telefon nömrəsi daxil edin';return}
   if(pw.length<4){err.textContent='⚠️ Şifrə minimum 4 xarakter olmalıdır';return}
   if(un===ADMIN_USER){err.textContent='⚠️ Bu istifadəçi adından istifadə edilə bilməz';return}
-  if(!window.__usersReady){err.textContent='⏳ Yüklənir, bir neçə saniyə sonra yenidən cəhd edin';return}
-  const users=getUsers();
-  if(users[un]){err.textContent='⚠️ Bu istifadəçi adı artıq var';return}
+  if(!/^[A-Za-z0-9_-]{3,30}$/.test(un)){err.textContent='⚠️ İstifadəçi adı 3–30 simvol: hərf, rəqəm, _ və - ola bilər';return}
   const newUser={fn,ln,prof,workplace,phone,pw,status:'pending',regDate:new Date().toLocaleString('az-AZ')};
-  window.__fbSetUser(un,newUser).then(()=>{
+  window.__fbRegister(un,newUser).then(()=>{
     err.style.color='var(--green)';
     err.textContent='✅ Qeydiyyat uğurlu! Admin təsdiqini gözləyin.';
     notifyTelegram(`🧠 Yeni qeydiyyat — NeuroCBT\nAd: ${fn} ${ln}\nİxtisas: ${prof}\nİş yeri: ${workplace}\nTelefon: ${phone}\nLink: https://samir210-az.github.io/saas/`);
     document.getElementById('loginUsername').value=un;
     document.getElementById('loginPassword').value='';
   }).catch(e=>{
-    err.textContent='❌ Xəta: qeydiyyat göndərilmədi (internet yoxlayın)';
+    err.textContent = /permission/i.test((e&&(e.code||e.message))||'') ? '⚠️ Bu istifadəçi adı artıq var' : '❌ Xəta: qeydiyyat göndərilmədi (internet yoxlayın)';
   });
 }
 
@@ -619,30 +650,38 @@ function handleLogin(){
   const err=document.getElementById('authError');
   err.style.color='var(--red)';
   if(!un||!pw){err.textContent='⚠️ Məlumatları daxil edin';return}
-  // Admin yoxla
-  if(un===ADMIN_USER&&pw===ADMIN_PASS){
-    currentUser={fn:'Admin',ln:'',prof:'Administrator',username:ADMIN_USER,isAdmin:true};
-    saveSession(currentUser);
-    showAdmin();
+  // Admin: istifadəçi adı "admin" yazılanda Google hesabı ilə yoxlanılır
+  if(un===ADMIN_USER){
+    err.textContent='⏳ Google ilə yoxlanılır…';
+    window.__fbAdminLogin().then(()=>{
+      err.textContent='';
+      currentUser={fn:'Admin',ln:'',prof:'Administrator',username:ADMIN_USER,isAdmin:true};
+      showAdmin();
+    }).catch(e=>{
+      if(e&&(e.code==='auth/popup-closed-by-user'||e.code==='auth/cancelled-popup-request')){err.textContent='';return}
+      err.textContent = e&&e.message==='not-admin' ? '❌ Bu Google hesabının admin icazəsi yoxdur' : '❌ Admin girişi alınmadı';
+    });
     return;
   }
-  if(!window.__usersReady){err.textContent='⏳ Yüklənir, bir neçə saniyə sonra yenidən cəhd edin';return}
-  const users=getUsers();
-  if(!users[un]){err.textContent='❌ Bu istifadəçi adı tapılmadı';return}
-  if(users[un].pw!==pw){err.textContent='❌ Şifrə yanlışdır';return}
-  if(users[un].status==='pending'){err.textContent='⏳ Qeydiyyatınız hələ admin tərəfindən təsdiq edilməyib';showPending(users[un]);return}
-  if(users[un].status==='rejected'){err.textContent='❌ Qeydiyyatınız rədd edilmişdir. Adminlə əlaqə saxlayın';return}
-  currentUser=users[un];
-  currentUser.username=un;
-  saveSession(currentUser);
-  document.getElementById('userInfoSpan').textContent=`${currentUser.fn} ${currentUser.ln}`;
-  document.getElementById('userProfSpan').textContent=`${currentUser.prof} | ${currentUser.workplace||''}`;
-  showMain();
-  loadPatients();
-  renderInstruction();
+  err.textContent='⏳ Yoxlanılır…';
+  window.__fbLogin(un,pw).then(u=>{
+    err.textContent='';
+    if(!u){err.textContent='❌ İstifadəçi adı və ya şifrə yanlışdır';return}
+    if(u.status==='pending'){err.textContent='⏳ Qeydiyyatınız hələ admin tərəfindən təsdiq edilməyib';showPending(u);return}
+    if(u.status==='rejected'){err.textContent='❌ Qeydiyyatınız rədd edilmişdir. Adminlə əlaqə saxlayın';return}
+    currentUser=u;
+    currentUser.username=un;
+    saveSession(currentUser);
+    document.getElementById('userInfoSpan').textContent=`${currentUser.fn} ${currentUser.ln}`;
+    document.getElementById('userProfSpan').textContent=`${currentUser.prof} | ${currentUser.workplace||''}`;
+    showMain();
+    loadPatients();
+    renderInstruction();
+  }).catch(()=>{ err.textContent='❌ İstifadəçi adı və ya şifrə yanlışdır'; });
 }
 
 function logout(){
+  if(currentUser&&currentUser.isAdmin&&window.__fbAdminLogout) window.__fbAdminLogout();
   currentUser=null;
   selectedPatient=null;
   saveSession(null);
@@ -664,8 +703,10 @@ function getUserStats(un){
   return {patients:patients.length, reports};
 }
 
+function escH(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function loadAdminUsers(){
-  const users=getUsers();
+  const raw=getUsers(), users={};
+  Object.keys(raw).forEach(k=>{ if(!/^[A-Za-z0-9_.@+-]{1,60}$/.test(k)) return; const u=raw[k]||{}; users[k]={}; Object.keys(u).forEach(f=>{ users[k][f]=typeof u[f]==='string'?escH(u[f]):u[f]; }); });
   const list=document.getElementById('adminUserList');
   const entries=Object.entries(users);
   if(!entries.length){
@@ -1188,32 +1229,19 @@ window.onclick=function(e){if(e.target.classList.contains('modal'))e.target.styl
 function initApp(){
   const session=loadSession();
   if(!session){showAuth();return}
+  // Admin sessiyası saxlanmır: hər dəfə yenidən Google ilə daxil olunur
+  if(session.isAdmin){ saveSession(null); showAuth(); return; }
   currentUser=session;
-  if(session.isAdmin){
-    showAdmin();
-    return;
-  }
-  // Firebase-dən istifadəçi siyahısı yüklənənə qədər gözlə
-  function checkUserStatus(){
-    const users=getUsers();
-    const u=users[session.username];
+  window.__fbMyUser(session.username).then(u=>{
     if(u&&u.status==='approved'){
+      currentUser={...u, username:session.username};
       document.getElementById('userInfoSpan').textContent=`${currentUser.fn} ${currentUser.ln}`;
       document.getElementById('userProfSpan').textContent=`${currentUser.prof} | ${currentUser.workplace||''}`;
       showMain();loadPatients();renderInstruction();
     } else {
-      saveSession(null);showAuth();
+      currentUser=null; saveSession(null); showAuth();
     }
-  }
-  if(window.__usersReady){ checkUserStatus(); }
-  else {
-    let tries=0;
-    const waitInterval=setInterval(()=>{
-      tries++;
-      if(window.__usersReady){ clearInterval(waitInterval); checkUserStatus(); }
-      else if(tries>50){ clearInterval(waitInterval); checkUserStatus(); }
-    },100);
-  }
+  });
 }
 
 window.addEventListener('DOMContentLoaded', initApp);
