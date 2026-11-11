@@ -1,4 +1,4 @@
-const CACHE_NAME = 'saas-v2';
+const CACHE_NAME = 'saas-v3';
 const urlsToCache = ['./', './index.html'];
 
 self.addEventListener('install', e => {
