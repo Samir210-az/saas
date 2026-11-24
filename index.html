@@ -635,7 +635,7 @@ function handleRegister(){
   window.__fbRegister(un,newUser).then(()=>{
     err.style.color='var(--green)';
     err.textContent='✅ Qeydiyyat uğurlu! Admin təsdiqini gözləyin.';
-    notifyTelegram(`🧠 Yeni qeydiyyat — NeuroCBT\nAd: ${fn} ${ln}\nİxtisas: ${prof}\nİş yeri: ${workplace}\nTelefon: ${phone}\nLink: https://samir210-az.github.io/saas/`);
+    notifyTelegram(`🧠 Yeni qeydiyyat — NeuroCBT\nAd: ${fn} ${ln}\nİxtisas: ${prof}\nİş yeri: ${workplace}\nTelefon: ${phone}\nLink: https://neuro.aze-ai.az`);
     document.getElementById('loginUsername').value=un;
     document.getElementById('loginPassword').value='';
   }).catch(e=>{
